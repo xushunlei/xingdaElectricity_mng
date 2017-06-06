@@ -10,6 +10,8 @@
 		request.getServerName()+":"+
 		request.getServerPort()+request.getContextPath()+"/";%>
 <base href="<%=basePath%>">
+<!-- 修改浏览器图标 -->
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
 <script type="text/javascript" src="js/plugins/jquery-1.7.min.js"></script>
 <script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
@@ -51,7 +53,7 @@
              
                 <div class="msghead">
                     <ul class="msghead_menu">
-                        <li><a class="reportspam">Report Spam</a></li>
+                        <li><a class="reportspam">举报垃圾信息</a></li>
                         <li class="marginleft5 dropdown" id="actions">
                             <a class="dropdown_label" href="#actions">
                             Actions

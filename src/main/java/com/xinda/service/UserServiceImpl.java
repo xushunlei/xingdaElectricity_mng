@@ -1,5 +1,7 @@
 package com.xinda.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,5 +48,25 @@ public class UserServiceImpl implements UserService
 	{
 		return userDao.selectByUser(user);
 		
+	}
+	@Override
+	public List<User> findUserByStatus(Byte status)
+	{
+		return userDao.selectUsersByStatus(status);
+	}
+	@Override
+	public List<User> findUsers()
+	{
+		return userDao.selectUsers();
+	}
+	@Override
+	public int getTotalCountOfUser()
+	{
+		return userDao.selectTotalCount();
+	}
+	@Override
+	public int getCountByStatus(Byte status)
+	{
+		return userDao.selectCountByStatus(status);
 	}
 }

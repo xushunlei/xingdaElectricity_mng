@@ -111,5 +111,40 @@
       </if>
     </trim>
   </insert>
-  
+  <select id="selectUsersByStatus" parameterType="java.lang.Byte" resultType="com.xinda.entity.User">
+  	select <include refid="Base_Column_List" />
+  	from user
+    where user_status=#{status}
+  </select>
+  <select id="selectUsers" resultMap="UserMap">
+  	select <include refid="Base_Column_List" />
+  	from user
+  </select>
+  <select id="selectTotalCount" resultType="java.lang.Integer">
+  	select count(1)
+  	from user
+  </select>
+  <select id="selectCountByStatus" resultType="java.lang.Integer" parameterType="java.lang.Byte">
+  	select count(1)
+  	from user
+  	where user_status=#{status}
+  </select>
+  <update id="updateByUser" parameterType="com.xinda.entity.User">
+  	update user
+  	<set>
+  		user_account=#{account},
+  		<if test="password!=null">user_password=#{password},</if>
+  		<if test="name!=null">user_name=#{name},</if>
+  		<if test="role!=null">user_role=#{role},</if>
+  		<if test="mobile!=null">user_mobile=#{mobile},</if>
+  		<if test="balance!=null">user_balance=#{balance},</if>
+  		<if test="idcard!=null">user_idcard=#{idcard},</if>
+  		<if test="email!=null">user_email=#{email},</if>
+  		<if test="address!=null">user_address=#{address},</if>
+  		<if test="status!=null">user_status=#{status},</if>
+  	</set>
+  	<where>
+  		id=#{id}
+  	</where>
+  </update>
 </mapper>

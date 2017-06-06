@@ -13,7 +13,7 @@ public class User {
 
     private String mobile;
 
-    private Long balance;
+    private Double balance;
 
     private String idcard;
 
@@ -71,11 +71,11 @@ public class User {
         this.mobile = mobile == null ? null : mobile.trim();
     }
 
-    public Long getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(Long balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 

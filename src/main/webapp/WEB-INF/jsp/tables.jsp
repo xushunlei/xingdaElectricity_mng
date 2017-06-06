@@ -11,6 +11,7 @@
 <!-- 基链接标记:它只能应用于标记head内。 
 你网页上的所有相对路径在链接时都将在前面加上基链接指向的地址。 -->
 <base href="<%=basePath%>">
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />

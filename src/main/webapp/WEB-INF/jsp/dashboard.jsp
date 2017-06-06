@@ -14,6 +14,7 @@
 <!-- 基链接标记:它只能应用于标记head内。 
 你网页上的所有相对路径在链接时都将在前面加上基链接指向的地址。 -->
 <base href="<%=basePath%>">
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
 <script type="text/javascript" src="js/plugins/jquery-1.7.min.js"></script>
@@ -33,13 +34,16 @@
     
     <div class="vernav2 iconmenu">
     	<ul>
-    		<li><a href="#formsub" class="editor">查看信息</a>
+    		<li><a href="#usersub" class="msg">查看信息</a>
             	<span class="arrow"></span>
-            	<ul id="msgsub">
-               		<c:forEach items="" var="">
+            	<ul id="usersub">
+               		<c:forEach items="${userList}" var="user">
+               		<li><a href="javascript:showOneBranch('${user.account}');">${user.name}</a></li>
                		</c:forEach>
                 </ul>
             </li>
+            <li><a href="user/userlistView" class="userlist">查看用户列表</a></li>
+            
         	<li><a href="#formsub" class="editor">表单提交</a>
             	<span class="arrow"></span>
             	<ul id="formsub">

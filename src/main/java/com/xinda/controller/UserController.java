@@ -1,5 +1,8 @@
 package com.xinda.controller;
 
+import java.util.List;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -41,7 +44,10 @@ public class UserController
 		if(userService.checkUserIsExist(user)){
 			user=userService.login(user);
 			if(user.getRole()==1){//管理员
-				
+				List<User> userList=userService.findUsers();
+				System.out.println(userList);
+				session.setAttribute("userList", userList);
+				//session.setAttribute("branchList", branchService.getBranchs());
 			}else{
 				
 			}
@@ -57,7 +63,7 @@ public class UserController
 	public String showTables(HttpServletRequest request, HttpServletResponse response){
 		return "tables";
 	}
-	/**查看用户资料*/
+	/**查看用户个人资料*/
 	@RequestMapping("profileView")
 	public String showProfile(HttpServletRequest request, HttpServletResponse response){
 		HttpSession session=request.getSession();
@@ -66,6 +72,18 @@ public class UserController
 			System.out.println(loginUser);
 			return "profile";
 		}else {
+			return "index";
+		}
+	}
+	/**查看用户列表*/
+	@RequestMapping("userlistView")
+	public String showUserlist(HttpServletRequest request,HttpServletResponse response){
+		HttpSession session=request.getSession();
+		User loginUser=(User)session.getAttribute("loginUser");
+		if(loginUser!=null&&loginUser.getRole()==1){
+			session.setAttribute("userList", userService.findUsers());
+			return "userlist";
+		}else{
 			return "index";
 		}
 	}
