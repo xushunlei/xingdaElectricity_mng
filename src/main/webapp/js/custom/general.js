@@ -9,7 +9,7 @@
  *  http://themeforest.net/category/site-templates/admin-templates
  */
 
-jQuery.noConflict();
+jQuery.noConflict();//释放对 $ 标识符的控制，这样其他脚本就可以使用它了。
 
 jQuery(document).ready(function(){
 								

@@ -59,9 +59,9 @@
                             <span class="arrow"></span>
                             </a>
                             <ul>
-                                <li><a href="">启用</a></li>
-                                <li><a href="">停用</a></li>
-                                <li><a href="">注销</a></li>
+                                <li><a id="do_enable" href="javascript:void(0);">启用</a></li>
+                                <li><a id="do_disable" href="javascript:void(0);">停用</a></li>
+                                <li><a href="javascript:void(0);">注销</a></li>
                             </ul>
                         </li>
                         <li class="marginleft5"><a class="msgtrash" title="Trash"></a></li>
@@ -76,13 +76,14 @@
                     <colgroup>
                         <col class="con1" width="3%"/>
                         <col class="con0" width="3%" />
+                        <col class="con1" width="8%"/>
+                        <col class="con0" width="8%"/>
+                        <col class="con1" width="8%"/>
+                        <col class="con0" width="15%"/>
                         <col class="con1" width="10%"/>
-                        <col class="con0" width="10%"/>
-                        <col class="con1" width="10%"/>
-                        <col class="con1" width="15%"/>
-                        <col class="con1" width="30%"/>
-                        <col class="con1" width="9%"/>
-                        <col class="con1" width="5%"/>
+                        <col class="con0" width="27%"/>
+                        <col class="con1" width="8%"/>
+                        <col class="con0" width="5%"/>
                         <col class="con1" width="5%"/>
                     </colgroup>
                     <thead>
@@ -93,6 +94,7 @@
                         <th class="head0">账户名</th>
                         <th class="head1 attachement">手机</th>
                         <th class="head0">邮箱</th>
+                        <th>身份证号</th>
                         <th>地址</th>
                         <th>余额</th>
                         <th>状态</th>
@@ -112,21 +114,22 @@
                     <tbody>
                     <c:forEach items="${userList}" var="user" varStatus="vs">
                     	<tr>
-                    		<td class="aligncenter"><input type="checkbox" name="" /></td>
+                    		<td class="aligncenter"><input type="checkbox" name="cuser" value="${user.id}"/></td>
                     		<td class="star">${vs.count}</td>
                     		<td>${user.name}</td>
                     		<td>${user.account}</td>
                     		<td>${user.mobile}</td>
                     		<td>${user.email}</td>
+                    		<td>${user.idcard}</td>
                     		<td>${user.address}</td>
                     		<td>${user.balance}</td>
                     		<td>${user.status==0?"活跃":"停用"}</td>
                     		<td>
 	                    		<c:if test="${user.status==0}">
-	                    		<a href="javascript:disableUser(${user.id});" style="color:red">停用</a>
+	                    		<a href="admin/disable?userid=${user.id}" style="color:red">停用</a>
 	                    		</c:if>
 	                    		<c:if test="${user.status==1}">
-	                    		<a href="javascript:enableUser(${user.id});" style="color:green">启用</a>
+	                    		<a href="admin/enable?userid=${user.id}" style="color:green">启用</a>
 	                    		</c:if>
                     		</td>
                     	</tr>

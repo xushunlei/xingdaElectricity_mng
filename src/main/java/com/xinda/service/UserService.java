@@ -22,4 +22,10 @@ public interface UserService
 	public int getTotalCountOfUser();
 	/**查询指定状态用户数量*/
 	public int getCountByStatus(Byte status);
+	/**修改用户*/
+	public boolean modifyUser(User user);
+	/**根据ID查用户*/
+	public User findById(Integer id);
+	/**修改用户状态*/
+	public void editStatusById(String[] ids,Byte status);
 }

@@ -147,4 +147,16 @@
   		id=#{id}
   	</where>
   </update>
+  <select id="selectUserById" resultMap="UserMap" parameterType="java.lang.Integer">
+  	select <include refid="Base_Column_List"/>
+  	from user
+  	where id=#{id}
+  </select>
+  <update id="updateStatus">
+  	update user
+  	<set>
+  		user_status=#{st,jdbcType=TINYINT}
+  	</set>
+  	where id=#{id,jdbcType=INTEGER}
+  </update>
 </mapper>

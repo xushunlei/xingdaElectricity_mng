@@ -107,7 +107,30 @@ jQuery(document).ready(function(){
 	jQuery(document).click(function(){
 		jQuery('.dropdown').removeClass('open').find('ul').hide();
 	});
+	jQuery("#do_enable").click(function(){
+		var str="";
+		var idss=document.getElementsByName("cuser");
+		for(var i=0;i<idss.length;i++){
+			if(idss[i].checked){
+				str=str+idss[i].value+",";
+			}
+		}
+		str=str.substring(0, str.length-1);
+		console.log(str);
+		window.location="admin/enable?userid="+str;
+	});
 	
+	jQuery("#do_disable").click(function(){
+		var str="";
+		var idss=document.getElementsByName("cuser");
+		for(var i=0;i<idss.length;i++){
+			if(idss[i].checked){
+				str=str+idss[i].value+",";
+			}
+		}
+		str=str.substring(0, str.length-1);
+		window.location="admin/disable?userid="+str;
+	})
 	
 });
 function disableUser(id){

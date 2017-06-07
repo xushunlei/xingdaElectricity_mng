@@ -1,16 +1,21 @@
 package com.xinda.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mysql.jdbc.interceptors.SessionAssociationInterceptor;
 import com.xinda.entity.User;
@@ -43,20 +48,26 @@ public class UserController
 		user.setPassword(password);
 		if(userService.checkUserIsExist(user)){
 			user=userService.login(user);
-			if(user.getRole()==1){//管理员
+			/*if(user.getRole()==1){//管理员
 				List<User> userList=userService.findUsers();
 				System.out.println(userList);
 				session.setAttribute("userList", userList);
 				//session.setAttribute("branchList", branchService.getBranchs());
 			}else{
 				
-			}
+			}*/
 			session.setAttribute("loginUser", user);
 			return "dashboard";
 		}else{
 			return "index";
 		}
 		
+	}
+	/**用户退出*/
+	@RequestMapping("logout")
+	public String logout(HttpServletRequest request){
+		request.getSession().removeAttribute("loginUser");
+		return "index";
 	}
 	/**查看用户报表*/
 	@RequestMapping("tablesView")
@@ -87,5 +98,23 @@ public class UserController
 			return "index";
 		}
 	}
-	
+	/**编辑用户资料*/
+	@RequestMapping("editprofile")
+	public String editFrofile(){
+		return "userinfo";
+	}
+	/**修改用户资料*/
+	//@Transactional//事务性。程序出错会回滚
+	@ResponseBody
+	@RequestMapping("saveUser")
+	public Map<String, Object> saveUser(User user,HttpServletRequest request){
+		Map<String, Object> resultMap=new HashMap<String, Object>();
+		boolean flag=false;
+		if(user.getId()!=null&&userService.modifyUser(user)){
+			flag=true;
+			request.getSession().setAttribute("loginUser", userService.findById(user.getId()));
+		}
+		resultMap.put("flag", flag);
+		return resultMap;
+	}
 }

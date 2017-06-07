@@ -18,30 +18,17 @@ public class UserServiceImpl implements UserService
 		if(null==user||null==user.getAccount()){
 			return false;
 		}
-		int count=userDao.selectCountByAccount(user.getAccount());
-		if(count>0){
-			return false;
-		}else{
-			return true;
-		}
+		return userDao.selectCountByAccount(user.getAccount())==0;
 	}
 	@Override
 	public boolean saveUser(User user)
 	{
-		if(userDao.insertSelective(user)==1){
-			return true;
-		}{
-			return false;
-		}
+		return userDao.insertSelective(user)==1;
 	}
 	@Override
 	public boolean checkUserIsExist(User user)
 	{
-		if(userDao.selectCountByUser(user)==0){
-			return false;
-		}else{
-			return true;
-		}
+		return userDao.selectCountByUser(user)!=0;
 	}
 	@Override
 	public User login(User user)
@@ -68,5 +55,24 @@ public class UserServiceImpl implements UserService
 	public int getCountByStatus(Byte status)
 	{
 		return userDao.selectCountByStatus(status);
+	}
+	@Override
+	public boolean modifyUser(User user)
+	{
+		System.out.println(user.getAddress());
+		return userDao.updateByUser(user)==1;
+	}
+	@Override
+	public User findById(Integer id)
+	{
+		return userDao.selectUserById(id);
+	}
+	@Override
+	public void editStatusById(String[] ids,Byte status)
+	{
+		for(String id:ids){
+			if(!id.isEmpty())
+				userDao.updateStatus(status, Integer.parseInt(id));
+		}
 	}
 }

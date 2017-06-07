@@ -1,5 +1,8 @@
 package com.xinda.controller;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,4 +33,39 @@ public class AdminController
 			return "index";
 		}
 	}
+	
+	@RequestMapping("enable")
+	public void enableUser(HttpServletRequest request,HttpServletResponse response){
+		String[] idStrings=request.getParameter("userid").split(",");
+		userService.editStatusById(idStrings, (byte)0);
+		try
+		{
+			request.getRequestDispatcher("manageView").forward(request, response);
+		} catch (ServletException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//return "userlist";
+	}
+	@RequestMapping("disable")
+	public void disableUser(HttpServletRequest request,HttpServletResponse response){
+		String[] idStrings=request.getParameter("userid").split(",");
+		userService.editStatusById(idStrings, (byte)1);
+		try
+		{
+			request.getRequestDispatcher("manageView").forward(request, response);
+		} catch (ServletException e)
+		{
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 }

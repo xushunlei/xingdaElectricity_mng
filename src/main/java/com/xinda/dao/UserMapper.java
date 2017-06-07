@@ -2,6 +2,8 @@ package com.xinda.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.xinda.entity.User;
 
 public interface UserMapper {
@@ -23,4 +25,8 @@ public interface UserMapper {
 	int selectCountByStatus(Byte status);
 	/**修改用户信息*/
 	int updateByUser(User user);
+	/**根据ID查用户*/
+	User selectUserById(Integer id);
+	/**修改用户状态*/
+	int updateStatus(@Param("st")Byte status,@Param("id")Integer id);
 }
