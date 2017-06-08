@@ -29,4 +29,7 @@ public interface UserMapper {
 	User selectUserById(Integer id);
 	/**修改用户状态*/
 	int updateStatus(@Param("st")Byte status,@Param("id")Integer id);
+	/**修改密码*/
+	int updatePwdById(@Param("pwd")String password,@Param("id")Integer id);
+	
 }

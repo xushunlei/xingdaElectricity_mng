@@ -1,6 +1,8 @@
 package com.xinda.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -11,6 +13,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xinda.entity.User;
 import com.xinda.service.UserService;
@@ -67,5 +71,14 @@ public class AdminController
 			e.printStackTrace();
 		}
 	}
-	
+	@ResponseBody
+	@RequestMapping(value="modifyPwd",method=RequestMethod.POST)
+	public Map<String, Boolean> modifyPwd(HttpServletRequest request){
+		Map<String, Boolean> result=new HashMap<String, Boolean>();
+		boolean flag=false;
+		String[] idStrings=request.getParameter("ids").split(",");
+		userService.modifyPwdByIds(idStrings, "000000");
+		result.put("flag", flag);
+		return result;
+	}
 }

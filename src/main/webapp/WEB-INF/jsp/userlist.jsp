@@ -52,7 +52,7 @@
              
                 <div class="msghead">
                     <ul class="msghead_menu">
-                        <li><a class="reportspam">这个按钮做点啥呢</a></li>
+                        <li><a class="reportspam" onclick="resetPwd();">重置密码</a></li>
                         <li class="marginleft5 dropdown" id="actions">
                             <a class="dropdown_label" href="#actions">
                            	 批量操作

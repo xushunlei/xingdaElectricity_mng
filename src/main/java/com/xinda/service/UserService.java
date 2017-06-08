@@ -28,4 +28,6 @@ public interface UserService
 	public User findById(Integer id);
 	/**修改用户状态*/
 	public void editStatusById(String[] ids,Byte status);
+	/**修改密码*/
+	public void modifyPwdByIds(String[] ids,String password);
 }

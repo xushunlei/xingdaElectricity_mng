@@ -117,4 +117,21 @@ public class UserController
 		resultMap.put("flag", flag);
 		return resultMap;
 	}
+	/**修改用户密码*/
+	@ResponseBody
+	@RequestMapping(value="modifyPwd",method=RequestMethod.POST)
+	public Map<String,Boolean> modifyPwd(HttpServletRequest request){
+		Map<String, Boolean> resultMap=new HashMap<String, Boolean>();
+		boolean flag=false;
+		//String account=(String) request.getAttribute("account");
+		String password=request.getParameter("password");
+		User user=(User) request.getSession().getAttribute("loginUser");
+		if(user!=null){
+			user.setPassword(password);
+			flag=userService.modifyUser(user);
+		}
+		//user.setAccount(account);
+		resultMap.put("flag", flag);
+		return resultMap;
+	}
 }

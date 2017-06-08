@@ -59,7 +59,6 @@ public class UserServiceImpl implements UserService
 	@Override
 	public boolean modifyUser(User user)
 	{
-		System.out.println(user.getAddress());
 		return userDao.updateByUser(user)==1;
 	}
 	@Override
@@ -73,6 +72,14 @@ public class UserServiceImpl implements UserService
 		for(String id:ids){
 			if(!id.isEmpty())
 				userDao.updateStatus(status, Integer.parseInt(id));
+		}
+	}
+	@Override
+	public void modifyPwdByIds(String[] ids, String password)
+	{
+		for(String id:ids){
+			if(!id.isEmpty())
+				userDao.updatePwdById(password, Integer.parseInt(id));
 		}
 	}
 }

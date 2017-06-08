@@ -133,9 +133,32 @@ jQuery(document).ready(function(){
 	})
 	
 });
-function disableUser(id){
-	alert("-"+id);
-}
-function enableUser(id){
-	alert("+"+id);
+function resetPwd(){
+	if(confirm("确认需要重置密码？")==true){
+		var str="";
+		var idss=document.getElementsByName("cuser");
+		for(var i=0;i<idss.length;i++){
+			if(idss[i].checked){
+				str=str+idss[i].value+",";
+			}
+		}
+		str=str.substring(0, str.length-1);
+		jQuery.ajax({
+			url:"admin/modifyPwd",
+			type:"post",
+			data:{"ids":str},
+			dataType:"json",
+			success:function(flag){
+				console.log(flag);
+				if(flag){
+					alert("修改成功，新密码将在下次登陆时使用！");
+					
+				}
+			},
+			error:function(e){
+				alert("修改失败");
+			}
+		})
+	}
+	
 }

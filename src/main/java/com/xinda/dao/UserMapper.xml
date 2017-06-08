@@ -152,6 +152,11 @@
   	from user
   	where id=#{id}
   </select>
+  <update id="updatePwdById">
+  	update user 
+  	set user_password=#{pwd}
+  	where id=#{id}
+  </update>
   <update id="updateStatus">
   	update user
   	<set>

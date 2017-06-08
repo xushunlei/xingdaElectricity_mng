@@ -88,10 +88,14 @@ function aaa(){
              </div>
              <div id="compose" class="subcontent" style="display: none">&nbsp;
              	<table>
-             		<tr><td>登陆账户:</td><td><span>${loginUser.account }</span></td></tr>
-             		<tr><td>旧密码:</td><td><input ></td></tr>
-             		<tr><td>新密码:</td><td><input></td></tr>
-             		<tr><td>确认新密码:</td><td><input></td></tr>
+             		<tr><td>登陆账户:</td><td><span id="account">${loginUser.account }</span></td></tr>
+             		<tr><td>旧密码:</td><td><input id="old_pwd" type="password"><span id="oldtips"></span></td></tr>
+             		<tr><td>新密码:</td><td><input id="new_pwd" type="password"><span id="newtips"></span></td></tr>
+             		<tr><td>确认新密码:</td><td><input id="verify_pwd" type="password"><span id="verifytips"></span></td></tr>
+             		<tr>
+             			<td><input class="mybtn" value="提交" onclick="change_password()" type="button"></td>
+             			<td><input class="mybtn" value="重置" onclick="clean_newpwd()" type="button"></td>
+             		</tr>
              	</table>
              </div>
         </div><!--contentwrapper-->
