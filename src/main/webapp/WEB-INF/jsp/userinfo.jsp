@@ -31,13 +31,12 @@
 </style>
 <script type="text/javascript">
 jQuery(document).ready(function($){
-	$("#userid").val('${loginUser.id}');
-	$("#useraccount").val('${loginUser.account}');
-	$("#username").val("${loginUser.name}");
-	$("#usermobile").val("${loginUser.mobile}");
-	$("#useridcard").val("${loginUser.idcard}");
-	$("#useremail").val("${loginUser.email}");
-	$("#useraddress").val("${loginUser.address}");
+	$("#userid").val('${loginUser.userId}');
+	$("#useraccount").val('${loginUser.userAccount}');
+	$("#username").val("${loginUser.userName}");
+	$("#usermobile").val("${loginUser.userMobile}");
+	$("#useridcard").val("${loginUser.userEmail}");
+	$("#useraddress").val("${loginUser.userAddress}");
 });
 function aaa(){
 	alert(1);
@@ -88,7 +87,7 @@ function aaa(){
              </div>
              <div id="compose" class="subcontent" style="display: none">&nbsp;
              	<table>
-             		<tr><td>登陆账户:</td><td><span id="account">${loginUser.account }</span></td></tr>
+             		<tr><td>登陆账户:</td><td><span id="account">${loginUser.userAccount }</span></td></tr>
              		<tr><td>旧密码:</td><td><input id="old_pwd" type="password"><span id="oldtips"></span></td></tr>
              		<tr><td>新密码:</td><td><input id="new_pwd" type="password"><span id="newtips"></span></td></tr>
              		<tr><td>确认新密码:</td><td><input id="verify_pwd" type="password"><span id="verifytips"></span></td></tr>

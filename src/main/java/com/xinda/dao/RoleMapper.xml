@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xinda.dao.RoleMapper" >
   <resultMap id="RoleMap" type="com.xinda.entity.Role" >
-    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="id" property="roleId" jdbcType="INTEGER" />
     <result column="role_name" property="roleName" jdbcType="VARCHAR" />
     <result column="role_status" property="roleStatus" jdbcType="TINYINT" />
   </resultMap>
@@ -16,7 +16,7 @@
   <insert id="insertSelective" parameterType="com.xinda.entity.Role" >
     insert into role
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+      <if test="roleId != null" >
         id,
       </if>
       <if test="roleName != null" >
@@ -27,8 +27,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
       </if>
       <if test="roleName != null" >
         #{roleName,jdbcType=VARCHAR},
@@ -48,17 +48,17 @@
         role_status = #{roleStatus,jdbcType=TINYINT},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{roleId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.xinda.entity.Role" >
     update role
     set 
       role_name = #{roleName,jdbcType=VARCHAR},
       role_status = #{roleStatus}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{roleId,jdbcType=INTEGER}
   </update>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from role
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{roleId,jdbcType=INTEGER}
   </delete>
 </mapper>

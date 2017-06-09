@@ -15,8 +15,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.xinda.entity.Branch;
+import com.xinda.entity.Meter;
 import com.xinda.entity.User;
+import com.xinda.service.BranchService;
+import com.xinda.service.MeterService;
 import com.xinda.service.UserService;
 
 @Controller
@@ -25,14 +30,21 @@ public class AdminController
 {
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private MeterService meterservice;
+	@Autowired
+	private BranchService branchService;
 	@RequestMapping("manageView")
 	public String managePage(HttpServletRequest request, HttpServletResponse response){
 		HttpSession session=request.getSession();
 		User loginUser=(User)session.getAttribute("loginUser");
-		if(loginUser!=null&&loginUser.getRole()==1){
-			session.setAttribute("userList", userService.findUsers());
+		if(loginUser!=null&&loginUser.getUserRole()==1){
+			session.setAttribute("branchList", branchService.findAllBranch());
+			//session.setAttribute("userList", userService.findUsers());//修改。不展示用户列表，改以展示电表列表
+			session.setAttribute("meterList", meterservice.findAllMeters());
 			session.setAttribute("paging_user_totalcount", userService.getTotalCountOfUser());
-			return "userlist";
+			//return "userlist";
+			return "managePage";
 		}else{
 			return "index";
 		}
@@ -80,5 +92,29 @@ public class AdminController
 		userService.modifyPwdByIds(idStrings, "000000");
 		result.put("flag", flag);
 		return result;
+	}
+	/**查询网点所有电表*/
+	@RequestMapping("getmeters")
+	public ModelAndView getMeters(HttpServletRequest request){
+		ModelAndView mav=new ModelAndView();
+		Meter meter=new Meter();
+		Branch branch=new Branch();
+		String branchNum=request.getParameter("branch_num");
+		if(branchNum!=null){
+			branch.setBranchNumber(branchNum);
+			meter.setMeterBranch(branch);
+			mav.addObject(meterservice.findMetersLikeMeter(meter));
+		}
+		return mav;
+	}
+	/**电表充值*/
+	@RequestMapping("payment")
+	public String payment(HttpServletRequest request, HttpServletResponse response){
+		String meterNum=request.getParameter("meter_num");
+		Double price=Double.parseDouble(request.getParameter("price"));
+		if(meterservice.recharge(meterNum, price)){
+			
+		}
+		return "";
 	}
 }

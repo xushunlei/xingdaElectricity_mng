@@ -44,8 +44,8 @@ public class UserController
 		String nameString=request.getParameter("username");
 		String password=request.getParameter("password");
 		User user=new User();
-		user.setAccount(nameString);
-		user.setPassword(password);
+		user.setUserAccount(nameString);
+		user.setUserPassword(password);
 		if(userService.checkUserIsExist(user)){
 			user=userService.login(user);
 			/*if(user.getRole()==1){//管理员
@@ -91,7 +91,7 @@ public class UserController
 	public String showUserlist(HttpServletRequest request,HttpServletResponse response){
 		HttpSession session=request.getSession();
 		User loginUser=(User)session.getAttribute("loginUser");
-		if(loginUser!=null&&loginUser.getRole()==1){
+		if(loginUser!=null&&loginUser.getUserRole()==1){
 			session.setAttribute("userList", userService.findUsers());
 			return "userlist";
 		}else{
@@ -110,9 +110,9 @@ public class UserController
 	public Map<String, Object> saveUser(User user,HttpServletRequest request){
 		Map<String, Object> resultMap=new HashMap<String, Object>();
 		boolean flag=false;
-		if(user.getId()!=null&&userService.modifyUser(user)){
+		if(user.getUserId()!=null&&userService.modifyUser(user)){
 			flag=true;
-			request.getSession().setAttribute("loginUser", userService.findById(user.getId()));
+			request.getSession().setAttribute("loginUser", userService.findById(user.getUserId()));
 		}
 		resultMap.put("flag", flag);
 		return resultMap;
@@ -127,7 +127,7 @@ public class UserController
 		String password=request.getParameter("password");
 		User user=(User) request.getSession().getAttribute("loginUser");
 		if(user!=null){
-			user.setPassword(password);
+			user.setUserPassword(password);
 			flag=userService.modifyUser(user);
 		}
 		//user.setAccount(account);

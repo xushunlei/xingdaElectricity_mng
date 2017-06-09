@@ -70,5 +70,11 @@
 		<table tableName="branch" selectByExampleQueryId="false" enableUpdateByExample="false" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false">
 			<columnRenamingRule searchString="^branch_" replaceString=""/>
 		</table>
+		<table tableName="current_price" selectByExampleQueryId="false" enableUpdateByExample="false" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false">
+		</table>
+		<table tableName="historical_price" selectByExampleQueryId="false" enableUpdateByExample="false" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false">
+		</table>
+		<table tableName="meter" selectByExampleQueryId="false" enableUpdateByExample="false" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false">
+		</table>
 	</context>
 </generatorConfiguration>

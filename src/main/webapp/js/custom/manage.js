@@ -1,17 +1,9 @@
-/*
- * 	Additional function for message.html
- *	Written by ThemePixels	
- *	http://themepixels.com/
- *
- *	Copyright (c) 2012 ThemePixels (http://themepixels.com)
- *	
- *	Built for Amanda Premium Responsive Admin Template
- *  http://themeforest.net/category/site-templates/admin-templates
- */
 
-
-jQuery(document).ready(function(){	
-
+jQuery(document).ready(function($){	
+	
+	$("#pagename").text();
+	
+	
 	///// CHECKBOX TRANSFORM /////
 	jQuery('input:checkbox').uniform();
 
@@ -142,32 +134,3 @@ jQuery(document).ready(function(){
 		jQuery("#keyword").removeClass("my_cleancolor");
 	});
 });
-function resetPwd(){
-	if(confirm("确认需要重置密码？")==true){
-		var str="";
-		var idss=document.getElementsByName("cuser");
-		for(var i=0;i<idss.length;i++){
-			if(idss[i].checked){
-				str=str+idss[i].value+",";
-			}
-		}
-		str=str.substring(0, str.length-1);
-		jQuery.ajax({
-			url:"admin/modifyPwd",
-			type:"post",
-			data:{"ids":str},
-			dataType:"json",
-			success:function(flag){
-				console.log(flag);
-				if(flag){
-					alert("修改成功，新密码将在下次登陆时使用！");
-					
-				}
-			},
-			error:function(e){
-				alert("修改失败");
-			}
-		})
-	}
-	
-}

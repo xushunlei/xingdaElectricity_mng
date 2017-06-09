@@ -1,119 +1,141 @@
 package com.xinda.entity;
 
 public class User {
-    private Integer id;
+    private Integer userId;
 
-    private String account;
+    private String userAccount;
 
-    private String password;
+    private String userPassword;
 
-    private String name;
+    private String userName;
 
-    private Integer role;
+    private Integer userRole;
 
-    private String mobile;
+    private String userMobile;
 
-    private Double balance;
+    private Double userBalance;
 
-    private String idcard;
+    private String userIdcard;
 
-    private String email;
+    private String userEmail;
 
-    private String address;
+    private String userAddress;
 
-    private Byte status;
+    private Byte userStatus;
 
-    public Integer getId() {
-        return id;
-    }
+	public Integer getUserId()
+	{
+		return userId;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setUserId(Integer userId)
+	{
+		this.userId = userId;
+	}
 
-    public String getAccount() {
-        return account;
-    }
+	public String getUserAccount()
+	{
+		return userAccount;
+	}
 
-    public void setAccount(String account) {
-        this.account = account == null ? null : account.trim();
-    }
+	public void setUserAccount(String userAccount)
+	{
+		this.userAccount = userAccount;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getUserPassword()
+	{
+		return userPassword;
+	}
 
-    public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
-    }
+	public void setUserPassword(String userPassword)
+	{
+		this.userPassword = userPassword;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getUserName()
+	{
+		return userName;
+	}
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
+	public void setUserName(String userName)
+	{
+		this.userName = userName;
+	}
 
-    public Integer getRole() {
-        return role;
-    }
+	public Integer getUserRole()
+	{
+		return userRole;
+	}
 
-    public void setRole(Integer role) {
-        this.role = role;
-    }
+	public void setUserRole(Integer userRole)
+	{
+		this.userRole = userRole;
+	}
 
-    public String getMobile() {
-        return mobile;
-    }
+	public String getUserMobile()
+	{
+		return userMobile;
+	}
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile == null ? null : mobile.trim();
-    }
+	public void setUserMobile(String userMobile)
+	{
+		this.userMobile = userMobile;
+	}
 
-    public Double getBalance() {
-        return balance;
-    }
+	public Double getUserBalance()
+	{
+		return userBalance;
+	}
 
-    public void setBalance(Double balance) {
-        this.balance = balance;
-    }
+	public void setUserBalance(Double userBalance)
+	{
+		this.userBalance = userBalance;
+	}
 
-    public String getIdcard() {
-        return idcard;
-    }
+	public String getUserIdcard()
+	{
+		return userIdcard;
+	}
 
-    public void setIdcard(String idcard) {
-        this.idcard = idcard == null ? null : idcard.trim();
-    }
+	public void setUserIdcard(String userIdcard)
+	{
+		this.userIdcard = userIdcard;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getUserEmail()
+	{
+		return userEmail;
+	}
 
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
-    }
+	public void setUserEmail(String userEmail)
+	{
+		this.userEmail = userEmail;
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	public String getUserAddress()
+	{
+		return userAddress;
+	}
 
-    public void setAddress(String address) {
-        this.address = address == null ? null : address.trim();
-    }
+	public void setUserAddress(String userAddress)
+	{
+		this.userAddress = userAddress;
+	}
 
-    public Byte getStatus() {
-        return status;
-    }
+	public Byte getUserStatus()
+	{
+		return userStatus;
+	}
 
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
+	public void setUserStatus(Byte userStatus)
+	{
+		this.userStatus = userStatus;
+	}
 
 	@Override
 	public String toString()
 	{
-		return "User [id=" + id + ", account=" + account + ", password=" + password + ", name=" + name + ", role=" + role + ", mobile=" + mobile + ", balance=" + balance + ", idcard=" + idcard + ", email=" + email + ", address=" + address + ", status=" + status + "]";
+		return "User [userId=" + userId + ", userAccount=" + userAccount + ", userPassword=" + userPassword + ", userName=" + userName + ", userRole=" + userRole + ", userMobile=" + userMobile + ", userBalance=" + userBalance + ", userIdcard=" + userIdcard + ", userEmail=" + userEmail + ", userAddress=" + userAddress + ", userStatus=" + userStatus + "]";
 	}
 }

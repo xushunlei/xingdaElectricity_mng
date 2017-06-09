@@ -2,17 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xinda.dao.UserMapper" >
   <resultMap id="UserMap" type="com.xinda.entity.User" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="user_account" property="account" jdbcType="VARCHAR" />
-    <result column="user_password" property="password" jdbcType="VARCHAR" />
-    <result column="user_name" property="name" jdbcType="VARCHAR" />
-    <result column="user_role" property="role" jdbcType="INTEGER" />
-    <result column="user_mobile" property="mobile" jdbcType="VARCHAR" />
-    <result column="user_balance" property="balance" jdbcType="DECIMAL" />
-    <result column="user_idcard" property="idcard" jdbcType="VARCHAR" />
-    <result column="user_email" property="email" jdbcType="VARCHAR" />
-    <result column="user_address" property="address" jdbcType="VARCHAR" />
-    <result column="user_status" property="status" jdbcType="TINYINT" />
+    <id column="id" property="userId" jdbcType="INTEGER" />
+    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
+    <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_role" property="userRole" jdbcType="INTEGER" />
+    <result column="user_mobile" property="userMobile" jdbcType="VARCHAR" />
+    <result column="user_balance" property="userBalance" jdbcType="DECIMAL" />
+    <result column="user_idcard" property="userIdcard" jdbcType="VARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="user_address" property="userAddress" jdbcType="VARCHAR" />
+    <result column="user_status" property="userStatus" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, user_account, user_password, user_name, user_role, user_mobile, user_balance, 
@@ -22,99 +22,99 @@
     select 
     <include refid="Base_Column_List" />
     from user
-    where user_account = #{account} 
-    and user_password=#{password}
+    where user_account = #{userAccount} 
+    and user_password=#{userPassword}
   </select>
   <select id="selectCountByAccount" resultType="java.lang.Integer" parameterType="java.lang.String" >
     select 
     count(1) 
     from user 
-    where user_account = #{account}
+    where user_account = #{userAccount}
   </select>
   <select id="selectCountByUser" resultType="java.lang.Integer" parameterType="com.xinda.entity.User" >
     select 
     count(1) 
     from user 
-    where user_account = #{account}
-    and user_password=#{password}
+    where user_account = #{userAccount}
+    and user_password=#{userPassword}
   </select>
   <insert id="insertSelective" parameterType="com.xinda.entity.User" >
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+      <if test="userId != null" >
         id,
       </if>
-      <if test="account != null" >
+      <if test="userAccount != null" >
         user_account,
       </if>
-      <if test="password != null" >
+      <if test="userPassword != null" >
         user_password,
       </if>
-      <if test="name != null" >
+      <if test="userName != null" >
         user_name,
       </if>
-      <if test="role != null" >
+      <if test="userRole != null" >
         user_role,
       </if>
-      <if test="mobile != null" >
+      <if test="userMobile != null" >
         user_mobile,
       </if>
-      <if test="balance != null" >
+      <if test="userBalance != null" >
         user_balance,
       </if>
-      <if test="idcard != null" >
+      <if test="userIdcard != null" >
         user_idcard,
       </if>
-      <if test="email != null" >
+      <if test="userEmail != null" >
         user_email,
       </if>
-      <if test="address != null" >
+      <if test="userAddress != null" >
         user_address,
       </if>
-      <if test="status != null" >
+      <if test="userStatus != null" >
         user_status,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
       </if>
-      <if test="account != null" >
-        #{account,jdbcType=VARCHAR},
+      <if test="userAccount != null" >
+        #{userAccount,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
-        #{password,jdbcType=VARCHAR},
+      <if test="userPassword != null" >
+        #{userPassword,jdbcType=VARCHAR},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="role != null" >
-        #{role,jdbcType=INTEGER},
+      <if test="userRole != null" >
+        #{userRole,jdbcType=INTEGER},
       </if>
-      <if test="mobile != null" >
-        #{mobile,jdbcType=VARCHAR},
+      <if test="userMobile != null" >
+        #{userMobile,jdbcType=VARCHAR},
       </if>
-      <if test="balance != null" >
-        #{balance,jdbcType=DECIMAL},
+      <if test="userBalance != null" >
+        #{userBalance,jdbcType=DECIMAL},
       </if>
-      <if test="idcard != null" >
-        #{idcard,jdbcType=VARCHAR},
+      <if test="userIdcard != null" >
+        #{userIdcard,jdbcType=VARCHAR},
       </if>
-      <if test="email != null" >
-        #{email,jdbcType=VARCHAR},
+      <if test="userEmail != null" >
+        #{userEmail,jdbcType=VARCHAR},
       </if>
-      <if test="address != null" >
-        #{address,jdbcType=VARCHAR},
+      <if test="userAddress != null" >
+        #{userAddress,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
-        #{status,jdbcType=TINYINT},
+      <if test="userStatus != null" >
+        #{userStatus,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
   <select id="selectUsersByStatus" parameterType="java.lang.Byte" resultType="com.xinda.entity.User">
   	select <include refid="Base_Column_List" />
   	from user
-    where user_status=#{status}
+    where user_status=#{userStatus}
   </select>
   <select id="selectUsers" resultMap="UserMap">
   	select <include refid="Base_Column_List" />
@@ -132,25 +132,25 @@
   <update id="updateByUser" parameterType="com.xinda.entity.User">
   	update user
   	<set>
-  		user_account=#{account},
-  		<if test="password!=null">user_password=#{password},</if>
-  		<if test="name!=null">user_name=#{name},</if>
-  		<if test="role!=null">user_role=#{role},</if>
-  		<if test="mobile!=null">user_mobile=#{mobile},</if>
-  		<if test="balance!=null">user_balance=#{balance},</if>
-  		<if test="idcard!=null">user_idcard=#{idcard},</if>
-  		<if test="email!=null">user_email=#{email},</if>
-  		<if test="address!=null">user_address=#{address},</if>
-  		<if test="status!=null">user_status=#{status},</if>
+  		user_account=#{userAccount},
+  		<if test="userPassword!=null">user_password=#{userPassword},</if>
+  		<if test="userName!=null">user_name=#{userName},</if>
+  		<if test="userRole!=null">user_role=#{userRole},</if>
+  		<if test="userMobile!=null">user_mobile=#{userMobile},</if>
+  		<if test="userBalance!=null">user_balance=#{userBalance},</if>
+  		<if test="userIdcard!=null">user_idcard=#{userIdcard},</if>
+  		<if test="euserEmail!=null">user_email=#{userEmail},</if>
+  		<if test="userAddress!=null">user_address=#{userAddress},</if>
+  		<if test="userStatus!=null">user_status=#{userStatus},</if>
   	</set>
   	<where>
-  		id=#{id}
+  		id=#{userId}
   	</where>
   </update>
   <select id="selectUserById" resultMap="UserMap" parameterType="java.lang.Integer">
   	select <include refid="Base_Column_List"/>
   	from user
-  	where id=#{id}
+  	where id=#{iserId}
   </select>
   <update id="updatePwdById">
   	update user 

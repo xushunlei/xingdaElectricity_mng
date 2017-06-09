@@ -9,12 +9,6 @@
             <h1 class="logo">Ama.<span>Admin</span></h1>
             <span class="slogan">后台管理系统</span>
             
-            <div class="search">
-            	<form action="" method="post">
-                	<input type="text" name="keyword" id="keyword" value="请输入" />
-                    <button class="submitbutton"></button>
-                </form>
-            </div><!--search-->
             
             <br clear="all" />
             
@@ -26,7 +20,7 @@
         	</div>-->
             <div class="userinfo">
             	<img src="images/thumbs/avatar.png" alt="" />
-                <span>${loginUser.role==1?"管理员":"用户" }</span>
+                <span>${loginUser.userRole==1?"管理员":"用户" }</span>
             </div><!--userinfo-->
             
             <div class="userinfodrop">
@@ -42,8 +36,8 @@
                     </div>
                 </div><!--avatar-->
                 <div class="userdata">
-                	<h4>${loginUser.name }</h4>
-                    <span class="email">${loginUser.email }</span>
+                	<h4>${loginUser.userName }</h4>
+                    <span class="email">${loginUser.userEmail }</span>
                     <ul>
                     	<li><a href="user/editprofile">编辑资料</a></li>
                         <li><a href="accountsettings.html">账号设置</a></li>
@@ -59,7 +53,7 @@
     <div class="header">
     	<ul class="headermenu">
         	<li class="current"><a href="dashboard.html"><span class="icon icon-flatscreen"></span>首页</a></li>
-            <c:if test="${loginUser.role==1}">
+            <c:if test="${loginUser.userRole==1}">
             <li><a href="admin/manageView"><span class="icon icon-pencil"></span>管理</a></li>
             </c:if>
             <li><a href="messages.html"><span class="icon icon-message"></span>查看消息</a></li>
@@ -67,11 +61,11 @@
         </ul>
         
        <div class="headerwidget">
-       <c:if test="${loginUser.role==0 }">
+       <c:if test="${loginUser.userRole==0 }">
         	<div class="earnings">
             	<div class="one_half">
                 	<h4>账户余额</h4>
-                    <h2>￥${loginUser.balance }</h2>
+                    <h2>￥${loginUser.userBalance }</h2>
                 </div><!--one_half-->
                 <div class="one_half last alignright">
                 	<h4><a href="" style="color:#fff">历史记录</a></h4>

@@ -38,7 +38,7 @@
             	<span class="arrow"></span>
             	<ul id="usersub">
                		<c:forEach items="${userList}" var="user">
-               		<li><a href="javascript:showOneBranch('${user.account}');">${user.name}</a></li>
+               		<li><a href="javascript:showOneBranch('${user.userAccount}');">${user.userName}</a></li>
                		</c:forEach>
                 </ul>
             </li>

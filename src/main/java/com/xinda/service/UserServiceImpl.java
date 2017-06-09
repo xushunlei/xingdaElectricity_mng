@@ -15,10 +15,10 @@ public class UserServiceImpl implements UserService
 	@Override
 	public boolean checkUserCanRegisted(User user)
 	{
-		if(null==user||null==user.getAccount()){
+		if(null==user||null==user.getUserAccount()){
 			return false;
 		}
-		return userDao.selectCountByAccount(user.getAccount())==0;
+		return userDao.selectCountByAccount(user.getUserAccount())==0;
 	}
 	@Override
 	public boolean saveUser(User user)

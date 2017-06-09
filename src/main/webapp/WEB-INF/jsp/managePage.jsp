@@ -20,7 +20,7 @@
 <script type="text/javascript" src="js/plugins/jquery.alerts.js"></script>
 <script type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script>
 <script type="text/javascript" src="js/custom/general.js"></script>
-<script type="text/javascript" src="js/custom/userlist.js"></script>
+<script type="text/javascript" src="js/custom/manage.js"></script>
 <style type="text/css">
 .my_cleancolor{
 background:#fff;
@@ -42,7 +42,7 @@ background:#fff;
     <div class="centercontent">
     
         <div class="pageheader">
-            <h1 class="pagetitle">管理页面</h1>
+            <h1 class="pagetitle" id="pagename">管理页面</h1>
             <span class="pagedesc">The content below are loaded using ajax</span>
             
             <ul class="hornav">
@@ -89,29 +89,29 @@ background:#fff;
                     <colgroup>
                         <col class="con1" width="3%"/>
                         <col class="con0" width="3%" />
-                        <col class="con1" width="8%"/>
-                        <col class="con0" width="8%"/>
-                        <col class="con1" width="8%"/>
+                        <col class="con1" width="10%"/>
+                        <col class="con0" width="5%"/>
+                        <col class="con1" width="16%"/>
                         <col class="con0" width="15%"/>
                         <col class="con1" width="10%"/>
-                        <col class="con0" width="27%"/>
+                        <col class="con0" width="10%"/>
                         <col class="con1" width="8%"/>
-                        <col class="con0" width="5%"/>
-                        <col class="con1" width="5%"/>
+                        <col class="con0" width="10%"/>
+                        <col class="con1" width="10%"/>
                     </colgroup>
                     <thead>
                     <tr>
                         <th width="20" class="head1 aligncenter"><input type="checkbox" name="checkall" class="checkall" /></th>
                         <th class="head0">&nbsp;</th>
-                        <th class="head1">姓名</th>
-                        <th class="head0">账户名</th>
-                        <th class="head1 attachement">手机</th>
-                        <th class="head0">邮箱</th>
-                        <th>身份证号</th>
-                        <th>地址</th>
-                        <th>余额</th>
-                        <th>状态</th>
-                        <th>操作</th>
+                        <th class="head1">编号</th>
+                        <th class="head0">类型</th>
+                        <th class="head1">状态</th>
+                        <th class="head0">余额</th>
+                        <th>允许透支金额</th>
+                        <th>消费总额</th>
+                        <th>户主</th>
+                        <th>联系电话</th>
+                        <th>身份证</th>
                     </tr>
                     </thead>
                     <!-- <tfoot>
@@ -125,26 +125,31 @@ background:#fff;
                         </tr>
                     </tfoot> -->
                     <tbody>
-                    <c:forEach items="${userList}" var="user" varStatus="vs">
+                    <c:forEach items="${meterList}" var="meter" varStatus="vs">
                     	<tr>
-                    		<td class="aligncenter"><input type="checkbox" name="cuser" value="${user.userId}"/></td>
+                    		<td class="aligncenter"><input type="checkbox" name="cuser" value="${meter.meterId}"/></td>
                     		<td class="star">${vs.count}</td>
-                    		<td>${user.userName}</td>
-                    		<td>${user.userAccount}</td>
-                    		<td>${user.userMobile}</td>
-                    		<td>${user.userEmail}</td>
-                    		<td>${user.userIdcard}</td>
-                    		<td>${user.userAddress}</td>
-                    		<td>${user.userBlance}</td>
-                    		<td>${user.userStatus==0?"活跃":"停用"}</td>
+                    		<td>${meter.meterNumber}</td>
+                    		<td>${meter.meterType==0?"单相":"三相"}</td>
                     		<td>
-	                    		<c:if test="${user.userStatus==0}">
-	                    		<a href="admin/disable?userid=${user.userId}" style="color:red">停用</a>
-	                    		</c:if>
-	                    		<c:if test="${user.userStatus==1}">
-	                    		<a href="admin/enable?userid=${user.userId}" style="color:green">启用</a>
-	                    		</c:if>
+                    			<c:choose>
+                    				<c:when test="${meter.meterStatus==0}">供电</c:when>
+                    				<c:when test="${meter.meterStatus==1}">透支</c:when>
+                    				<c:when test="${meter.meterStatus==2}">拉闸</c:when>
+                    			</c:choose>
+                    			<select style="float:right;">
+                    				<option >--操作--</option>
+                    				<option value="0">供电</option>
+                    				<option value="1">透支</option>
+                    				<option value="2">拉闸</option>
+                    			</select>
                     		</td>
+                    		<td>${meter.meterBalance}<button style="float:right;">充值</button></td>
+                    		<td>${meter.meterMaxOverdraft}<button style="float:right;">设置</button></td>
+                    		<td>${meter.meterTotalConsumption}</td>
+                    		<td>${meter.meterUser.userAccount}</td>
+                    		<td>${meter.meterUser.userMobile}</td>
+                    		<td>${meter.meterUser.userIdcard}</td>
                     	</tr>
                     </c:forEach>
                     </tbody>

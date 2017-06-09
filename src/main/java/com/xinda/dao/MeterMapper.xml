@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinda.dao.MeterMapper" >
+  <resultMap id="BaseResultMap" type="com.xinda.entity.Meter" >
+    <id column="id" property="meterId" jdbcType="INTEGER" />
+    <result column="meter_number" property="meterNumber" jdbcType="VARCHAR" />
+    <result column="meter_type" property="meterType" jdbcType="TINYINT" />
+    <result column="meter_status" property="meterStatus" jdbcType="TINYINT" />
+    <result column="meter_total_value" property="meterTotalValue" jdbcType="VARCHAR" />
+    <result column="meter_max_balance" property="meterMaxBalance" jdbcType="DECIMAL" />
+    <result column="meter_balance" property="meterBalance" jdbcType="DECIMAL" />
+    <result column="meter_prompt_amount" property="meterPromptAmount" jdbcType="DECIMAL" />
+    <result column="meter_stop_amount" property="meterStopAmount" jdbcType="DECIMAL" />
+    <result column="meter_max_overdraft" property="meterMaxOverdraft" jdbcType="DECIMAL" />
+    <result column="meter_current_overdraft" property="meterCurrentOverdraft" jdbcType="DECIMAL" />
+    <result column="meter_total_consumption" property="meterTotalConsumption" jdbcType="DECIMAL" />
+    <result column="electricity_price" property="electricityPrice" jdbcType="DECIMAL" />
+    <association column="branch_number" property="meterBranch" resultMap="BranchMap"></association>
+    <association column="user_account" property="meterUser" resultMap="UserMap"></association>
+  </resultMap>
+  <resultMap type="com.xinda.entity.User" id="UserMap">
+  	<id column="id" property="userId" jdbcType="INTEGER" />
+    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
+    <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_role" property="userRole" jdbcType="INTEGER" />
+    <result column="user_mobile" property="userMobile" jdbcType="VARCHAR" />
+    <result column="user_balance" property="userBalance" jdbcType="DECIMAL" />
+    <result column="user_idcard" property="userIdcard" jdbcType="VARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="user_address" property="userAddress" jdbcType="VARCHAR" />
+    <result column="user_status" property="userStatus" jdbcType="TINYINT" />
+  </resultMap>
+  <resultMap id="BranchMap" type="com.xinda.entity.Branch" >
+    <id column="id" property="branchId" jdbcType="INTEGER" />
+    <result column="branch_name" property="branchName" jdbcType="VARCHAR" />
+    <result column="branch_number" property="branchNumber" jdbcType="VARCHAR" />
+    <result column="branch_address" property="branchAddress" jdbcType="VARCHAR" />
+    <result column="branch_host" property="branchHost" jdbcType="VARCHAR" />
+    <result column="branch_port" property="branchPort" jdbcType="INTEGER" />
+    <association column="branch_manager" property="branchManager" resultMap="UserMap"></association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, meter_number, meter_type, meter_status, meter_total_value, meter_max_balance, 
+    meter_balance, meter_prompt_amount, meter_stop_amount, meter_max_overdraft, meter_current_overdraft, 
+    meter_total_consumption, electricity_price, user_account, branch_number
+  </sql>
+  <!-- <select id="selectUser" parameterType="java.lang.String" resultType="com.xinda.entity.User">
+  	select * from user where user_account=#{userAccount}
+  </select> -->
+  <select id="selectAllMeters" resultMap="BaseResultMap">
+  	select * from meter m 
+  	left join user u
+  	on m.user_account=u.user_account
+  </select>
+  
+</mapper>

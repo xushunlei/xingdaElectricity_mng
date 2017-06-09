@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinda.dao.BranchMapper" >
+  <resultMap id="BaseResultMap" type="com.xinda.entity.Branch" >
+    <id column="id" property="branchId" jdbcType="INTEGER" />
+    <result column="branch_name" property="branchName" jdbcType="VARCHAR" />
+    <result column="branch_number" property="branchNumber" jdbcType="VARCHAR" />
+    <result column="branch_address" property="branchAddress" jdbcType="VARCHAR" />
+    <result column="branch_host" property="branchHost" jdbcType="VARCHAR" />
+    <result column="branch_port" property="branchPort" jdbcType="INTEGER" />
+    <association column="branch_manager" property="branchManager" resultMap="UserMap"></association>
+  </resultMap>
+  <resultMap type="com.xinda.entity.User" id="UserMap">
+  	<id column="id" property="userId" jdbcType="INTEGER" />
+    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
+    <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_role" property="userRole" jdbcType="INTEGER" />
+    <result column="user_mobile" property="userMobile" jdbcType="VARCHAR" />
+    <result column="user_balance" property="userBalance" jdbcType="DECIMAL" />
+    <result column="user_idcard" property="userIdcard" jdbcType="VARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="user_address" property="userAddress" jdbcType="VARCHAR" />
+    <result column="user_status" property="userStatus" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, branch_name, branch_number, branch_address, branch_manager, branch_host, branch_port
+  </sql>
+</mapper>

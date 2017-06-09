@@ -1,21 +1,23 @@
 package com.xinda.entity;
 
 public class Role {
-    private Integer id;
+    private Integer roleId;
 
     private String roleName;
 
     private Integer roleStatus;
 
-    public Integer getId() {
-        return id;
-    }
+    public Integer getRoleId()
+	{
+		return roleId;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setRoleId(Integer roleId)
+	{
+		this.roleId = roleId;
+	}
 
-    public String getRoleName() {
+	public String getRoleName() {
         return roleName;
     }
 
@@ -30,4 +32,9 @@ public class Role {
     public void setRoleStatus(Integer roleStatus) {
         this.roleStatus = roleStatus;
     }
+	@Override
+	public String toString()
+	{
+		return "Role [id=" + roleId + ", roleName=" + roleName + ", roleStatus=" + roleStatus + "]";
+	}
 }
