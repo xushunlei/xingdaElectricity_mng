@@ -192,10 +192,12 @@ jQuery(document).ready(function(){
 	
 	jQuery('#keyword').bind('focusin focusout', function(e){
 		var t = jQuery(this);
-		if(e.type == 'focusin' && t.val() == 'Enter keyword(s)') {
+		if(e.type == 'focusin' && t.val() == '请输入关键字') {
+			t.addClass("my_cleancolor");
 			t.val('');
 		} else if(e.type == 'focusout' && t.val() == '') {
-			t.val('Enter keyword(s)');	
+			t.removeClass("my_cleancolor");
+			t.val('请输入关键字');	
 		}
 	});
 	

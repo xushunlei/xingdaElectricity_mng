@@ -1,7 +1,9 @@
 package com.xinda.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -41,7 +43,7 @@ public class AdminController
 		if(loginUser!=null&&loginUser.getUserRole()==1){
 			session.setAttribute("branchList", branchService.findAllBranch());
 			//session.setAttribute("userList", userService.findUsers());//修改。不展示用户列表，改以展示电表列表
-			session.setAttribute("meterList", meterservice.findAllMeters());
+			//session.setAttribute("meterList", meterservice.findAllMeters());
 			session.setAttribute("paging_user_totalcount", userService.getTotalCountOfUser());
 			//return "userlist";
 			return "managePage";
@@ -49,7 +51,31 @@ public class AdminController
 			return "index";
 		}
 	}
-	
+	@ResponseBody
+	@RequestMapping(value="meter_page", method=RequestMethod.POST)
+	public List<Meter> meterPage(HttpServletRequest request){
+		int currentPage;
+		String cPageString=request.getParameter("pageNo");
+		if(cPageString!=null&&cPageString.trim()!=""){
+			currentPage=Integer.parseInt(cPageString);
+		}else {
+			currentPage=1;
+		}
+		int pageSize;
+		String pageNoString=request.getParameter("pageSize");
+		if(pageNoString!=null&&pageNoString.trim()!=""){
+			pageSize=Integer.parseInt(pageNoString);
+		}else{
+			pageSize=10;
+		}
+		String condition=request.getParameter("seachfor");
+		System.out.println("seachword===>"+condition);
+		if(condition!=null&&condition.trim()!=""){
+			return meterservice.findMetersLikeMeter(condition, currentPage, pageSize);
+		}else{
+			return meterservice.findAllMeters(currentPage, pageSize);
+		}
+	}
 	@RequestMapping("enable")
 	public void enableUser(HttpServletRequest request,HttpServletResponse response){
 		String[] idStrings=request.getParameter("userid").split(",");
@@ -59,11 +85,9 @@ public class AdminController
 			request.getRequestDispatcher("manageView").forward(request, response);
 		} catch (ServletException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		//return "userlist";
@@ -100,10 +124,24 @@ public class AdminController
 		Meter meter=new Meter();
 		Branch branch=new Branch();
 		String branchNum=request.getParameter("branch_num");
+		int currentPage;
+		String cPageString=request.getParameter("pageNo");
+		if(cPageString!=null&&cPageString.trim()!=""){
+			currentPage=Integer.parseInt(cPageString);
+		}else {
+			currentPage=1;
+		}
+		int pageSize;
+		String pageNoString=request.getParameter("pageSize");
+		if(pageNoString!=null&&pageNoString.trim()!=""){
+			pageSize=Integer.parseInt(pageNoString);
+		}else{
+			pageSize=10;
+		}
 		if(branchNum!=null){
 			branch.setBranchNumber(branchNum);
 			meter.setMeterBranch(branch);
-			mav.addObject(meterservice.findMetersLikeMeter(meter));
+			mav.addObject(meterservice.findMetersLikeMeter(branchNum,currentPage,pageSize));
 		}
 		return mav;
 	}

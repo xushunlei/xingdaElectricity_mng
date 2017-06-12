@@ -24,11 +24,13 @@ public interface MeterService
 	 */
 	public boolean closeMeter(String meterNum);
 	/**
-	 * 根据相似条件查找电表列表
-	 * @param meter 查找模板。主要设置网点、类型、状态
+	 * 根据相似条件查找电表列表,并分页
+	 * @param condition 查找条件。主要设置网点、类型、状态、用户名
+	 * @param currentPage 查找第几页
+	 * @param pageSize 每页显示条目数
 	 * @return List<Meter> 电表列表
 	 */
-	public List<Meter> findMetersLikeMeter(Meter meter);
+	public List<Meter> findMetersLikeMeter(String condition, Integer currentPage, Integer pageSize);
 	/**
 	 * 新增电表
 	 * @param meter
@@ -41,5 +43,6 @@ public interface MeterService
 	 */
 	public Meter findByNumber(String meterNum);
 	/**查找所有电表*/
-	public List<Meter> findAllMeters();
+	public List<Meter> findAllMeters(Integer currentPage, Integer pageSize);
+
 }

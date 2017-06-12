@@ -1,6 +1,8 @@
 
+var curr_page=1;
+var page_size=10;
 jQuery(document).ready(function($){	
-	
+	//drowTable(curr_page,page_size);
 	$("#pagename").text();
 	
 	
@@ -99,38 +101,59 @@ jQuery(document).ready(function($){
 	jQuery(document).click(function(){
 		jQuery('.dropdown').removeClass('open').find('ul').hide();
 	});
-	jQuery("#do_enable").click(function(){
-		var str="";
-		var idss=document.getElementsByName("cuser");
-		for(var i=0;i<idss.length;i++){
-			if(idss[i].checked){
-				str=str+idss[i].value+",";
-			}
-		}
-		str=str.substring(0, str.length-1);
-		console.log(str);
-		window.location="admin/enable?userid="+str;
-	});
 	
-	jQuery("#do_disable").click(function(){
-		var str="";
-		var idss=document.getElementsByName("cuser");
-		for(var i=0;i<idss.length;i++){
-			if(idss[i].checked){
-				str=str+idss[i].value+",";
+});
+function next_page(){
+	jQuery("#up_page").removeClass("prev_disabled");
+	curr_page+=1;
+	var keyword=jQuery("#keyword").val();
+	console.log(curr_page+"&"+keyword);
+}
+function prev_page(){
+	if(curr_page==2)jQuery("#up_page").addClass("prev_disabled");
+	if(curr_page>1){
+		curr_page-=1;
+		jQuery("down_page").removeClass("next_disabled");
+	}else {
+		
+	}
+}
+function drowTable(pageNo,pageSize){
+	var table=jQuery("#meter_info");
+	var seachword=jQuery("#keyword").val();
+	if(seachword=="请输入关键字"||jQuery.trim(seachword)==""){
+		seachword="";
+	}
+	console.log(seachword);
+	jQuery.ajax({
+		url:"admin/meter_page",
+		type:"post",
+		data:{"pageNo":pageNo,"pageSize":pageSize,"seachfor":seachword},
+		dataType:"json",
+		error:function(){
+			alert("!!");
+		},
+		success:function(result){
+			for(var i=0;i<result.length;i++){
+				var meterType=result[i].meterType==0?"单相":"三相";
+				var meterStatus="";
+				if(result[i].meterStatus==0)meterStatus="供电";
+				else if(result[i].meterStatus==1)meterStatus="透支";
+				else if(result[i].meterStatus==2)meterStatus="拉闸";
+				var str='<tr><td class="aligncenter">'+
+				'<input type="checkbox" name="cuser" value="'+result[i].meterId+
+				'"/></td><td class="star">'+(i+1)+'</td><td>'+result[i].meterNumber+'</td>'+
+				'<td>'+meterType+'</td><td>'+meterStatus+'<select style="float:right;">'+
+				'<option value="0">供电</option><option value="1">透支</option><option value="2">拉闸</option></select></td>'+
+				'<td>'+result[i].meterBalance+'<button style="float:right;" onclick="recharge('+result[i].meterId+')">充值</button></td>'+
+				'<td>'+result[i].meterMaxOverdraft+'<button style="float:right;" onclick="setOverdraft('+result[i].meterId+')">设置</button></td>'+
+				'<td>'+result[i].meterTotalConsumption+'</td>'+
+				'<td>'+result[i].meterUser.userAccount+'</td>'+
+				'<td>'+result[i].meterUser.userMobile+'</td>'+
+				'<td>'+result[i].meterUser.userIdcard+'</td></tr>';
+				table.append(str);
 			}
 		}
-		str=str.substring(0, str.length-1);
-		window.location="admin/disable?userid="+str;
 	});
-	jQuery("#keyword").focus(function(){
-		jQuery("#keyword").addClass("my_cleancolor");
-		var searchText=jQuery("#keyword").val();
-		if(searchText=="请输入关键字"){
-			jQuery("#keyword").val("");
-		}
-	});
-	jQuery("#keyword").blur(function(){
-		jQuery("#keyword").removeClass("my_cleancolor");
-	});
-});
+
+}

@@ -70,14 +70,14 @@ background:#fff;
                             </ul>
                         </li>
                         <li class="marginleft5"><a class="msgtrash" title="Trash"></a></li>
-                    	<li class="right"><a class="next"></a></li>
-                        <li class="right"><a class="prev prev_disabled"></a></li>
+                    	<li class="right"><a class="next" href="javascript:next_page()" id="down_page"></a></li>
+                        <li class="right"><a class="prev prev_disabled" id="up_page" href="javascript:prev_page()"></a></li>
                         <li class="right"><span class="pageinfo">1-10 of ${paging_user_totalcount}</span></li>
                         <li class="right">
 			            <div class="search">
 			            	<form action="" method="post">
 			                	<input type="text" name="keyword" id="keyword" value="请输入关键字" />
-			                    <button class="submitbutton"></button>
+			                    <button class="submitbutton" onclick="drowTable(1,10)"></button>
 			                </form>
 			            </div><!--search-->
 			            </li>
@@ -85,16 +85,16 @@ background:#fff;
                     <span class="clearall"></span>
                 </div><!--msghead-->
                 
-                <table cellpadding="0" cellspacing="0" border="0" class="stdtable mailinbox">
+                <table cellpadding="0" cellspacing="0" border="0" class="stdtable mailinbox" id="meter_info">
                     <colgroup>
                         <col class="con1" width="3%"/>
                         <col class="con0" width="3%" />
                         <col class="con1" width="10%"/>
                         <col class="con0" width="5%"/>
-                        <col class="con1" width="16%"/>
+                        <col class="con1" width="11%"/>
                         <col class="con0" width="15%"/>
                         <col class="con1" width="10%"/>
-                        <col class="con0" width="10%"/>
+                        <col class="con0" width="15%"/>
                         <col class="con1" width="8%"/>
                         <col class="con0" width="10%"/>
                         <col class="con1" width="10%"/>
@@ -125,7 +125,7 @@ background:#fff;
                         </tr>
                     </tfoot> -->
                     <tbody>
-                    <c:forEach items="${meterList}" var="meter" varStatus="vs">
+                    <%-- <c:forEach items="${meterList}" var="meter" varStatus="vs">
                     	<tr>
                     		<td class="aligncenter"><input type="checkbox" name="cuser" value="${meter.meterId}"/></td>
                     		<td class="star">${vs.count}</td>
@@ -151,7 +151,7 @@ background:#fff;
                     		<td>${meter.meterUser.userMobile}</td>
                     		<td>${meter.meterUser.userIdcard}</td>
                     	</tr>
-                    </c:forEach>
+                    </c:forEach> --%>
                     </tbody>
                 </table>             
              </div>
