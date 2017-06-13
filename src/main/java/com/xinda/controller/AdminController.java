@@ -44,7 +44,7 @@ public class AdminController
 			session.setAttribute("branchList", branchService.findAllBranch());
 			//session.setAttribute("userList", userService.findUsers());//修改。不展示用户列表，改以展示电表列表
 			//session.setAttribute("meterList", meterservice.findAllMeters());
-			session.setAttribute("paging_user_totalcount", userService.getTotalCountOfUser());
+			session.setAttribute("all_meter_count", meterservice.findAllMetersCount());
 			//return "userlist";
 			return "managePage";
 		}else{
@@ -52,7 +52,7 @@ public class AdminController
 		}
 	}
 	@ResponseBody
-	@RequestMapping(value="meter_page", method=RequestMethod.POST)
+	@RequestMapping(value="meter_page")
 	public List<Meter> meterPage(HttpServletRequest request){
 		int currentPage;
 		String cPageString=request.getParameter("pageNo");
@@ -69,12 +69,14 @@ public class AdminController
 			pageSize=10;
 		}
 		String condition=request.getParameter("seachfor");
-		System.out.println("seachword===>"+condition);
+		List<Meter> res=new ArrayList<Meter>();
 		if(condition!=null&&condition.trim()!=""){
-			return meterservice.findMetersLikeMeter(condition, currentPage, pageSize);
+			res= meterservice.findMetersLikeMeter(condition, currentPage, pageSize);
 		}else{
-			return meterservice.findAllMeters(currentPage, pageSize);
+			res= meterservice.findAllMeters(currentPage, pageSize);
 		}
+		System.out.println(res);//正常获取
+		return res;
 	}
 	@RequestMapping("enable")
 	public void enableUser(HttpServletRequest request,HttpServletResponse response){

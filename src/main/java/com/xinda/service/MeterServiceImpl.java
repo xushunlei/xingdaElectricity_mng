@@ -47,13 +47,14 @@ public class MeterServiceImpl implements MeterService
 			example.setMeterStatus(condi);
 			example.setMeterType(condi);
 			meterList=meterDao.selectMetersLikeExample1(example, (currentPage-1)*pageSize, pageSize);
-		}catch(ClassCastException e){
+		}catch(NumberFormatException e){
 			/*Branch exBranch=new Branch();
 			exBranch.setBranchNumber(condition);
 			User exUser=new User();
 			exUser.setUserAccount(condition);
 			example.setMeterBranch(exBranch);
 			example.setMeterUser(exUser);*/
+			System.out.println("string condi="+condition);
 			meterList=meterDao.selectMetersLikeExample2(condition, (currentPage-1)*pageSize, pageSize);
 		}finally{
 			System.out.println(meterList);
@@ -81,6 +82,11 @@ public class MeterServiceImpl implements MeterService
 		List<Meter> rList=meterDao.selectAllMeters((currentPage-1)*pageSize,pageSize);
 		//System.out.println("list===>"+rList);
 		return rList;
+	}
+	@Override
+	public Integer findAllMetersCount()
+	{
+		return meterDao.selectAllMetersCount();
 	}
 
 }

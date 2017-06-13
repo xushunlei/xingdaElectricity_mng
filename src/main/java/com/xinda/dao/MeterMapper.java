@@ -9,7 +9,8 @@ import com.xinda.entity.Meter;
 public interface MeterMapper {
     /**查找所有电表*/
 	List<Meter> selectAllMeters(@Param("start")Integer startNo, @Param("size")Integer pageSize);
-	
+	/**查找所有电表数量*/
+	Integer selectAllMetersCount();
 	/**根据电表状态或类型条件查找电表并分页*/
 	List<Meter> selectMetersLikeExample1(Meter meter, @Param("start")Integer currentPage, @Param("size")Integer pageSize);
 	

@@ -52,7 +52,16 @@
   	select * from meter m 
   	left join user u
   	on m.user_account=u.user_account
+	left join branch b
+	on m.branch_number=b.branch_number
   	limit #{start}, #{size}
+  </select>
+  <select id="selectAllMetersCount" resultType="int">
+  	select count(1) from meter m 
+  	left join user u
+  	on m.user_account=u.user_account
+	left join branch b
+	on m.branch_number=b.branch_number
   </select>
   <select id="selectMetersLikeExample1" resultMap="BaseResultMap" parameterType="com.xinda.entity.Meter">
   	select * from meter m 
@@ -67,6 +76,19 @@
   		</if>
   	</where>
   	limit #{start}, #{size}
+  </select>
+  <select id="selectMetersLikeExample1Count" resultType="int" parameterType="com.xinda.entity.Meter">
+  	select * from meter m 
+  	left join user u
+  	on m.user_account=u.user_account
+  	<where>
+  		<if test='meterStatus!=null'>
+  			m.meter_status = #{meterStatus} or
+  		</if>
+  		<if test="meterType!=null">
+  			m.meter_type = #{meterType} 
+  		</if>
+  	</where>
   </select>
   <select id="selectMetersLikeExample2" resultMap="BaseResultMap">
   	select * from meter m 

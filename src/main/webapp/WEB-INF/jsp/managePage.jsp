@@ -17,6 +17,7 @@
 <script type="text/javascript" src="js/plugins/jquery-1.7.min.js"></script>
 <script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
 <script type="text/javascript" src="js/plugins/jquery.cookie.js"></script>
+<script type="text/javascript" src="js/plugins/jquerySession.js"></script>
 <script type="text/javascript" src="js/plugins/jquery.alerts.js"></script>
 <script type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script>
 <script type="text/javascript" src="js/custom/general.js"></script>
@@ -72,12 +73,13 @@ background:#fff;
                         <li class="marginleft5"><a class="msgtrash" title="Trash"></a></li>
                     	<li class="right"><a class="next" href="javascript:next_page()" id="down_page"></a></li>
                         <li class="right"><a class="prev prev_disabled" id="up_page" href="javascript:prev_page()"></a></li>
-                        <li class="right"><span class="pageinfo">1-10 of ${paging_user_totalcount}</span></li>
+                        <li class="right"><span class="pageinfo" id="page_info">1-10 of <b id="b1">${all_meter_count}</b></span></li>
                         <li class="right">
 			            <div class="search">
 			            	<form action="" method="post">
 			                	<input type="text" name="keyword" id="keyword" value="请输入关键字" />
-			                    <button class="submitbutton" onclick="drowTable(1,10)"></button>
+			                    <!-- <button class="submitbutton" onclick="drowTable(1,10)"></button> -->
+			                    <input type="button" onclick="drowTable(1,10)" class="submitbutton">
 			                </form>
 			            </div><!--search-->
 			            </li>

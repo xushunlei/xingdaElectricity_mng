@@ -1,8 +1,12 @@
 
 var curr_page=1;
 var page_size=10;
+var total_count;
+var total_page;
 jQuery(document).ready(function($){	
-	//drowTable(curr_page,page_size);
+	total_count=$("#b1").text();
+	total_page=total_count%page_size==0?total_count/page_size:Math.ceil(total_count/page_size);
+	drowTable(curr_page,page_size);
 	$("#pagename").text();
 	
 	
@@ -104,18 +108,21 @@ jQuery(document).ready(function($){
 	
 });
 function next_page(){
-	jQuery("#up_page").removeClass("prev_disabled");
-	curr_page+=1;
-	var keyword=jQuery("#keyword").val();
-	console.log(curr_page+"&"+keyword);
+	if(curr_page<total_page){
+		jQuery("#up_page").removeClass("prev_disabled");
+		curr_page+=1;
+		drowTable(curr_page,page_size);
+		if(curr_page>=total_page){
+			jQuery("#down_page").addClass("next_disabled");
+		}
+	}
 }
 function prev_page(){
-	if(curr_page==2)jQuery("#up_page").addClass("prev_disabled");
 	if(curr_page>1){
 		curr_page-=1;
-		jQuery("down_page").removeClass("next_disabled");
-	}else {
-		
+		jQuery("#down_page").removeClass("next_disabled");
+		drowTable(curr_page,page_size);
+		if(curr_page<=1)jQuery("#up_page").addClass("prev_disabled");
 	}
 }
 function drowTable(pageNo,pageSize){
@@ -124,16 +131,18 @@ function drowTable(pageNo,pageSize){
 	if(seachword=="请输入关键字"||jQuery.trim(seachword)==""){
 		seachword="";
 	}
-	console.log(seachword);
 	jQuery.ajax({
 		url:"admin/meter_page",
 		type:"post",
 		data:{"pageNo":pageNo,"pageSize":pageSize,"seachfor":seachword},
 		dataType:"json",
-		error:function(){
-			alert("!!");
+		error:function(XMLHttpRequest,textStatus,errorThow){
+			alert(XMLHttpRequest.status);//0
+			alert(XMLHttpRequest.readyState);//0
+			alert(textStatus);//error
 		},
 		success:function(result){
+			jQuery("#meter_info tbody").html('');
 			for(var i=0;i<result.length;i++){
 				var meterType=result[i].meterType==0?"单相":"三相";
 				var meterStatus="";

@@ -31,6 +31,8 @@ public interface MeterService
 	 * @return List<Meter> 电表列表
 	 */
 	public List<Meter> findMetersLikeMeter(String condition, Integer currentPage, Integer pageSize);
+	
+	//public Integer findMetersLikeMeterCount();
 	/**
 	 * 新增电表
 	 * @param meter
@@ -44,5 +46,7 @@ public interface MeterService
 	public Meter findByNumber(String meterNum);
 	/**查找所有电表*/
 	public List<Meter> findAllMeters(Integer currentPage, Integer pageSize);
+	
+	public Integer findAllMetersCount();
 
 }
