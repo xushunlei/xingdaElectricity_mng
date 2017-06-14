@@ -17,7 +17,6 @@
 <script type="text/javascript" src="js/plugins/jquery-1.7.min.js"></script>
 <script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
 <script type="text/javascript" src="js/plugins/jquery.cookie.js"></script>
-<script type="text/javascript" src="js/plugins/jquerySession.js"></script>
 <script type="text/javascript" src="js/plugins/jquery.alerts.js"></script>
 <script type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script>
 <script type="text/javascript" src="js/custom/general.js"></script>
@@ -77,7 +76,7 @@ background:#fff;
                         <li class="right">
 			            <div class="search">
 			            	<form action="" method="post">
-			                	<input type="text" name="keyword" id="keyword" value="请输入关键字" />
+			                	<input type="text" name="keyword" id="keyword" value="请输入关键字" onkeydown="keyDown()"/>
 			                    <!-- <button class="submitbutton" onclick="drowTable(1,10)"></button> -->
 			                    <input type="button" onclick="drowTable(1,10)" class="submitbutton">
 			                </form>

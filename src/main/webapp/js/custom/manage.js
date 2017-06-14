@@ -5,7 +5,7 @@ var total_count;
 var total_page;
 jQuery(document).ready(function($){	
 	total_count=$("#b1").text();
-	total_page=total_count%page_size==0?total_count/page_size:Math.ceil(total_count/page_size);
+	total_page=Math.ceil(total_count/page_size);
 	drowTable(curr_page,page_size);
 	$("#pagename").text();
 	
@@ -107,6 +107,13 @@ jQuery(document).ready(function($){
 	});
 	
 });
+
+function keyDown(){
+	if(event.keyCode ==13){
+		alert("1111");
+		drowTable(1,10);
+	}
+}
 function next_page(){
 	if(curr_page<total_page){
 		jQuery("#up_page").removeClass("prev_disabled");
