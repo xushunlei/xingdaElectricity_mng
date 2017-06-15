@@ -110,4 +110,18 @@ public class MeterServiceImpl implements MeterService
 			return result;
 		}
 	}
+	@Override
+	public Integer findMeterCountForCondition(String branchNum,
+			String meterType, String meterStatus, String condition) {
+		Byte mType=null;
+		Byte mStatus=null;
+		try {
+			mType = Byte.valueOf(meterType);
+			mStatus = Byte.valueOf(meterStatus);
+		} catch (NumberFormatException e) {
+			System.out.println("搜索电表时，电表类型或电表状态错误！");
+		}finally{
+			return meterDao.selectCountForCondition(branchNum, mType, mStatus, condition);
+		}
+	}
 }

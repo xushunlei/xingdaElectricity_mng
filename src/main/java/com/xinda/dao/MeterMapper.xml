@@ -126,4 +126,28 @@
 	</where>
 	limit #{start}, #{size}
   </select>
+  <select id="selectCountForCondition" resultType="java.lang.Integer">
+  	select count(1) from meter m 
+  	left join user u
+  	on m.user_account=u.user_account
+	left join branch b
+	on m.branch_number=b.branch_number
+	<where> 
+	<if test="branchNum!=null">
+	m.branch_number=#{branchNum} and
+	</if>
+	<if test="meterType!=null">
+	m.meter_type=#{meterType} and
+	</if>
+	<if test="meterStatus!=null">
+	m.meter_status=#{meterStatus} and
+	</if>
+	<if test="condition!=null">
+	(u.user_name like concat("%",#{condition},"%")
+	or u.user_mobile = #{condition}
+	or u.user_idcard = #{condition}) and
+	</if>
+	1=1
+	</where>
+  </select>
 </mapper>

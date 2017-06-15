@@ -116,11 +116,17 @@ jQuery(document).ready(function($){
 });
 function changetype(){
 	meter_type=jQuery("#metertype").val();
+	//coding...获取总条目数，用于分页
+	findNewCount(branch_num,seach_word,meter_type,meter_status);
 	console.log(meter_type);
+	dr(curr_page,page_size,"",branch_num);
 }
 function changestatus(){
 	meter_status=jQuery("#meterstatus").val();
+	//coding...获取总条目数，用于分页
+	findNewCount(branch_num,seach_word,meter_type,meter_status);
 	console.log(meter_status);
+	dr(curr_page,page_size,"",branch_num);
 }
 function keyDown(){
 	if(event.keyCode ==13){
@@ -251,6 +257,8 @@ function select_branch(obj,b_no){
 	jQuery("#branches_tree li a").addClass("drafts");
 	jQuery(obj).removeClass("drafts");
 	jQuery(obj).addClass("inbox");
+	//coding...获取总条目数，用于分页
+	findNewCount(branch_num,seach_word,meter_type,meter_status);
 	dr(curr_page,page_size,"",branch_num);
 }
 function seachfor(){
@@ -258,5 +266,24 @@ function seachfor(){
 	if(seach_word=="请输入关键字"||jQuery.trim(seach_word)==""){
 		seach_word="";
 	}
+	//coding...获取总条目数，用于分页
+	findNewCount(branch_num,seach_word,meter_type,meter_status);
 	dr(curr_page,page_size,seach_word,branch_num);
+}
+function findNewCount(branchNum, seachWord, meterType, meterStatus){
+	jQuery.ajax({
+		url:"admin/findCount",
+		type:"post",
+		data:{
+			"branchNum":branchNum,
+			"seachWord":seachWord,
+			"meterType":meterType,
+			"meterStatus":meterStatus
+			},
+		async:true,
+		dataType:"json",
+		success:function(redata){
+			jQuery("#b1").text(redata.total_count);
+		}
+	});
 }

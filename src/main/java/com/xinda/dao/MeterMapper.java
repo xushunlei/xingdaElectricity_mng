@@ -33,4 +33,10 @@ public interface MeterMapper {
 			@Param("condition")String condition, 
 			@Param("start")Integer start, 
 			@Param("size")Integer pageSize);
+	
+	Integer selectCountForCondition(
+			@Param("branchNum")String branchNum,
+			@Param("meterType")Byte meterType, 
+			@Param("meterStatus")Byte meterStatus, 
+			@Param("condition")String condition);
 }

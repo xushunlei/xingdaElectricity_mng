@@ -100,6 +100,17 @@ public class AdminController
 		System.out.println(res);
 		return res;
 	}
+	@ResponseBody
+	@RequestMapping("findCount")
+	public Map<String,Integer> getCountFrom(HttpServletRequest request){
+		Map<String,Integer> redata=new HashMap<String, Integer>();
+		String meterType=request.getParameter("meterType");
+		String meterStatus=request.getParameter("meterStatus");
+		String branchNum=request.getParameter("branchNum");
+		String condition=request.getParameter("seachWord");
+		redata.put("total_count", meterservice.findMeterCountForCondition(branchNum, meterType, meterStatus, condition));
+		return redata;
+	}
 	@RequestMapping("enable")
 	public void enableUser(HttpServletRequest request,HttpServletResponse response){
 		String[] idStrings=request.getParameter("userid").split(",");

@@ -58,5 +58,7 @@ public interface MeterService
 	 * @param condition 查询条件
 	 * @return list 电表列表
 	 */
-	List<Meter> findMeterListForCondition(Integer currentPage, Integer pageSize, String branchNum, String meterType, String meterStatus, String condition);
+	public List<Meter> findMeterListForCondition(Integer currentPage, Integer pageSize, String branchNum, String meterType, String meterStatus, String condition);
+	
+	public Integer findMeterCountForCondition(String branchNum, String meterType, String meterStatus, String condition);
 }
