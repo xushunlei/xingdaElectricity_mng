@@ -194,7 +194,7 @@ jQuery(document).ready(function(){
 		var t = jQuery(this);
 		if(e.type == 'focusin' && t.val() == '请输入关键字') {
 			t.val('');
-		} else if(e.type == 'focusout' && t.val() == '') {
+		} else if(e.type == 'focusout' && jQuery.trim(t.val()) == '') {
 			t.val('请输入关键字');	
 		}
 	});

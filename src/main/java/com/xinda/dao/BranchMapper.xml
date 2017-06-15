@@ -26,4 +26,9 @@
   <sql id="Base_Column_List" >
     id, branch_name, branch_number, branch_address, branch_manager, branch_host, branch_port
   </sql>
+  <select id="selectBranchList" resultMap="BaseResultMap">
+  	select * from branch b 
+  	left join user u
+  	on b.branch_manager=u.user_account
+  </select>
 </mapper>

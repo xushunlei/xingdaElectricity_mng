@@ -2,13 +2,16 @@ package com.xinda.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xinda.dao.BranchMapper;
 import com.xinda.entity.Branch;
 @Service
 public class BranchServiceImpl implements BranchService
 {
-
+	@Autowired
+	private BranchMapper branchMapper;
 	@Override
 	public boolean saveBranch(Branch branch)
 	{
@@ -20,7 +23,9 @@ public class BranchServiceImpl implements BranchService
 	public List<Branch> findAllBranch()
 	{
 		// TODO Auto-generated method stub
-		return null;
+		List<Branch> list=branchMapper.selectBranchList();
+		System.out.println("bs:"+list);
+		return list;
 	}
 
 }

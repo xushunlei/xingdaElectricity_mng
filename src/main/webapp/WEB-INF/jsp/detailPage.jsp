@@ -20,10 +20,12 @@
 <script type="text/javascript" src="js/plugins/jquery.alerts.js"></script>
 <script type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script>
 <script type="text/javascript" src="js/custom/general.js"></script>
-<script type="text/javascript" src="js/custom/manage.js"></script>
+<script type="text/javascript" src="js/custom/detail.js"></script>
 <style type="text/css">
-.my_cleancolor{
-background:#fff;
+.my_select{
+    height: 30px;
+    border-color: #445775;
+    margin: 5px;
 }
 </style>
 </head>
@@ -31,11 +33,10 @@ background:#fff;
 <div class="bodywrapper">
     <%@include file="header.jsp" %>
     <div class="vernav iconmenu">
-    	<ul id="leftmenu">
-        	<li class="current"><a href="javascript:void(0)" onclick="modify_price(this)" class="inbox">修改电价</a></li>
-            <li><a href="javascript:void(0)" onclick="add_point(this)" class="drafts">添加网点列表</a></li>
-            <li><a href="javascript:void(0)" onclick="add_meter(this)" class="drafts">添加用户列表</a></li>
-            <li><a href="javascript:void(0)" onclick="send_msg(this)" class="drafts">推送消息</a></li>
+    	<ul id="branches_tree">
+   		<c:forEach items="${branchList }" var="branch">
+   			<li><a href="javascript:void(0)" onclick="select_branch(this,'${branch.branchNumber }');" class="drafts">${branch.branchName }</a></li>
+   		</c:forEach>
         </ul>
         <a class="togglemenu"></a>
         <br /><br />
@@ -44,7 +45,7 @@ background:#fff;
     <div class="centercontent">
     
         <div class="pageheader">
-            <h1 class="pagetitle" id="pagename">管理页面</h1>
+            <h1 class="pagetitle" id="pagename">详情页面</h1>
             <span class="pagedesc">The content below are loaded using ajax</span>
             
             <ul class="hornav">
@@ -79,9 +80,20 @@ background:#fff;
 			            <div class="search">
 			                	<input type="text" name="keyword" id="keyword" value="请输入关键字" onkeydown="keyDown();"/>
 			                    <!-- <button class="submitbutton" onclick="drowTable(1,10)"></button> -->
-			                    <input type="button" onclick="drowTable(1,10);" class="submitbutton" id="seach_btn">
+			                    <input type="button" onclick="seachfor();" class="submitbutton" id="seach_btn">
 			            </div><!--search-->
 			            </li>
+			            <li class="right"><select id="metertype" onchange="changetype()" class="my_select">
+				            <option>选择类型</option>
+				            <option value="0">单相电表</option>
+				            <option value="1">三相电表</option>
+			            </select></li>
+			            <li class="right"><select id="meterstatus" onchange="changestatus()" class="my_select">
+				            <option>选择状态</option>
+				            <option value="0">供电</option>
+				            <option value="1">透支</option>
+				            <option value="2">拉闸</option>
+			            </select></li>
                     </ul>
                     <span class="clearall"></span>
                 </div><!--msghead-->

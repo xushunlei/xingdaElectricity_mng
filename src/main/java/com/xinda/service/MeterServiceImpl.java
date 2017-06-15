@@ -57,7 +57,7 @@ public class MeterServiceImpl implements MeterService
 			System.out.println("string condi="+condition);
 			meterList=meterDao.selectMetersLikeExample2(condition, (currentPage-1)*pageSize, pageSize);
 		}finally{
-			System.out.println(meterList);
+			//System.out.println(meterList);
 			return meterList;
 		}
 	}
@@ -88,5 +88,26 @@ public class MeterServiceImpl implements MeterService
 	{
 		return meterDao.selectAllMetersCount();
 	}
-
+	@Override
+	public List<Meter> findMeterListForCondition(Integer currentPage,
+			Integer pageSize, String branchNum, String meterType,
+			String meterStatus, String condition) {
+		if(branchNum!=null&&branchNum.trim()==""){
+			branchNum=null;
+		}
+		if(condition!=null&&condition.trim()==""){
+			condition=null;
+		}
+		Byte mType=null;
+		Byte mStatus=null;
+		try {
+			mType = Byte.valueOf(meterType);
+			mStatus = Byte.valueOf(meterStatus);
+		} catch (NumberFormatException e) {
+			System.out.println("搜索电表时，电表类型或电表状态错误！");
+		}finally{
+			List<Meter> result=meterDao.selectMetersForCondition(branchNum, mType, mStatus, condition, (currentPage-1)*pageSize, pageSize);
+			return result;
+		}
+	}
 }

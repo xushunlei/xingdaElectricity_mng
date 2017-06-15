@@ -51,31 +51,53 @@ public class AdminController
 			return "index";
 		}
 	}
+	@RequestMapping("detailView")
+	public String detailView(HttpServletRequest request, HttpServletResponse response){
+		HttpSession session=request.getSession();
+		User loginUser=(User)session.getAttribute("loginUser");
+		if(loginUser!=null&&loginUser.getUserRole()==1){
+			session.setAttribute("branchList", branchService.findAllBranch());
+			//session.setAttribute("userList", userService.findUsers());//修改。不展示用户列表，改以展示电表列表
+			//session.setAttribute("meterList", meterservice.findAllMeters());
+			session.setAttribute("all_meter_count", meterservice.findAllMetersCount());
+			//return "userlist";
+			return "detailPage";
+		}else{
+			return "index";
+		}
+	}
 	@ResponseBody
 	@RequestMapping(value="meter_page")
 	public List<Meter> meterPage(HttpServletRequest request){
-		int currentPage;
+		int currentPage;//页码
 		String cPageString=request.getParameter("pageNo");
 		if(cPageString!=null&&cPageString.trim()!=""){
 			currentPage=Integer.parseInt(cPageString);
 		}else {
 			currentPage=1;
 		}
-		int pageSize;
+		int pageSize;//容量
 		String pageNoString=request.getParameter("pageSize");
 		if(pageNoString!=null&&pageNoString.trim()!=""){
 			pageSize=Integer.parseInt(pageNoString);
 		}else{
 			pageSize=10;
 		}
-		String condition=request.getParameter("seachfor");
 		List<Meter> res=new ArrayList<Meter>();
+		String meterType=request.getParameter("meterType");
+		String meterStatus=request.getParameter("meterStatus");
+		String branchNum=request.getParameter("branchNum");//网点编号
+		String condition=request.getParameter("seachfor");//搜索条件：用户姓名、身份证、电话
+		res=meterservice.findMeterListForCondition(currentPage, pageSize, branchNum, meterType, meterStatus, condition);
+		/*if(branchNum!=null&&branchNum.trim()!=""){
+			
+		}
 		if(condition!=null&&condition.trim()!=""){
 			res= meterservice.findMetersLikeMeter(condition, currentPage, pageSize);
 		}else{
 			res= meterservice.findAllMeters(currentPage, pageSize);
-		}
-		System.out.println(res);//正常获取
+		}*/
+		System.out.println(res);
 		return res;
 	}
 	@RequestMapping("enable")

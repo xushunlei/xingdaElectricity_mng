@@ -48,5 +48,15 @@ public interface MeterService
 	public List<Meter> findAllMeters(Integer currentPage, Integer pageSize);
 	
 	public Integer findAllMetersCount();
-
+	/**
+	 * 根据条件查找电表列表
+	 * @param currentPage 页码
+	 * @param pageSize 每页最大条目
+	 * @param branchNum 网点编号
+	 * @param meterType 电表类型
+	 * @param meterStatus 电表状态
+	 * @param condition 查询条件
+	 * @return list 电表列表
+	 */
+	List<Meter> findMeterListForCondition(Integer currentPage, Integer pageSize, String branchNum, String meterType, String meterStatus, String condition);
 }

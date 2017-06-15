@@ -26,22 +26,22 @@
             <div class="userinfodrop">
             	<div class="avatar">
                 	<a href=""><img src="images/thumbs/avatarbig.png" alt="" /></a>
-                    <div class="changetheme">
+                    <!-- <div class="changetheme">
                     	切换主题: <br />
                     	<a class="default"></a>
                         <a class="blueline"></a>
                         <a class="greenline"></a>
                         <a class="contrast"></a>
                         <a class="custombg"></a>
-                    </div>
+                    </div> -->
                 </div><!--avatar-->
                 <div class="userdata">
                 	<h4>${loginUser.userName }</h4>
                     <span class="email">${loginUser.userEmail }</span>
                     <ul>
                     	<li><a href="user/editprofile">编辑资料</a></li>
-                        <li><a href="accountsettings.html">账号设置</a></li>
-                        <li><a href="help.html">帮助</a></li>
+                        <li><a href="#">账号设置</a></li>
+                        <li><a href="#">帮助</a></li>
                         <li><a href="user/logout">退出</a></li>
                     </ul>
                 </div><!--userdata-->
@@ -53,11 +53,11 @@
     <div class="header">
     	<ul class="headermenu">
         	<li class="current"><a href="dashboard.html"><span class="icon icon-flatscreen"></span>首页</a></li>
-            <c:if test="${loginUser.userRole==1}">
             <li><a href="admin/manageView"><span class="icon icon-pencil"></span>管理</a></li>
-            </c:if>
-            <li><a href="messages.html"><span class="icon icon-message"></span>查看消息</a></li>
-            <li><a href="reports.html"><span class="icon icon-chart"></span>统计报表</a></li>
+            <li><a href="#"><span class="icon icon-message"></span>查看消息</a></li>
+            <li><a href="#"><span class="icon icon-chart"></span>统计报表</a></li>
+            <li><a href="admin/detailView"><span class="icon icon-clock"></span>实时数据</a></li>
+            <li><a href="#"><span class="icon icon-notebook"></span>查看历史</a></li>
         </ul>
         
        <div class="headerwidget">
