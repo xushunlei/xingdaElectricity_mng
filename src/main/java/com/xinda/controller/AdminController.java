@@ -36,6 +36,7 @@ public class AdminController
 	private MeterService meterservice;
 	@Autowired
 	private BranchService branchService;
+	/**进入管理页面*/
 	@RequestMapping("manageView")
 	public String managePage(HttpServletRequest request, HttpServletResponse response){
 		HttpSession session=request.getSession();
@@ -51,14 +52,15 @@ public class AdminController
 			return "index";
 		}
 	}
+	/**进入详情页面*/
 	@RequestMapping("detailView")
-	public String detailView(HttpServletRequest request, HttpServletResponse response){
+	public String detailPage(HttpServletRequest request, HttpServletResponse response){
 		HttpSession session=request.getSession();
 		User loginUser=(User)session.getAttribute("loginUser");
 		if(loginUser!=null&&loginUser.getUserRole()==1){
 			session.setAttribute("branchList", branchService.findAllBranch());
 			//session.setAttribute("userList", userService.findUsers());//修改。不展示用户列表，改以展示电表列表
-			//session.setAttribute("meterList", meterservice.findAllMeters());
+			session.setAttribute("meterList", meterservice.findAllMeters(1,10));
 			session.setAttribute("all_meter_count", meterservice.findAllMetersCount());
 			//return "userlist";
 			return "detailPage";
@@ -66,6 +68,21 @@ public class AdminController
 			return "index";
 		}
 	}
+	
+	@RequestMapping("reportView")
+	public String reportPage(HttpServletRequest request){
+		
+		return "reportPage";
+	}
+	@RequestMapping("histroyView")
+	public String histroyPage(HttpServletRequest request){
+		return "histroyPage";
+	}
+	@RequestMapping("messageView")
+	public String messagePage(HttpServletRequest request){
+		return "messagePage";
+	}
+	/**查询电表列表*/
 	@ResponseBody
 	@RequestMapping(value="meter_page")
 	public List<Meter> meterPage(HttpServletRequest request){
@@ -100,8 +117,9 @@ public class AdminController
 		System.out.println(res);
 		return res;
 	}
+	/**根据条件查询电表数量*/
 	@ResponseBody
-	@RequestMapping("findCount")
+	@RequestMapping(value="findCount",method=RequestMethod.POST)
 	public Map<String,Integer> getCountFrom(HttpServletRequest request){
 		Map<String,Integer> redata=new HashMap<String, Integer>();
 		String meterType=request.getParameter("meterType");
@@ -111,6 +129,7 @@ public class AdminController
 		redata.put("total_count", meterservice.findMeterCountForCondition(branchNum, meterType, meterStatus, condition));
 		return redata;
 	}
+	/**启用用户*/
 	@RequestMapping("enable")
 	public void enableUser(HttpServletRequest request,HttpServletResponse response){
 		String[] idStrings=request.getParameter("userid").split(",");
@@ -127,6 +146,7 @@ public class AdminController
 		}
 		//return "userlist";
 	}
+	/**停用用户*/
 	@RequestMapping("disable")
 	public void disableUser(HttpServletRequest request,HttpServletResponse response){
 		String[] idStrings=request.getParameter("userid").split(",");
@@ -142,6 +162,7 @@ public class AdminController
 			e.printStackTrace();
 		}
 	}
+	/**充值密码*/
 	@ResponseBody
 	@RequestMapping(value="modifyPwd",method=RequestMethod.POST)
 	public Map<String, Boolean> modifyPwd(HttpServletRequest request){

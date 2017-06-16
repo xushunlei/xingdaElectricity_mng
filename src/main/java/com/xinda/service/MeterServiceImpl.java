@@ -102,10 +102,14 @@ public class MeterServiceImpl implements MeterService
 		Byte mStatus=null;
 		try {
 			mType = Byte.valueOf(meterType);
+		} catch (NumberFormatException e) {
+			System.out.println("搜索电表时，电表类型错误！");
+		}try {
 			mStatus = Byte.valueOf(meterStatus);
 		} catch (NumberFormatException e) {
-			System.out.println("搜索电表时，电表类型或电表状态错误！");
-		}finally{
+			System.out.println("搜索电表时，电表状态错误！");
+		}
+		finally{
 			List<Meter> result=meterDao.selectMetersForCondition(branchNum, mType, mStatus, condition, (currentPage-1)*pageSize, pageSize);
 			return result;
 		}
@@ -115,13 +119,23 @@ public class MeterServiceImpl implements MeterService
 			String meterType, String meterStatus, String condition) {
 		Byte mType=null;
 		Byte mStatus=null;
+		if(branchNum!=null&&branchNum.trim()==""){
+			branchNum=null;
+		}if(condition!=null&&condition.trim()==""){
+			condition=null;
+		}
 		try {
 			mType = Byte.valueOf(meterType);
+		} catch (NumberFormatException e) {
+			System.out.println("查找数量时，电表类型错误！"+mType);
+		}try {
 			mStatus = Byte.valueOf(meterStatus);
 		} catch (NumberFormatException e) {
-			System.out.println("搜索电表时，电表类型或电表状态错误！");
+			System.out.println("查找数量时，电表状态错误！"+mStatus);
 		}finally{
-			return meterDao.selectCountForCondition(branchNum, mType, mStatus, condition);
+			int i=meterDao.selectCountForCondition(branchNum, mType, mStatus, condition);
+			System.out.println("b:"+branchNum+",t:"+mType+",s:"+mStatus+",c:"+condition+",总数："+i);
+			return i;
 		}
 	}
 }

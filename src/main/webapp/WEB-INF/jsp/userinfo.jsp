@@ -35,7 +35,8 @@ jQuery(document).ready(function($){
 	$("#useraccount").val('${loginUser.userAccount}');
 	$("#username").val("${loginUser.userName}");
 	$("#usermobile").val("${loginUser.userMobile}");
-	$("#useridcard").val("${loginUser.userEmail}");
+	$("#useridcard").val("${loginUser.userIdcard}");
+	$("#useremail").val("${loginUser.userEmail}");
 	$("#useraddress").val("${loginUser.userAddress}");
 });
 function aaa(){
@@ -74,13 +75,13 @@ function aaa(){
              <div id="inbox" class="subcontent">
              <form id="modify_info">
              	<table>
-                	<tr><td>账户名：</td><td><input id="useraccount" name="account" readonly style="background-color:#eee"></td></tr>
-                	<tr><td>姓名：</td><td><input id="username" name="name"></td></tr>
-                	<tr><td>电话：</td><td><input id="usermobile" name="mobile"></td></tr>
-                	<tr><td>身份证：</td><td><input id="useridcard" name="idcard"></td></tr>
-                	<tr><td>邮箱：</td><td><input id="useremail" name="email"></td></tr>
-                	<tr><td>住址：</td><td><input id="useraddress" name="address"></td></tr>
-                	<tr><td><input type="hidden" name="id" id="userid"></td></tr>
+                	<tr><td>账户名：</td><td><input id="useraccount" name="userAccount" readonly style="background-color:#eee"></td></tr>
+                	<tr><td>姓名：</td><td><input id="username" name="userName"></td></tr>
+                	<tr><td>电话：</td><td><input id="usermobile" name="userMobile"></td></tr>
+                	<tr><td>身份证：</td><td><input id="useridcard" name="userIdcard"></td></tr>
+                	<tr><td>邮箱：</td><td><input id="useremail" name="userEmail"></td></tr>
+                	<tr><td>住址：</td><td><input id="useraddress" name="userAddress"></td></tr>
+                	<tr><td><input type="hidden" name="userId" id="userid"></td></tr>
                 	<tr><td><input value="提交" type="button" onclick="saveuser()" class="mybtn"></td><td><input type="button" value="重置" onclick="resetform()" class="mybtn"></td></tr>
                 </table>
                 </form>             

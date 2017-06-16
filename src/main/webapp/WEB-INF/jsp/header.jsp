@@ -20,7 +20,7 @@
         	</div>-->
             <div class="userinfo">
             	<img src="images/thumbs/avatar.png" alt="" />
-                <span>${loginUser.userRole==1?"管理员":"用户" }</span>
+                <span>${loginUser.userName }</span>
             </div><!--userinfo-->
             
             <div class="userinfodrop">
@@ -36,12 +36,12 @@
                     </div> -->
                 </div><!--avatar-->
                 <div class="userdata">
-                	<h4>${loginUser.userName }</h4>
+                	<h4>${loginUser.userAccount }</h4>
                     <span class="email">${loginUser.userEmail }</span>
                     <ul>
                     	<li><a href="user/editprofile">编辑资料</a></li>
-                        <li><a href="#">账号设置</a></li>
-                        <li><a href="#">帮助</a></li>
+                        <!-- <li><a href="#">账号设置</a></li>
+                        <li><a href="#">帮助</a></li> -->
                         <li><a href="user/logout">退出</a></li>
                     </ul>
                 </div><!--userdata-->
@@ -54,10 +54,10 @@
     	<ul class="headermenu">
         	<li class="current"><a href="dashboard.html"><span class="icon icon-flatscreen"></span>首页</a></li>
             <li><a href="admin/manageView"><span class="icon icon-pencil"></span>管理</a></li>
-            <li><a href="#"><span class="icon icon-message"></span>查看消息</a></li>
-            <li><a href="#"><span class="icon icon-chart"></span>统计报表</a></li>
+            <li><a href="admin/messageView"><span class="icon icon-message"></span>查看消息</a></li>
+            <li><a href="admin/reportView"><span class="icon icon-chart"></span>统计报表</a></li>
             <li><a href="admin/detailView"><span class="icon icon-clock"></span>实时数据</a></li>
-            <li><a href="#"><span class="icon icon-notebook"></span>查看历史</a></li>
+            <li><a href="admin/histroyView"><span class="icon icon-notebook"></span>查看历史</a></li>
         </ul>
         
        <div class="headerwidget">

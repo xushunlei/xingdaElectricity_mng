@@ -56,7 +56,7 @@ jQuery(document).ready(function($){
 	
 	
 	///// EACH CHECKBOX CLICK EVENT /////
-	jQuery('.mailinbox input:checkbox').each(function(){
+	/*jQuery('.mailinbox input:checkbox').each(function(){
 		jQuery(this).click(function(){
 			if(!jQuery(this).is(':checked')) {
 				
@@ -88,7 +88,7 @@ jQuery(document).ready(function($){
 			
 			}
 		});
-	});
+	});*/
 	
 	
 	///// SHOW DROP DOWN BUTTON /////
@@ -202,6 +202,7 @@ function drowTable(pageNo,pageSize,obj,keyword){
 				'<td>'+result[i].meterUser.userIdcard+'</td></tr>';
 				table.append(str);
 			}
+		
 		}
 	});
 }
@@ -238,14 +239,48 @@ function dr(pageNo,pageSize,seachWord,branchNum){
 				'"/></td><td class="star">'+(i+1)+'</td><td>'+result[i].meterNumber+'</td>'+
 				'<td>'+meterType+'</td><td>'+meterStatus+'<select style="float:right;">'+
 				'<option value="0">供电</option><option value="1">透支</option><option value="2">拉闸</option></select></td>'+
-				'<td>'+result[i].meterBalance+'<button style="float:right;" onclick="recharge('+result[i].meterId+')">充值</button></td>'+
-				'<td>'+result[i].meterMaxOverdraft+'<button style="float:right;" onclick="setOverdraft('+result[i].meterId+')">设置</button></td>'+
+				'<td><span>'+result[i].meterBalance+'</span><button style="float:right;" onclick="recharge('+result[i].meterId+',this)">充值</button></td>'+
+				'<td><span>'+result[i].meterMaxOverdraft+'</span><button style="float:right;" onclick="setOverdraft('+result[i].meterId+',this)">设置</button></td>'+
 				'<td>'+result[i].meterTotalConsumption+'</td>'+
 				'<td>'+result[i].meterUser.userAccount+'</td>'+
 				'<td>'+result[i].meterUser.userMobile+'</td>'+
 				'<td>'+result[i].meterUser.userIdcard+'</td></tr>';
 				table.append(str);
 			}
+		///// EACH CHECKBOX CLICK EVENT /////
+			jQuery('.mailinbox input:checkbox').each(function(){
+				jQuery(this).click(function(){
+					if(!jQuery(this).is(':checked')) {
+						
+						//this will hide trash icon only when there are no selected row
+						var hidetrash = true;
+						jQuery('.mailinbox tbody input:checkbox').each(function(){
+							if(jQuery(this).is(':checked'))
+								hidetrash = false;
+						});
+						
+						if(hidetrash)
+							jQuery('.dropdown_label, .reportspam, .msgtrash').hide();
+						
+						//check if this checkbox is part of the list(tbody) not in the header/footer (thead/tfoot)
+						//this will remove class "selected" in a row when checked
+						if(jQuery(this).parents('tbody').length > 0)
+							jQuery(this).parents('tr').removeClass('selected');
+							
+					} else {
+						
+						//we use css({display:block}) instead of show() because show() is 
+						//using display: inline to show element
+						jQuery('.dropdown_label, .reportspam, .msgtrash').css({display: 'block'});
+						
+						//check if this checkbox is part of the list(tbody) not in the header/footer (thead/tfoot)
+						//this will add class "selected" in a row when checked
+						if(jQuery(this).parents('tbody').length > 0)
+							jQuery(this).parents('tr').addClass('selected');
+					
+					}
+				});
+			});
 		}
 	});
 }
@@ -282,8 +317,35 @@ function findNewCount(branchNum, seachWord, meterType, meterStatus){
 			},
 		async:true,
 		dataType:"json",
+		error:function(XMLHttpRequest,textStatus,errorThow){
+			alert(XMLHttpRequest.status);//0
+			alert(XMLHttpRequest.readyState);//0
+			alert(textStatus);//error
+		},
 		success:function(redata){
+			console.log(redata);
 			jQuery("#b1").text(redata.total_count);
+			total_page=Math.ceil(redata.total_count/page_size);
 		}
 	});
+}
+function recharge(meterid,obj){
+	var money=prompt("输入充值金额");
+	if(/^\d+(.\d+)?$/.test(money)){
+		console.log("充值￥"+money+"元");
+		var basis=parseFloat(jQuery(obj).prev().text())+parseFloat(money);
+		jQuery(obj).prev().text(basis);
+	}else{
+		alert("输入金额错误！！");
+	}
+}
+function setOverdraft(meterid,obj){
+	var money=prompt("输入最大透支金额");
+	if(/^\d+(.\d+)?$/.test(money)){
+		console.log("可透支￥"+money+"元");
+		jQuery(obj).prev().text(money);
+	}else{
+		alert("输入金额错误！！");
+	}
+	console.log(meterid);
 }

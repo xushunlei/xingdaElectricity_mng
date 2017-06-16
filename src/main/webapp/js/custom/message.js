@@ -10,8 +10,10 @@
  */
 
 
-jQuery(document).ready(function(){	
-
+jQuery(document).ready(function($){	
+	///设置顶部导航样式///
+	$(".headermenu li").removeClass('current');
+	$(".headermenu li").eq(2).addClass('current');
 	///// CHECKBOX TRANSFORM /////
 	jQuery('input:checkbox').uniform();
 

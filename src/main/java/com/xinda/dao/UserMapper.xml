@@ -139,7 +139,7 @@
   		<if test="userMobile!=null">user_mobile=#{userMobile},</if>
   		<if test="userBalance!=null">user_balance=#{userBalance},</if>
   		<if test="userIdcard!=null">user_idcard=#{userIdcard},</if>
-  		<if test="euserEmail!=null">user_email=#{userEmail},</if>
+  		<if test="userEmail!=null">user_email=#{userEmail},</if>
   		<if test="userAddress!=null">user_address=#{userAddress},</if>
   		<if test="userStatus!=null">user_status=#{userStatus},</if>
   	</set>

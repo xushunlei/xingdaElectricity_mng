@@ -19,7 +19,7 @@
 <script type="text/javascript" src="js/plugins/jquery.alerts.js"></script>
 <script type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script>
 <script type="text/javascript" src="js/custom/general.js"></script>
-<script type="text/javascript" src="js/custom/messages.js"></script>
+<script type="text/javascript" src="js/custom/message.js"></script>
 </head>
 <body class="withvernav">
 <div class="bodywrapper">
@@ -38,7 +38,7 @@
     <div class="centercontent">
     
         <div class="pageheader">
-            <h1 class="pagetitle">Messages</h1>
+            <h1 class="pagetitle">消息页面</h1>
             <span class="pagedesc">The content below are loaded using ajax</span>
             
             <ul class="hornav">

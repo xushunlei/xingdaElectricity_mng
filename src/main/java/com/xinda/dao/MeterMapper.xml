@@ -120,7 +120,7 @@
 	<if test="condition!=null">
 	(u.user_name like concat("%",#{condition},"%")
 	or u.user_mobile = #{condition}
-	or u.user_idcard = #{condition})
+	or u.user_idcard = #{condition}) and
 	</if>
 	1=1
 	</where>
