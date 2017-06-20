@@ -150,4 +150,44 @@
 	1=1
 	</where>
   </select>
+  <select id="selectMeterById" resultMap="BaseResultMap"  parameterType="java.lang.Integer">
+  	select * from meter where id=#{meterId}
+  </select>
+  <update id="updateBalanceById">
+  	update meter set meter_balance=#{meterBalance}
+  	where id= #{meterId}
+  </update>
+  
+  <update id="updateMeterById" parameterType="com.xinda.entity.Meter">
+  	update meter 
+  	<set>
+  		<if test="meterStatus!=null">
+  		meter_status=#{meterStatus},
+  		</if>
+  		<if test="meterMaxOverdraft!=null">
+  		meter_max_overdraft=#{meterMaxOverdraft},
+  		</if>
+  		<if test="meterBalance!=null">
+  		meter_balance=#{meterBalance},
+  		</if>
+  		<if test="meterCurrentOverdraft!=null">
+  		meter_current_overdraft=#{meterCurrentOverdraft},
+  		</if>
+  		<if test="meterTotalValue!=null">
+  		meter_total_value=#{meterTotalValue},
+  		</if>
+  		<if test="meterPromptAmount!=null">
+  		meter_prompt_amount=#{meterPromptAmount},
+  		</if>
+  		<if test="meterStopAmount!=null">
+  		meter_stop_amount=#{meterStopAmount},
+  		</if>
+  		<if test="meterTotalConsumption!=null">
+  		meter_total_consumption=#{meterTotalConsumption}
+  		</if>
+  	</set>
+  	<where>
+  		id=#{meterId}
+  	</where>
+  </update>
 </mapper>

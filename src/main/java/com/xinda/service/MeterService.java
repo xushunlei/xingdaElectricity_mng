@@ -1,5 +1,6 @@
 package com.xinda.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.xinda.entity.Meter;
@@ -10,9 +11,9 @@ public interface MeterService
 	 * 电表充值
 	 * @param meterNum 电表编号
 	 * @param price 充值金额
-	 * @return 成功与否
+	 * @return 充值后总金额
 	 */
-	public boolean recharge(String meterNum, double price);
+	public BigDecimal tx_recharge(Integer meterId, double price);
 	/**
 	 * 电表开启供电
 	 * @param meterNum 电表编号
@@ -61,4 +62,12 @@ public interface MeterService
 	public List<Meter> findMeterListForCondition(Integer currentPage, Integer pageSize, String branchNum, String meterType, String meterStatus, String condition);
 	
 	public Integer findMeterCountForCondition(String branchNum, String meterType, String meterStatus, String condition);
+	/**
+	 * 设置最大透支金额
+	 * @param meterId 操作电表ID
+	 * @param overdraft 最大透支金额
+	 */
+	public boolean tx_markOverdraft(Integer meterId, Long overdraft);
+	/**更改电表状态*/
+	public boolean tx_modifyStatus(Integer meterId, Byte meterStatus);
 }

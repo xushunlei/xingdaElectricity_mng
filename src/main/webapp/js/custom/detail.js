@@ -114,6 +114,7 @@ jQuery(document).ready(function($){
 	});
 	
 });
+/**选择搜索类型*/
 function changetype(){
 	meter_type=jQuery("#metertype").val();
 	//coding...获取总条目数，用于分页
@@ -121,6 +122,7 @@ function changetype(){
 	console.log(meter_type);
 	dr(curr_page,page_size,"",branch_num);
 }
+/**选择搜索状态*/
 function changestatus(){
 	meter_status=jQuery("#meterstatus").val();
 	//coding...获取总条目数，用于分页
@@ -128,11 +130,13 @@ function changestatus(){
 	console.log(meter_status);
 	dr(curr_page,page_size,"",branch_num);
 }
+/**侦测条件输入框的键盘按键，13表示敲入回车键*/
 function keyDown(){
 	if(event.keyCode ==13){
 		seachfor();
 	}
 }
+/**下一页*/
 function next_page(){
 	if(curr_page<total_page){
 		jQuery("#up_page").removeClass("prev_disabled");
@@ -143,6 +147,7 @@ function next_page(){
 		}
 	}
 }
+/**上一页*/
 function prev_page(){
 	if(curr_page>1){
 		curr_page-=1;
@@ -151,61 +156,7 @@ function prev_page(){
 		if(curr_page<=1)jQuery("#up_page").addClass("prev_disabled");
 	}
 }
-function drowTable(pageNo,pageSize,obj,keyword){
-	var table=jQuery("#meter_info");
-	var seachword;
-	if(keyword=="undefiend"||jQuery.trim(keyword)==""){
-		branch_num="";
-	}else{
-		//seachword=keyword;
-		branch_num=keyword;
-		jQuery("#branches_tree li").removeClass("current");
-		jQuery(obj).parent().addClass("current");
-		jQuery("#branches_tree li a").removeClass("inbox");
-		jQuery("#branches_tree li a").addClass("drafts");
-		jQuery(obj).removeClass("drafts");
-		jQuery(obj).addClass("inbox");
-	}
-	seachword=jQuery("#keyword").val();
-	if(seachword=="请输入关键字"||jQuery.trim(seachword)==""){
-		seachword="";
-	}
-	jQuery.ajax({
-		url:"admin/meter_page",
-		type:"post",
-		data:{"pageNo":pageNo,"pageSize":pageSize,"seachfor":seachword},
-		dataType:"json",
-		async:true,
-		error:function(XMLHttpRequest,textStatus,errorThow){
-			alert(XMLHttpRequest.status);//0
-			alert(XMLHttpRequest.readyState);//0
-			alert(textStatus);//error
-		},
-		success:function(result){
-			jQuery("#meter_info tbody").html('');
-			for(var i=0;i<result.length;i++){
-				var meterType=result[i].meterType==0?"单相":"三相";
-				var meterStatus="";
-				if(result[i].meterStatus==0)meterStatus="供电";
-				else if(result[i].meterStatus==1)meterStatus="透支";
-				else if(result[i].meterStatus==2)meterStatus="拉闸";
-				var str='<tr><td class="aligncenter">'+
-				'<input type="checkbox" name="cuser" value="'+result[i].meterId+
-				'"/></td><td class="star">'+(i+1)+'</td><td>'+result[i].meterNumber+'</td>'+
-				'<td>'+meterType+'</td><td>'+meterStatus+'<select style="float:right;">'+
-				'<option value="0">供电</option><option value="1">透支</option><option value="2">拉闸</option></select></td>'+
-				'<td>'+result[i].meterBalance+'<button style="float:right;" onclick="recharge('+result[i].meterId+')">充值</button></td>'+
-				'<td>'+result[i].meterMaxOverdraft+'<button style="float:right;" onclick="setOverdraft('+result[i].meterId+')">设置</button></td>'+
-				'<td>'+result[i].meterTotalConsumption+'</td>'+
-				'<td>'+result[i].meterUser.userAccount+'</td>'+
-				'<td>'+result[i].meterUser.userMobile+'</td>'+
-				'<td>'+result[i].meterUser.userIdcard+'</td></tr>';
-				table.append(str);
-			}
-		
-		}
-	});
-}
+/**绘制电表列表*/
 function dr(pageNo,pageSize,seachWord,branchNum){
 	var table=jQuery("#meter_info");
 	jQuery.ajax({
@@ -230,22 +181,19 @@ function dr(pageNo,pageSize,seachWord,branchNum){
 			jQuery("#meter_info tbody").html('');
 			for(var i=0;i<result.length;i++){
 				var meterType=result[i].meterType==0?"单相":"三相";
-				var meterStatus="";
-				if(result[i].meterStatus==0)meterStatus="供电";
-				else if(result[i].meterStatus==1)meterStatus="透支";
-				else if(result[i].meterStatus==2)meterStatus="拉闸";
 				var str='<tr><td class="aligncenter">'+
-				'<input type="checkbox" name="cuser" value="'+result[i].meterId+
+				'<input type="checkbox" name="mIds" value="'+result[i].meterId+
 				'"/></td><td class="star">'+(i+1)+'</td><td>'+result[i].meterNumber+'</td>'+
-				'<td>'+meterType+'</td><td>'+meterStatus+'<select style="float:right;">'+
-				'<option value="0">供电</option><option value="1">透支</option><option value="2">拉闸</option></select></td>'+
+				'<td>'+meterType+'</td><td><select style="float:right;" class="color_'+result[i].meterStatus+'" onchange="modifyStatus('+result[i].meterId+',this)">'+
+				'<option value="0" style="color:green">供电</option><option value="1" style="color:orange">透支</option><option value="2" style="color:red">拉闸</option></select></td>'+
 				'<td><span>'+result[i].meterBalance+'</span><button style="float:right;" onclick="recharge('+result[i].meterId+',this)">充值</button></td>'+
 				'<td><span>'+result[i].meterMaxOverdraft+'</span><button style="float:right;" onclick="setOverdraft('+result[i].meterId+',this)">设置</button></td>'+
 				'<td>'+result[i].meterTotalConsumption+'</td>'+
-				'<td>'+result[i].meterUser.userAccount+'</td>'+
+				'<td>'+result[i].meterUser.userName+'</td>'+
 				'<td>'+result[i].meterUser.userMobile+'</td>'+
 				'<td>'+result[i].meterUser.userIdcard+'</td></tr>';
 				table.append(str);
+				jQuery("#meter_info tr:eq("+(i+1)+") select").val(result[i].meterStatus);
 			}
 		///// EACH CHECKBOX CLICK EVENT /////
 			jQuery('.mailinbox input:checkbox').each(function(){
@@ -284,6 +232,7 @@ function dr(pageNo,pageSize,seachWord,branchNum){
 		}
 	});
 }
+/**导航栏选择网点后，搜索展示该网点下的电表*/
 function select_branch(obj,b_no){
 	branch_num=b_no;
 	jQuery("#branches_tree li").removeClass("current");
@@ -296,6 +245,7 @@ function select_branch(obj,b_no){
 	findNewCount(branch_num,seach_word,meter_type,meter_status);
 	dr(curr_page,page_size,"",branch_num);
 }
+/**按条件搜索*/
 function seachfor(){
 	seach_word=jQuery("#keyword").val();
 	if(seach_word=="请输入关键字"||jQuery.trim(seach_word)==""){
@@ -305,6 +255,7 @@ function seachfor(){
 	findNewCount(branch_num,seach_word,meter_type,meter_status);
 	dr(curr_page,page_size,seach_word,branch_num);
 }
+/**每次搜索后都要重新从后台读取满足条件的记录数，并转换成总页数用于分页*/
 function findNewCount(branchNum, seachWord, meterType, meterStatus){
 	jQuery.ajax({
 		url:"admin/findCount",
@@ -318,9 +269,9 @@ function findNewCount(branchNum, seachWord, meterType, meterStatus){
 		async:true,
 		dataType:"json",
 		error:function(XMLHttpRequest,textStatus,errorThow){
-			alert(XMLHttpRequest.status);//0
-			alert(XMLHttpRequest.readyState);//0
-			alert(textStatus);//error
+			alert(XMLHttpRequest.status);
+			alert(XMLHttpRequest.readyState);
+			alert(textStatus);
 		},
 		success:function(redata){
 			console.log(redata);
@@ -329,23 +280,88 @@ function findNewCount(branchNum, seachWord, meterType, meterStatus){
 		}
 	});
 }
+/**电表充值*/
 function recharge(meterid,obj){
 	var money=prompt("输入充值金额");
 	if(/^\d+(.\d+)?$/.test(money)){
 		console.log("充值￥"+money+"元");
-		var basis=parseFloat(jQuery(obj).prev().text())+parseFloat(money);
-		jQuery(obj).prev().text(basis);
+		jQuery.ajax({
+			url:"admin/payment",
+			data:{"meter_id":meterid,"price":money},
+			type:"post",
+			dataType:"json",
+			success:function(result){
+				if(!result.flag){
+					alert("充值失败！");
+				}else{
+					jQuery(obj).prev().text(result.funds);
+				}
+			},
+			error:function(XMLHttpRequest,textStatus,errorThow){
+				alert("充值失败！");
+			}
+		});
+//		var basis=parseFloat(jQuery(obj).prev().text())+parseFloat(money);
+//		jQuery(obj).prev().text(basis);
 	}else{
-		alert("输入金额错误！！");
+		alert("输入金额格式错误！！");
 	}
 }
+/**设置最大透支金额*/
 function setOverdraft(meterid,obj){
 	var money=prompt("输入最大透支金额");
-	if(/^\d+(.\d+)?$/.test(money)){
+	if(/^\d+$/.test(money)){
 		console.log("可透支￥"+money+"元");
-		jQuery(obj).prev().text(money);
+		jQuery.ajax({
+			type:"post",
+			url:"admin/markOverdraft",
+			data:{"meterId":meterid,"maxValue":money},
+			dataType:"json",
+			error:function(){
+				alert("设置失败");
+			},
+			success:function(result){
+				if(result.flag){
+					jQuery(obj).prev().text(money);
+				}else{
+					alert("shibai");
+				}
+			}
+		});
 	}else{
-		alert("输入金额错误！！");
+		alert("输入金额格式错误，只能是正整数格式！！");
 	}
-	console.log(meterid);
+}
+/**更改指定ID电表的状态*/
+function modifyStatus(meterId,obj){
+	var t=jQuery(obj).val();
+	jQuery.ajax({
+		url:"admin/modifyStatus",
+		type:"post",
+		data:{"meterId":meterId,"meterStatus":t},
+		dataType:"json",
+		error:function(){
+			alert("大错");
+		},
+		success:function(result){
+			if(result.flag){
+				jQuery(obj).removeClass().addClass("color_"+t);
+			}else{
+				alert("状态更改失败");
+			}
+		}
+	});
+}
+function all_shutdown(){
+	var ids=document.getElementsByName("mIds");
+	var mIds="";
+	for(var i=0;i<ids.length;i++){
+		if(ids[i].checked){
+			mIds=mIds+ids[i].value+",";
+		}
+	}
+	mIds=mIds.substring(0, mIds.length-1);
+	console.log(mIds);
+	//局部刷新比较麻烦，采用页面刷新
+	//coding...
 }

@@ -1,10 +1,12 @@
 package com.xinda.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.xinda.dao.MeterMapper;
 import com.xinda.entity.Branch;
@@ -16,10 +18,18 @@ public class MeterServiceImpl implements MeterService
 	@Autowired
 	private MeterMapper meterDao;
 	@Override
-	public boolean recharge(String meterNum, double price)
+	@Transactional
+	public BigDecimal tx_recharge(Integer meterId, double price)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		Meter meter=meterDao.selectMeterById(meterId);
+		System.out.println(meter);
+		BigDecimal m=new BigDecimal(price);
+		BigDecimal r=m.add(meter.getMeterBalance());
+		int res=meterDao.updateBalanceById(r, meterId);
+		if(res!=1){
+			throw new RuntimeException("The tx_recharge() is abnormal, and method has been rolled back.");
+		}
+		return r;
 	}
 
 	@Override
@@ -136,6 +146,34 @@ public class MeterServiceImpl implements MeterService
 			int i=meterDao.selectCountForCondition(branchNum, mType, mStatus, condition);
 			System.out.println("b:"+branchNum+",t:"+mType+",s:"+mStatus+",c:"+condition+",总数："+i);
 			return i;
+		}
+	}
+	@Override
+	@Transactional
+	public boolean tx_markOverdraft(Integer meterId, Long overdraft) {
+		Meter meter = new Meter();
+		meter.setMeterMaxOverdraft(overdraft);
+		meter.setMeterId(meterId);
+		int t=meterDao.updateMeterById(meter);
+		if(t!=1){
+			throw new RuntimeException("rollback tx_markOverdraft()");
+//			return false;
+		}else{
+			
+			return true;
+		}
+	}
+	@Override
+	@Transactional
+	public boolean tx_modifyStatus(Integer meterId, Byte meterStatus) {
+		Meter meter=new Meter();
+		meter.setMeterId(meterId);
+		meter.setMeterStatus(meterStatus);
+		int t=meterDao.updateMeterById(meter);
+		if(t!=1){
+			throw new RuntimeException("rollback tx_modifyStatus()");
+		}else{
+			return true;
 		}
 	}
 }

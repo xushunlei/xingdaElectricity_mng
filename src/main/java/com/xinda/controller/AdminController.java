@@ -1,10 +1,12 @@
 package com.xinda.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -25,6 +27,7 @@ import com.xinda.entity.User;
 import com.xinda.service.BranchService;
 import com.xinda.service.MeterService;
 import com.xinda.service.UserService;
+import com.xinda.util.StringDepot;
 
 @Controller
 @RequestMapping("admin/")
@@ -68,16 +71,18 @@ public class AdminController
 			return "index";
 		}
 	}
-	
+	/**进入报表页面*/
 	@RequestMapping("reportView")
 	public String reportPage(HttpServletRequest request){
 		
 		return "reportPage";
 	}
+	/**进入历史页面*/
 	@RequestMapping("histroyView")
 	public String histroyPage(HttpServletRequest request){
 		return "histroyPage";
 	}
+	/**进入消息页面*/
 	@RequestMapping("messageView")
 	public String messagePage(HttpServletRequest request){
 		return "messagePage";
@@ -162,7 +167,7 @@ public class AdminController
 			e.printStackTrace();
 		}
 	}
-	/**充值密码*/
+	/**重置密码*/
 	@ResponseBody
 	@RequestMapping(value="modifyPwd",method=RequestMethod.POST)
 	public Map<String, Boolean> modifyPwd(HttpServletRequest request){
@@ -202,13 +207,68 @@ public class AdminController
 		return mav;
 	}
 	/**电表充值*/
-	@RequestMapping("payment")
-	public String payment(HttpServletRequest request, HttpServletResponse response){
-		String meterNum=request.getParameter("meter_num");
-		Double price=Double.parseDouble(request.getParameter("price"));
-		if(meterservice.recharge(meterNum, price)){
-			
+	@ResponseBody
+	@RequestMapping(value="payment", method=RequestMethod.POST)
+	public Map<String, Object> payment(HttpServletRequest request, HttpServletResponse response){
+		Map<String,Object> result=new HashMap<String, Object>();
+		String meterIdString=request.getParameter("meter_id");
+		Integer meterId=null;
+		if(meterIdString!=null&&meterIdString.trim()!=""){
+			meterId=Integer.parseInt(meterIdString);
 		}
-		return "";
+		String priceString=request.getParameter("price");
+		Double price=null;
+		if(priceString!=null&&priceString.trim()!=""&&Pattern.matches(StringDepot.DOUBLE_REG_EX, priceString.trim())){
+			price=Double.parseDouble(request.getParameter("price"));
+		}
+		if(meterId==null||price==null){
+			result.put("flag", false);
+		}else{
+			result.put("funds", meterservice.tx_recharge(meterId, price));
+			result.put("flag", true);
+		}
+		return result;
+	}
+	@ResponseBody
+	@RequestMapping(value="markOverdraft", method=RequestMethod.POST)
+	public Map<String,Object> markOverdraft(HttpServletRequest request){
+		Map<String,Object> result=new HashMap<String, Object>();
+		String meterIdString=request.getParameter("meterId");
+		String valueString=request.getParameter("maxValue");
+		Long maxValue=null;
+		Integer meterId=null;
+		if(meterIdString!=null&&meterIdString.trim()!=""){
+			meterId=Integer.parseInt(meterIdString);
+		}
+		if(valueString!=null&&valueString.trim()!=""&&Pattern.matches(StringDepot.INTEGER_REG_EX, valueString.trim())){
+			maxValue=new Long(valueString);
+		}
+		if(meterId==null||maxValue==null){
+			result.put("flag", false);
+		}else{
+			result.put("flag", meterservice.tx_markOverdraft(meterId, maxValue));
+		}
+		return result;
+	}
+	@ResponseBody
+	@RequestMapping(value="modifyStatus",method=RequestMethod.POST)
+	public Map<String,Boolean> modifyStatus(HttpServletRequest request){
+		Map<String, Boolean> result=new HashMap<String, Boolean>();
+		String meterIdString=request.getParameter("meterId");
+		String meterStatusString=request.getParameter("meterStatus");
+		Integer meterId=null;
+		Byte meterStatus=null;
+		if(meterIdString!=null&&meterIdString.trim()!=""&&Pattern.matches(StringDepot.INTEGER_REG_EX, meterIdString)){
+			meterId=Integer.parseInt(meterIdString);
+		}
+		if(meterStatusString!=null&&meterStatusString.trim()!=""&&Pattern.matches(StringDepot.INTEGER_REG_EX, meterStatusString)){
+			meterStatus=Byte.parseByte(meterStatusString);
+		}
+		if(meterId==null||meterStatus==null){
+			result.put("flag", false);
+		}else{
+			result.put("flag", meterservice.tx_modifyStatus(meterId, meterStatus));
+		}
+		return result;
 	}
 }

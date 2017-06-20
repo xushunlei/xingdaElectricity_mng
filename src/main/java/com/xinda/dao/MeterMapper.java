@@ -1,5 +1,6 @@
 package com.xinda.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -33,10 +34,33 @@ public interface MeterMapper {
 			@Param("condition")String condition, 
 			@Param("start")Integer start, 
 			@Param("size")Integer pageSize);
-	
+	/**搜索满足条件的电表数*/
 	Integer selectCountForCondition(
 			@Param("branchNum")String branchNum,
 			@Param("meterType")Byte meterType, 
 			@Param("meterStatus")Byte meterStatus, 
 			@Param("condition")String condition);
+	
+	Meter selectMeterById(Integer meterId);
+	/**
+	 * 给指定ID电表充值
+	 * @param balance 充值金额
+	 * @param meterId 电表ID
+	 * @return 修改记录数
+	 */
+	Integer updateBalanceById(@Param("meterBalance")BigDecimal balance, @Param("meterId")Integer meterId);
+	/**
+	 * 根据ID修改电表记录
+	 * @param meter ID必须合法，其他可修改属性：
+	 * 	meterStatus 电表状态
+	 * 	meterBalance 余额
+	 * 	meterMaxOverdraft 最大透支金额
+	 * 	meterCurrentOverdraft 当前透支金额
+	 * 	meterTotalValue 总用电量
+	 * 	meterTotalConsumption 总消费金额
+	 * 	meterPromptAmount 提示报警金额
+	 * 	meterStopAmount 拉闸报警金额
+	 * @return
+	 */
+	int updateMeterById(Meter meter);
 }

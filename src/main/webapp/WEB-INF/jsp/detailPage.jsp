@@ -27,6 +27,15 @@
     border-color: #445775;
     margin: 5px;
 }
+.color_0{
+	color:green;
+}
+.color_1{
+	color:orange;
+}
+.color_2{
+	color:red;
+}
 </style>
 </head>
 <body class="withvernav">
@@ -67,9 +76,9 @@
                             <span class="arrow"></span>
                             </a>
                             <ul>
-                                <li><a id="do_enable" href="javascript:void(0);">启用</a></li>
-                                <li><a id="do_disable" href="javascript:void(0);">停用</a></li>
-                                <li><a href="javascript:void(0);">注销</a></li>
+                                <li><a id="do_enable" href="javascript:void(0);">供电</a></li>
+                                <li><a id="do_disable" href="javascript:void(0);">透支</a></li>
+                                <li><a href="javascript:void(0);" onclick="all_shutdown()">拉闸</a></li>
                             </ul>
                         </li>
                         <li class="marginleft5"><a class="msgtrash" title="Trash"></a></li>
