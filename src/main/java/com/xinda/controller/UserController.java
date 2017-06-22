@@ -50,7 +50,6 @@ public class UserController
 			user=userService.login(user);
 			/*if(user.getRole()==1){//管理员
 				List<User> userList=userService.findUsers();
-				System.out.println(userList);
 				session.setAttribute("userList", userList);
 				//session.setAttribute("branchList", branchService.getBranchs());
 			}else{

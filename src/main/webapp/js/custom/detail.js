@@ -184,6 +184,7 @@ function dr(pageNo,pageSize,seachWord,branchNum){
 				var str='<tr><td class="aligncenter">'+
 				'<input type="checkbox" name="mIds" value="'+result[i].meterId+
 				'"/></td><td class="star">'+(i+1)+'</td><td>'+result[i].meterNumber+'</td>'+
+				'<td>'+result[i].meterBranch.branchName+'</td>'+
 				'<td>'+meterType+'</td><td><select style="float:right;" class="color_'+result[i].meterStatus+'" onchange="modifyStatus('+result[i].meterId+',this)">'+
 				'<option value="0" style="color:green">供电</option><option value="1" style="color:orange">透支</option><option value="2" style="color:red">拉闸</option></select></td>'+
 				'<td><span>'+result[i].meterBalance+'</span><button style="float:right;" onclick="recharge('+result[i].meterId+',this)">充值</button></td>'+
@@ -191,7 +192,8 @@ function dr(pageNo,pageSize,seachWord,branchNum){
 				'<td>'+result[i].meterTotalConsumption+'</td>'+
 				'<td>'+result[i].meterUser.userName+'</td>'+
 				'<td>'+result[i].meterUser.userMobile+'</td>'+
-				'<td>'+result[i].meterUser.userIdcard+'</td></tr>';
+				'<td>'+result[i].meterUser.userIdcard+'</td>'+
+				'<td>'+result[i].meterUser.userAddress+'</td></tr>';
 				table.append(str);
 				jQuery("#meter_info tr:eq("+(i+1)+") select").val(result[i].meterStatus);
 			}
@@ -352,7 +354,8 @@ function modifyStatus(meterId,obj){
 		}
 	});
 }
-function all_shutdown(){
+/**批量操作*/
+function centralized(s){
 	var ids=document.getElementsByName("mIds");
 	var mIds="";
 	for(var i=0;i<ids.length;i++){
@@ -363,5 +366,26 @@ function all_shutdown(){
 	mIds=mIds.substring(0, mIds.length-1);
 	console.log(mIds);
 	//局部刷新比较麻烦，采用页面刷新
-	//coding...
+	modify_all(mIds,s);
+}
+/**统一修改状态，实现全页面刷新*/
+function modify_all(mIds,status){
+	jQuery.ajax({
+		url:"admin/modifyStatus",
+		type:"post",
+		data:{"meterId":mIds,"meterStatus":status},
+		dataType:"json",
+		error:function(e){
+			console.log(e);
+		},
+		success:function(result){
+			if(result.flag){
+				alert("修改成功");
+				window.location="admin/detailView";
+			}else{
+				alert("修改失败");
+			}
+		}
+	});
+	
 }

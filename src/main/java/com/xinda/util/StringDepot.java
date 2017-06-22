@@ -5,4 +5,6 @@ public class StringDepot {
 	public static final String DOUBLE_REG_EX="^\\d+(.\\d+)?$";
 	//整形正则
 	public static final String INTEGER_REG_EX="^\\d+$";
+	
+	public static final String INTEGER_ARRAY_REG_EX="^\\d+(,\\d+)*";
 }

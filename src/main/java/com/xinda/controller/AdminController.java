@@ -119,7 +119,6 @@ public class AdminController
 		}else{
 			res= meterservice.findAllMeters(currentPage, pageSize);
 		}*/
-		System.out.println(res);
 		return res;
 	}
 	/**根据条件查询电表数量*/
@@ -229,6 +228,7 @@ public class AdminController
 		}
 		return result;
 	}
+	/**修改最大透支金额*/
 	@ResponseBody
 	@RequestMapping(value="markOverdraft", method=RequestMethod.POST)
 	public Map<String,Object> markOverdraft(HttpServletRequest request){
@@ -250,25 +250,40 @@ public class AdminController
 		}
 		return result;
 	}
+	/**修改拉合闸状态*/
 	@ResponseBody
 	@RequestMapping(value="modifyStatus",method=RequestMethod.POST)
 	public Map<String,Boolean> modifyStatus(HttpServletRequest request){
 		Map<String, Boolean> result=new HashMap<String, Boolean>();
 		String meterIdString=request.getParameter("meterId");
 		String meterStatusString=request.getParameter("meterStatus");
-		Integer meterId=null;
 		Byte meterStatus=null;
-		if(meterIdString!=null&&meterIdString.trim()!=""&&Pattern.matches(StringDepot.INTEGER_REG_EX, meterIdString)){
-			meterId=Integer.parseInt(meterIdString);
-		}
 		if(meterStatusString!=null&&meterStatusString.trim()!=""&&Pattern.matches(StringDepot.INTEGER_REG_EX, meterStatusString)){
 			meterStatus=Byte.parseByte(meterStatusString);
 		}
-		if(meterId==null||meterStatus==null){
+		if(meterIdString==null||meterStatus==null||!Pattern.matches(StringDepot.INTEGER_ARRAY_REG_EX, meterIdString)){
 			result.put("flag", false);
 		}else{
-			result.put("flag", meterservice.tx_modifyStatus(meterId, meterStatus));
+			result.put("flag", meterservice.tx_modifyStatus(meterIdString, meterStatus));
 		}
+		return result;
+	}
+	@ResponseBody
+	@RequestMapping(value="modifyPrice",method=RequestMethod.POST)
+	public Map<String,Object> modifyPrice(HttpServletRequest request){
+		Map<String,Object> result=new HashMap<String, Object>();
+		User user=(User)request.getSession().getAttribute("loginUser");
+		String price=request.getParameter("new_price");
+		String up_date=request.getParameter("up_date");
+		String sendable=request.getParameter("sendable");
+		String send_date=request.getParameter("send_date");
+		String send_content=request.getParameter("send_content");
+		if(sendable!=null&&"1".equals(sendable)){
+			System.out.println(send_content+user.getUserAccount());
+		}
+		result.put("flag", false);
+		result.put("ud", up_date);
+		result.put("p", price);
 		return result;
 	}
 }

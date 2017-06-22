@@ -24,7 +24,6 @@ public class BranchServiceImpl implements BranchService
 	{
 		// TODO Auto-generated method stub
 		List<Branch> list=branchMapper.selectBranchList();
-		System.out.println("bs:"+list);
 		return list;
 	}
 

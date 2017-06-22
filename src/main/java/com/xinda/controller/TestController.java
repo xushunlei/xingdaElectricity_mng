@@ -14,7 +14,6 @@ public class TestController
 	private MeterService meterService;
 	@RequestMapping
 	public String Hello(){
-		//System.out.println(meterService.findAllMeters());
 		return "index";
 	}
 }

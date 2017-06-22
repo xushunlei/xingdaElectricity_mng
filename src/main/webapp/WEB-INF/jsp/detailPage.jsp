@@ -76,9 +76,9 @@
                             <span class="arrow"></span>
                             </a>
                             <ul>
-                                <li><a id="do_enable" href="javascript:void(0);">供电</a></li>
-                                <li><a id="do_disable" href="javascript:void(0);">透支</a></li>
-                                <li><a href="javascript:void(0);" onclick="all_shutdown()">拉闸</a></li>
+                                <li><a href="javascript:void(0);" onclick="centralized(0)">供电</a></li>
+                                <li><a href="javascript:void(0);" onclick="centralized(1)">透支</a></li>
+                                <li><a href="javascript:void(0);" onclick="centralized(2)">拉闸</a></li>
                             </ul>
                         </li>
                         <li class="marginleft5"><a class="msgtrash" title="Trash"></a></li>
@@ -111,21 +111,24 @@
                     <colgroup>
                         <col class="con1" width="3%"/>
                         <col class="con0" width="3%" />
-                        <col class="con1" width="10%"/>
+                        <col class="con1" width="6%"/>
+                        <col class="con1" width="6%"/>
                         <col class="con0" width="5%"/>
-                        <col class="con1" width="11%"/>
-                        <col class="con0" width="15%"/>
+                        <col class="con1" width="5%"/>
+                        <col class="con0" width="10%"/>
                         <col class="con1" width="10%"/>
-                        <col class="con0" width="15%"/>
+                        <col class="con0" width="8%"/>
                         <col class="con1" width="8%"/>
                         <col class="con0" width="10%"/>
                         <col class="con1" width="10%"/>
+                        <col class="con0" width="16%"/>
                     </colgroup>
                     <thead>
                     <tr>
                         <th width="20" class="head1 aligncenter"><input type="checkbox" name="checkall" class="checkall" /></th>
                         <th class="head0">&nbsp;</th>
                         <th class="head1">编号</th>
+                        <th class="head1">网点</th>
                         <th class="head0">类型</th>
                         <th class="head1">状态</th>
                         <th class="head0">余额</th>
@@ -134,6 +137,7 @@
                         <th>户主</th>
                         <th>联系电话</th>
                         <th>身份证</th>
+                        <th>地址</th>
                     </tr>
                     </thead>
                     <!-- <tfoot>

@@ -14,16 +14,19 @@
 <!-- 修改浏览器图标 -->
 <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
+<link rel="stylesheet" href="My97DatePicker/skin/WdatePicker.css" type="text/css" />
 <script type="text/javascript" src="js/plugins/jquery-1.7.min.js"></script>
 <script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="js/plugins/jquery.cookie.js"></script>
 <script type="text/javascript" src="js/plugins/jquery.alerts.js"></script>
 <script type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script>
 <script type="text/javascript" src="js/custom/general.js"></script>
 <script type="text/javascript" src="js/custom/manage.js"></script>
 <style type="text/css">
-.my_cleancolor{
-background:#fff;
+
+.sendcells{
+	display:none;
 }
 </style>
 </head>
@@ -54,107 +57,21 @@ background:#fff;
         </div><!--pageheader-->
         
         <div id="contentwrapper" class="contentwrapper">
-             
              <div id="inbox" class="subcontent">
-             
-                <div class="msghead">
-                    <ul class="msghead_menu">
-                        <li><a class="reportspam" onclick="resetPwd();">重置密码</a></li>
-                        <li class="marginleft5 dropdown" id="actions">
-                            <a class="dropdown_label" href="#actions">
-                           	 批量操作
-                            <span class="arrow"></span>
-                            </a>
-                            <ul>
-                                <li><a id="do_enable" href="javascript:void(0);">启用</a></li>
-                                <li><a id="do_disable" href="javascript:void(0);">停用</a></li>
-                                <li><a href="javascript:void(0);">注销</a></li>
-                            </ul>
-                        </li>
-                        <li class="marginleft5"><a class="msgtrash" title="Trash"></a></li>
-                    	<li class="right"><a class="next" href="javascript:next_page()" id="down_page"></a></li>
-                        <li class="right"><a class="prev prev_disabled" id="up_page" href="javascript:prev_page()"></a></li>
-                        <li class="right"><span class="pageinfo" id="page_info">1-10 of <b id="b1">${all_meter_count}</b></span></li>
-                        <li class="right">
-			            <div class="search">
-			                	<input type="text" name="keyword" id="keyword" value="请输入关键字" onkeydown="keyDown();"/>
-			                    <!-- <button class="submitbutton" onclick="drowTable(1,10)"></button> -->
-			                    <input type="button" onclick="drowTable(1,10);" class="submitbutton" id="seach_btn">
-			            </div><!--search-->
-			            </li>
-                    </ul>
-                    <span class="clearall"></span>
-                </div><!--msghead-->
-                
-                <table cellpadding="0" cellspacing="0" border="0" class="stdtable mailinbox" id="meter_info">
-                    <colgroup>
-                        <col class="con1" width="3%"/>
-                        <col class="con0" width="3%" />
-                        <col class="con1" width="10%"/>
-                        <col class="con0" width="5%"/>
-                        <col class="con1" width="11%"/>
-                        <col class="con0" width="15%"/>
-                        <col class="con1" width="10%"/>
-                        <col class="con0" width="15%"/>
-                        <col class="con1" width="8%"/>
-                        <col class="con0" width="10%"/>
-                        <col class="con1" width="10%"/>
-                    </colgroup>
-                    <thead>
-                    <tr>
-                        <th width="20" class="head1 aligncenter"><input type="checkbox" name="checkall" class="checkall" /></th>
-                        <th class="head0">&nbsp;</th>
-                        <th class="head1">编号</th>
-                        <th class="head0">类型</th>
-                        <th class="head1">状态</th>
-                        <th class="head0">余额</th>
-                        <th>允许透支金额</th>
-                        <th>消费总额</th>
-                        <th>户主</th>
-                        <th>联系电话</th>
-                        <th>身份证</th>
-                    </tr>
-                    </thead>
-                    <!-- <tfoot>
-                        <tr>
-                            <th class="head1 aligncenter"><input type="checkbox" name="checkall" class="checkall2" /></th>
-                            <th class="head0"></th>
-                            <th class="head1">Sender</th>
-                            <th class="head0">Subject</th>
-                            <th class="head1 attachement">&nbsp;</th>
-                            <th class="head0">Date</th>
-                        </tr>
-                    </tfoot> -->
-                    <tbody>
-                    <%-- <c:forEach items="${meterList}" var="meter" varStatus="vs">
-                    	<tr>
-                    		<td class="aligncenter"><input type="checkbox" name="cuser" value="${meter.meterId}"/></td>
-                    		<td class="star">${vs.count}</td>
-                    		<td>${meter.meterNumber}</td>
-                    		<td>${meter.meterType==0?"单相":"三相"}</td>
-                    		<td>
-                    			<c:choose>
-                    				<c:when test="${meter.meterStatus==0}">供电</c:when>
-                    				<c:when test="${meter.meterStatus==1}">透支</c:when>
-                    				<c:when test="${meter.meterStatus==2}">拉闸</c:when>
-                    			</c:choose>
-                    			<select style="float:right;">
-                    				<option >--操作--</option>
-                    				<option value="0">供电</option>
-                    				<option value="1">透支</option>
-                    				<option value="2">拉闸</option>
-                    			</select>
-                    		</td>
-                    		<td>${meter.meterBalance}<button style="float:right;">充值</button></td>
-                    		<td>${meter.meterMaxOverdraft}<button style="float:right;">设置</button></td>
-                    		<td>${meter.meterTotalConsumption}</td>
-                    		<td>${meter.meterUser.userAccount}</td>
-                    		<td>${meter.meterUser.userMobile}</td>
-                    		<td>${meter.meterUser.userIdcard}</td>
-                    	</tr>
-                    </c:forEach> --%>
-                    </tbody>
-                </table>             
+             	<div>
+             	<form id="price_form">
+             		<table>
+             			<tr><td>当前电价：</td><td><span id="show_price">5.58</span>元/度</td><td>*自<span id="show_start_date" >2017-03-01</span>起计费</td></tr>
+             			<tr><td>最近修改：</td><td><span id="recent_change_date">2015-12-31</span>起，电价改为：<span id="recent_change_price">5.36</span>元/度</td></tr>
+             			<tr><td>修改电价：</td><td><input style="width:32px;padding:0" name="new_price">元/度</td></tr>
+             			<tr><td>启用时间：</td><td><input id="usedate" class="Wdate" name="up_date"></td></tr>
+             			<tr><td>短信通知</td><td><label><input type="radio" name="sendable" value="1">是</label><label><input type="radio" name="sendable" value="0" checked="checked">否</label></td></tr>
+             			<tr class="sendcells"><td>发送时间：</td><td><input id="senddate" class="Wdate" name="send_date"></td></tr>
+             			<tr class="sendcells"><td>短信内容：</td><td colspan="2"><textarea rows="6" cols="" name="send_content" style="resize:none"></textarea></td></tr>
+             			<tr><td></td><td><input type="button" value="确认" onclick="modifyPrice()"></td></tr>
+             		</table>
+             	</form>
+             	</div>
              </div>
              <div id="compose" class="subcontent" style="display: none">&nbsp;
              	

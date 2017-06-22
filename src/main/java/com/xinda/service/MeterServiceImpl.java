@@ -22,7 +22,6 @@ public class MeterServiceImpl implements MeterService
 	public BigDecimal tx_recharge(Integer meterId, double price)
 	{
 		Meter meter=meterDao.selectMeterById(meterId);
-		System.out.println(meter);
 		BigDecimal m=new BigDecimal(price);
 		BigDecimal r=m.add(meter.getMeterBalance());
 		int res=meterDao.updateBalanceById(r, meterId);
@@ -53,7 +52,6 @@ public class MeterServiceImpl implements MeterService
 		Meter example= new Meter();
 		try{
 			Byte condi=Byte.valueOf(condition);
-			System.out.println("byte condition="+condi);
 			example.setMeterStatus(condi);
 			example.setMeterType(condi);
 			meterList=meterDao.selectMetersLikeExample1(example, (currentPage-1)*pageSize, pageSize);
@@ -64,10 +62,8 @@ public class MeterServiceImpl implements MeterService
 			exUser.setUserAccount(condition);
 			example.setMeterBranch(exBranch);
 			example.setMeterUser(exUser);*/
-			System.out.println("string condi="+condition);
 			meterList=meterDao.selectMetersLikeExample2(condition, (currentPage-1)*pageSize, pageSize);
 		}finally{
-			//System.out.println(meterList);
 			return meterList;
 		}
 	}
@@ -90,7 +86,6 @@ public class MeterServiceImpl implements MeterService
 	public List<Meter> findAllMeters(Integer currentPage, Integer pageSize)
 	{
 		List<Meter> rList=meterDao.selectAllMeters((currentPage-1)*pageSize,pageSize);
-		//System.out.println("list===>"+rList);
 		return rList;
 	}
 	@Override
@@ -144,7 +139,6 @@ public class MeterServiceImpl implements MeterService
 			System.out.println("查找数量时，电表状态错误！"+mStatus);
 		}finally{
 			int i=meterDao.selectCountForCondition(branchNum, mType, mStatus, condition);
-			System.out.println("b:"+branchNum+",t:"+mType+",s:"+mStatus+",c:"+condition+",总数："+i);
 			return i;
 		}
 	}
@@ -165,15 +159,16 @@ public class MeterServiceImpl implements MeterService
 	}
 	@Override
 	@Transactional
-	public boolean tx_modifyStatus(Integer meterId, Byte meterStatus) {
-		Meter meter=new Meter();
-		meter.setMeterId(meterId);
-		meter.setMeterStatus(meterStatus);
-		int t=meterDao.updateMeterById(meter);
-		if(t!=1){
-			throw new RuntimeException("rollback tx_modifyStatus()");
-		}else{
-			return true;
+	public boolean tx_modifyStatus(String meterIds, Byte meterStatus) {
+		for(String meterId:meterIds.split(",")){
+			Meter meter=new Meter();
+			meter.setMeterId(Integer.parseInt(meterId));
+			meter.setMeterStatus(meterStatus);
+			int t=meterDao.updateMeterById(meter);
+			if(t!=1){
+				throw new RuntimeException("rollback tx_modifyStatus()");
+			}
 		}
+		return true;
 	}
 }

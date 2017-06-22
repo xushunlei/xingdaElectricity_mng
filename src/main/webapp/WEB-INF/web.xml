@@ -45,7 +45,7 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>default</servlet-name>
-		<url-pattern>/ajax/*</url-pattern>
+		<url-pattern>/My97DatePicker/*</url-pattern>
 	</servlet-mapping>
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>

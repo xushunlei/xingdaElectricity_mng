@@ -69,5 +69,5 @@ public interface MeterService
 	 */
 	public boolean tx_markOverdraft(Integer meterId, Long overdraft);
 	/**更改电表状态*/
-	public boolean tx_modifyStatus(Integer meterId, Byte meterStatus);
+	public boolean tx_modifyStatus(String meterIds, Byte meterStatus);
 }
