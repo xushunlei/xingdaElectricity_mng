@@ -10,7 +10,9 @@ public class CurrentPrice {
 
     private BigDecimal price;
 
-    private String operator;
+    private User priceOperator;
+    
+    private Date startDate;
 
     public Integer getId() {
         return id;
@@ -36,11 +38,19 @@ public class CurrentPrice {
         this.price = price;
     }
 
-    public String getOperator() {
-        return operator;
-    }
+	public User getPriceOperator() {
+		return priceOperator;
+	}
 
-    public void setOperator(String operator) {
-        this.operator = operator == null ? null : operator.trim();
-    }
+	public void setPriceOperator(User operator) {
+		this.priceOperator = operator;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
 }

@@ -1,18 +1,28 @@
 package com.xinda.entity;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.fasterxml.jackson.databind.ser.std.DateSerializer;
+
 public class HistoricalPrice {
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	
     private Integer id;
 
-    private Date createDate;
+    private Timestamp createDate;
 
-    private String operator;
+    private User priceOperator;
 
     private BigDecimal price;
+    
+    private Timestamp startDate;
 
-    private Date expiredDate;
+    private Timestamp expiredDate;
+
+    private Byte active;
 
     public Integer getId() {
         return id;
@@ -22,23 +32,26 @@ public class HistoricalPrice {
         this.id = id;
     }
 
-    public Date getCreateDate() {
+    public Timestamp getCreateDate() {
         return createDate;
     }
+    public String getCreateDateStr() {
+        return createDate==null?"":sdf.format(createDate);
+    }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
     }
 
-    public String getOperator() {
-        return operator;
-    }
+	public User getPriceOperator() {
+		return priceOperator;
+	}
 
-    public void setOperator(String operator) {
-        this.operator = operator == null ? null : operator.trim();
-    }
+	public void setPriceOperator(User priceOperator) {
+		this.priceOperator = priceOperator;
+	}
 
-    public BigDecimal getPrice() {
+	public BigDecimal getPrice() {
         return price;
     }
 
@@ -46,11 +59,44 @@ public class HistoricalPrice {
         this.price = price;
     }
 
-    public Date getExpiredDate() {
+    public Timestamp getStartDate() {
+		return startDate;
+	}
+    
+    public String getStartDateStr() {
+		return startDate==null?"":sdf.format(startDate);
+	}
+
+	public void setStartDate(Timestamp startDate) {
+		this.startDate = startDate;
+	}
+
+	public Timestamp getExpiredDate() {
         return expiredDate;
     }
+	
+	public String getExpiredDateStr() {
+        return expiredDate==null?"":sdf.format(createDate);
+    }
 
-    public void setExpiredDate(Date expiredDate) {
+    public void setExpiredDate(Timestamp expiredDate) {
         this.expiredDate = expiredDate;
     }
+
+	public Byte getActive() {
+		return active;
+	}
+
+	public void setActive(Byte active) {
+		this.active = active;
+	}
+
+	@Override
+	public String toString() {
+		return "HistoricalPrice [id=" + id + ", createDate=" + createDate
+				+ ", priceOperator=" + priceOperator + ", price=" + price
+				+ ", startDate=" + startDate + ", expiredDate=" + expiredDate
+				+ ", active=" + active + "]";
+	}
+    
 }

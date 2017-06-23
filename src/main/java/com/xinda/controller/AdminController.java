@@ -2,7 +2,11 @@ package com.xinda.controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,10 +26,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.xinda.entity.Branch;
+import com.xinda.entity.HistoricalPrice;
 import com.xinda.entity.Meter;
 import com.xinda.entity.User;
 import com.xinda.service.BranchService;
 import com.xinda.service.MeterService;
+import com.xinda.service.PriceService;
 import com.xinda.service.UserService;
 import com.xinda.util.StringDepot;
 
@@ -39,6 +45,8 @@ public class AdminController
 	private MeterService meterservice;
 	@Autowired
 	private BranchService branchService;
+	@Autowired
+	private PriceService priceService;
 	/**进入管理页面*/
 	@RequestMapping("manageView")
 	public String managePage(HttpServletRequest request, HttpServletResponse response){
@@ -49,6 +57,14 @@ public class AdminController
 			//session.setAttribute("userList", userService.findUsers());//修改。不展示用户列表，改以展示电表列表
 			//session.setAttribute("meterList", meterservice.findAllMeters());
 			session.setAttribute("all_meter_count", meterservice.findAllMetersCount());
+			HistoricalPrice currPrice=priceService.findPriceByActive(new Byte("1"));
+			System.out.println(currPrice);
+			session.setAttribute("currPrice", currPrice);
+			HistoricalPrice futurePrice=priceService.findPriceByActive(new Byte("0"));
+			if(futurePrice==null){
+				futurePrice=currPrice;
+			}
+			session.setAttribute("futurePrice", futurePrice);
 			//return "userlist";
 			return "managePage";
 		}else{
@@ -268,18 +284,43 @@ public class AdminController
 		}
 		return result;
 	}
+	/**修改电价*/
 	@ResponseBody
 	@RequestMapping(value="modifyPrice",method=RequestMethod.POST)
 	public Map<String,Object> modifyPrice(HttpServletRequest request){
 		Map<String,Object> result=new HashMap<String, Object>();
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 		User user=(User)request.getSession().getAttribute("loginUser");
 		String price=request.getParameter("new_price");
 		String up_date=request.getParameter("up_date");
 		String sendable=request.getParameter("sendable");
 		String send_date=request.getParameter("send_date");
 		String send_content=request.getParameter("send_content");
-		if(sendable!=null&&"1".equals(sendable)){
-			System.out.println(send_content+user.getUserAccount());
+		try {
+			Timestamp upDate=new Timestamp(sdf.parse(up_date).getTime());
+			Timestamp nowDate=new Timestamp(System.currentTimeMillis());
+			HistoricalPrice hp=new HistoricalPrice();
+			if(price!=null&&price.trim()!=""&&Pattern.matches(StringDepot.DOUBLE_REG_EX, price)){
+				hp.setPrice(new BigDecimal(price));//设置修改的价格
+			}
+			hp.setPriceOperator(user);//设置操作员
+			//判断是否当天修改价格
+			if(upDate.after(nowDate)){//设置计价日期和记录状态:0-暂不启用，1-当前使用
+				hp.setStartDate(upDate);
+				hp.setActive((byte)0);
+			}else{
+				hp.setStartDate(nowDate);
+				hp.setActive((byte)1);
+			}
+			hp.setCreateDate(nowDate);//设置创建时间
+			//判断是否需要发送短信通知
+			if(sendable!=null&&"1".equals(sendable)&&priceService.editPrice(hp)){
+				Timestamp sendDate=new Timestamp(sdf.parse(send_date).getTime());
+				System.out.println(send_content+user.getUserAccount());
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		result.put("flag", false);
 		result.put("ud", up_date);

@@ -31,10 +31,10 @@ function modifyPrice(){
 		dataType:"json",
 		success:function(result){
 			if(result.flag){
-				alert("修改成功");
-			}else{
 				jQuery("#recent_change_price").text(result.p);
 				jQuery("#recent_change_date").text(result.ud);
+			}else{
+				alert("修改成功");
 			}
 		}
 	});

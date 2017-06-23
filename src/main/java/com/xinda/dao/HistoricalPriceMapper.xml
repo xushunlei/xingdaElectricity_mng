@@ -4,29 +4,21 @@
   <resultMap id="BaseResultMap" type="com.xinda.entity.HistoricalPrice" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
-    <result column="operator" property="operator" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
     <result column="expired_date" property="expiredDate" jdbcType="TIMESTAMP" />
+    <result column="active" property="active" jdbcType="TINYINT"/>
+    <association column="operator" property="priceOperator" resultMap="com.xinda.dao.UserMapper.UserMap" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, create_date, operator, price, expired_date
+    id, create_date, operator, price, start_date, expired_date, active
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByActive" resultMap="BaseResultMap" parameterType="java.lang.Byte" >
     select 
     <include refid="Base_Column_List" />
     from historical_price
-    where id = #{id,jdbcType=INTEGER}
+    where active = #{active}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from historical_price
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.xinda.entity.HistoricalPrice" >
-    insert into historical_price (id, create_date, operator, 
-      price, expired_date)
-    values (#{id,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR}, 
-      #{price,jdbcType=DECIMAL}, #{expiredDate,jdbcType=TIMESTAMP})
-  </insert>
   <insert id="insertSelective" parameterType="com.xinda.entity.HistoricalPrice" >
     insert into historical_price
     <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -45,6 +37,12 @@
       <if test="expiredDate != null" >
         expired_date,
       </if>
+      <if test="startDate !=null">
+      	start_date,
+      </if>
+      <if test="active!=null">
+      	active,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -62,32 +60,26 @@
       <if test="expiredDate != null" >
         #{expiredDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="startDate !=null">
+      	#{startDate}
+      </if>
+      <if test="active!=null">
+      	#{active}
+      </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xinda.entity.HistoricalPrice" >
-    update historical_price
-    <set >
-      <if test="createDate != null" >
-        create_date = #{createDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="operator != null" >
-        operator = #{operator,jdbcType=VARCHAR},
-      </if>
-      <if test="price != null" >
-        price = #{price,jdbcType=DECIMAL},
-      </if>
+  <delete id="deleteByActive">
+  	delete from historical_price where active=0
+  </delete>
+  <update id="updateHistoricalPrice" parameterType="com.xinda.entity.HistoricalPrice">
+  	update historical_price
+  	set 
       <if test="expiredDate != null" >
-        expired_date = #{expiredDate,jdbcType=TIMESTAMP},
+        expired_date=#{expiredDate},
       </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.xinda.entity.HistoricalPrice" >
-    update historical_price
-    set create_date = #{createDate,jdbcType=TIMESTAMP},
-      operator = #{operator,jdbcType=VARCHAR},
-      price = #{price,jdbcType=DECIMAL},
-      expired_date = #{expiredDate,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
+      <if test="active!=null">
+      	active=#{active}
+      </if>
+      where id=#{id}
   </update>
 </mapper>
