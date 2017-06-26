@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xinda.dao.UserMapper" >
   <resultMap id="UserMap" type="com.xinda.entity.User" >
-    <id column="id" property="userId" jdbcType="INTEGER" />
+    <id column="uid" property="userId" jdbcType="INTEGER" />
     <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
     <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
@@ -15,7 +15,7 @@
     <result column="user_status" property="userStatus" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_account, user_password, user_name, user_role, user_mobile, user_balance, 
+    uid, user_account, user_password, user_name, user_role, user_mobile, user_balance, 
     user_idcard, user_email, user_address, user_status
   </sql>
   <select id="selectByUser" resultMap="UserMap" parameterType="com.xinda.entity.User" >
@@ -42,7 +42,7 @@
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
-        id,
+        uid,
       </if>
       <if test="userAccount != null" >
         user_account,
@@ -144,24 +144,24 @@
   		<if test="userStatus!=null">user_status=#{userStatus},</if>
   	</set>
   	<where>
-  		id=#{userId}
+  		uid=#{userId}
   	</where>
   </update>
   <select id="selectUserById" resultMap="UserMap" parameterType="java.lang.Integer">
   	select <include refid="Base_Column_List"/>
   	from user
-  	where id=#{iserId}
+  	where uid=#{iserId}
   </select>
   <update id="updatePwdById">
   	update user 
   	set user_password=#{pwd}
-  	where id=#{id}
+  	where uid=#{id}
   </update>
   <update id="updateStatus">
   	update user
   	<set>
   		user_status=#{st,jdbcType=TINYINT}
   	</set>
-  	where id=#{id,jdbcType=INTEGER}
+  	where uid=#{id,jdbcType=INTEGER}
   </update>
 </mapper>

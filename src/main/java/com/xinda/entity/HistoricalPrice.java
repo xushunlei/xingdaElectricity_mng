@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 public class HistoricalPrice {
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
-    private Integer id;
+    private Integer pid;
 
     private Timestamp createDate;
 
@@ -24,12 +24,12 @@ public class HistoricalPrice {
 
     private Byte active;
 
-    public Integer getId() {
-        return id;
+    public Integer getPid() {
+        return pid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 
     public Timestamp getCreateDate() {
@@ -93,7 +93,7 @@ public class HistoricalPrice {
 
 	@Override
 	public String toString() {
-		return "HistoricalPrice [id=" + id + ", createDate=" + createDate
+		return "HistoricalPrice [pid=" + pid + ", createDate=" + createDate
 				+ ", priceOperator=" + priceOperator + ", price=" + price
 				+ ", startDate=" + startDate + ", expiredDate=" + expiredDate
 				+ ", active=" + active + "]";

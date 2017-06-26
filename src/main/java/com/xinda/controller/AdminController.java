@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -58,7 +59,6 @@ public class AdminController
 			//session.setAttribute("meterList", meterservice.findAllMeters());
 			session.setAttribute("all_meter_count", meterservice.findAllMetersCount());
 			HistoricalPrice currPrice=priceService.findPriceByActive(new Byte("1"));
-			System.out.println(currPrice);
 			session.setAttribute("currPrice", currPrice);
 			HistoricalPrice futurePrice=priceService.findPriceByActive(new Byte("0"));
 			if(futurePrice==null){
@@ -308,21 +308,24 @@ public class AdminController
 			if(upDate.after(nowDate)){//设置计价日期和记录状态:0-暂不启用，1-当前使用
 				hp.setStartDate(upDate);
 				hp.setActive((byte)0);
+				result.put("pt", false);
 			}else{
 				hp.setStartDate(nowDate);
 				hp.setActive((byte)1);
+				result.put("pt", true);
 			}
 			hp.setCreateDate(nowDate);//设置创建时间
+			boolean flag=priceService.tx_editPrice(hp);
+			result.put("flag", flag);
 			//判断是否需要发送短信通知
-			if(sendable!=null&&"1".equals(sendable)&&priceService.editPrice(hp)){
+			if(flag&&sendable!=null&&"1".equals(sendable)){
 				Timestamp sendDate=new Timestamp(sdf.parse(send_date).getTime());
-				System.out.println(send_content+user.getUserAccount());
+				System.out.println(sendDate+":"+send_content+user.getUserAccount());
 			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		result.put("flag", false);
 		result.put("ud", up_date);
 		result.put("p", price);
 		return result;

@@ -16,10 +16,9 @@ public interface PriceService
 	public HistoricalPrice findPriceByActive(Byte active);
 	/**
 	 * 修改电价
-	 * @param user 操作员
-	 * @param currentPrice 当前电价
+	 * @param HistoricalPrice 
 	 */
-	public boolean editPrice(HistoricalPrice hp);
+	public boolean tx_editPrice(HistoricalPrice hp);
 	/**
 	 * 查询历史电价
 	 * @return list 电价列表
