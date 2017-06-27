@@ -323,7 +323,6 @@ public class AdminController
 				System.out.println(sendDate+":"+send_content+user.getUserAccount());
 			}
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		result.put("ud", up_date);

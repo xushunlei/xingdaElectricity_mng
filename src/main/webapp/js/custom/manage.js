@@ -21,8 +21,23 @@ jQuery(document).ready(function($){
 			$(".sendcells").css("display","none");
 		}
 	});
-	
+	/*jQuery("#tree_machine").window({
+		modal:true
+	});
+	jQuery("#userlist").tree({
+		url:"",
+		queryParams:,//在请求远程数据的时候增加查询参数并发送到服务器
+		checkbox:true,
+		loadFilter:function(data){
+			if (data.d){    
+	            return data.d;    
+	        } else {    
+	            return data;    
+	        }
+		}
+	})*/
 });
+/**修改电价*/
 function modifyPrice(){
 	jQuery.ajax({
 		url:"admin/modifyPrice",
@@ -43,6 +58,10 @@ function modifyPrice(){
 			}
 		}
 	});
+}
+/**管理消息组*/
+function showTree(){
+	
 }
 function modify_menu(el){
 	jQuery("#leftmenu li").removeClass("current");

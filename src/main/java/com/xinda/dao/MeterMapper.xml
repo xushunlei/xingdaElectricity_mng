@@ -19,7 +19,7 @@
     <association column="user_account" property="meterUser" resultMap="UserMap"></association>
   </resultMap>
   <resultMap type="com.xinda.entity.User" id="UserMap">
-  	<id column="id" property="userId" jdbcType="INTEGER" />
+  	<id column="uid" property="userId" jdbcType="INTEGER" />
     <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
     <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
@@ -32,7 +32,7 @@
     <result column="user_status" property="userStatus" jdbcType="TINYINT" />
   </resultMap>
   <resultMap id="BranchMap" type="com.xinda.entity.Branch" >
-    <id column="id" property="branchId" jdbcType="INTEGER" />
+    <id column="bid" property="branchId" jdbcType="INTEGER" />
     <result column="branch_name" property="branchName" jdbcType="VARCHAR" />
     <result column="branch_number" property="branchNumber" jdbcType="VARCHAR" />
     <result column="branch_address" property="branchAddress" jdbcType="VARCHAR" />

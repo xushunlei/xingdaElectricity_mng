@@ -36,8 +36,8 @@
     <div class="vernav iconmenu">
     	<ul id="leftmenu">
         	<li class="current"><a href="javascript:void(0)" onclick="modify_price(this)" class="inbox">修改电价</a></li>
-            <li><a href="javascript:void(0)" onclick="add_point(this)" class="drafts">添加网点列表</a></li>
-            <li><a href="javascript:void(0)" onclick="add_meter(this)" class="drafts">添加用户列表</a></li>
+            <li><a href="javascript:void(0)" onclick="add_point(this)" class="drafts">新增网点</a></li>
+            <li><a href="javascript:void(0)" onclick="add_meter(this)" class="drafts">新增用户</a></li>
             <li><a href="javascript:void(0)" onclick="send_msg(this)" class="drafts">推送消息</a></li>
         </ul>
         <a class="togglemenu"></a>
@@ -51,8 +51,10 @@
             <span class="pagedesc">The content below are loaded using ajax</span>
             
             <ul class="hornav">
-                <li class="current"><a href="#inbox">用户列表信息</a></li>
-                <li><a href="#compose">网点列表信息</a></li>
+                <li class="current"><a href="#inbox">修改电价</a></li>
+                <li><a href="#compose">新建网点</a></li>
+                <li><a href="#newmetchdiv">新建用户</a></li>
+                <li><a href="#senddiv">推送短信</a></li>
             </ul>
         </div><!--pageheader-->
         
@@ -74,6 +76,38 @@
              	</div>
              </div>
              <div id="compose" class="subcontent" style="display: none">&nbsp;
+             	<center>
+             	<form>
+             		<table>
+             		<tr><td>名称：</td><td><input ></td></tr>
+             		<tr><td>编号：</td><td><input ></td></tr>
+             		<tr><td>管理员：</td><td><select>
+             			<option value="1">管理员</option>
+             			<option value="2">超级管理员</option>
+             		</select></td></tr>
+             		<tr><td>地址：</td><td><input ></td></tr>
+             		<tr><td>IP：</td><td><input ></td></tr>
+             		<tr><td>端口：</td><td><input ></td></tr>
+             		<tr><td><input type="reset">重置</td><td><input type="submit">提交</td></tr>
+             		</table>
+             	</form>
+             	</center>
+             </div>
+             <div id="newmetchdiv" class="subcontent" style="display: none">&nbsp;
+             	<div id="tree_machine">
+             		<div id="seachdiv">
+             			
+             		</div>
+             		<div id="userlist">
+             			
+             		</div>
+             		<div id="groupname">
+             			
+             		</div>
+             	</div>
+             	<input type="button" onclick="showTree();">
+             </div>
+             <div id="senddiv" class="subcontent" style="display: none">&nbsp;
              	
              </div>
         </div><!--contentwrapper-->
