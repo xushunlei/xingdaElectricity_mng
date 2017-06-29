@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinda.dao.TransactionRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.xinda.entity.TransactionRecord" >
+    <id column="id" property="trid" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="money" property="operaAmout" jdbcType="DECIMAL" />
+    <result column="trading_time" property="tradingTime" jdbcType="TIMESTAMP" />
+    <association column="meter" property="operaMeter" resultMap="com.xinda.dao.MeterMapper.BaseResultMap" />
+    <association column="user" property="operaUser" resultMap="com.xinda.dao.UserMapper.UserMap" />
+  </resultMap>
+  <resultMap type="java.util.HashMap" id="GroupByMonth">
+  	<result column="s_m" property="totalMoney" jdbcType="DECIMAL"/>
+  	<result column="f_d" property="groupMonth" jdbcType="DATE"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, meter, user, type, money, trading_time
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select * 
+  	from transaction_record tr 
+  	left join meter m 
+  	on tr.meter=m.meter_number
+  	left join user u
+  	on tr.user=u.user_account
+  </select>
+  <insert id="insert" parameterType="com.xinda.entity.TransactionRecord" >
+    insert into transaction_record (id, meter, user, 
+      type, money, trading_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{meter,jdbcType=VARCHAR}, #{user,jdbcType=VARCHAR}, 
+      #{type,jdbcType=TINYINT}, #{money,jdbcType=DECIMAL}, #{tradingTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xinda.entity.TransactionRecord" >
+    insert into transaction_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="meter != null" >
+        meter,
+      </if>
+      <if test="user != null" >
+        user,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="tradingTime != null" >
+        trading_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="meter != null" >
+        #{meter,jdbcType=VARCHAR},
+      </if>
+      <if test="user != null" >
+        #{user,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="tradingTime != null" >
+        #{tradingTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="selectByBranchGroupMonth" resultMap="GroupByMonth" parameterType="java.lang.String">
+	select SUM(money) s_m,DATE_FORMAT(trading_time,'%Y %m') f_d 
+	from transaction_record tr JOIN meter m ON tr.meter=m.meter_number 
+	left join `user` u on tr.`user`=u.user_account
+	WHERE meter IN (select meter_number from meter WHERE branch_number=#{branchNumber})
+	group BY DATE_FORMAT(trading_time,'%Y %m');
+  </select>
+  <select id="selectMoneyGroupByMonth" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+  	select SUM(money)
+	from transaction_record tr JOIN meter m ON tr.meter=m.meter_number 
+	left join user u on tr.user=u.user_account
+	WHERE meter IN (select meter_number from meter WHERE branch_number=#{branchNumber})
+	group BY DATE_FORMAT(trading_time,'%Y %m');
+  </select>
+  <select id="selectMonthGroupByMonth" parameterType="java.lang.String" resultType="java.lang.String">
+  	select DATE_FORMAT(trading_time,'%Y年%m月')
+	from transaction_record tr JOIN meter m ON tr.meter=m.meter_number 
+	left join user u on tr.user=u.user_account
+	WHERE meter IN (select meter_number from meter WHERE branch_number=#{branchNumber})
+	group BY DATE_FORMAT(trading_time,'%Y %m');
+  </select>
+</mapper>

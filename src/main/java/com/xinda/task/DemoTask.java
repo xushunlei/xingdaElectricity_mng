@@ -34,7 +34,7 @@ public class DemoTask {
 	 * （如果有返回值，spring初始化的时候会告诉你有个错误、需要设定一个proxytargetclass的某个值为true）*/
 		System.out.println("hey");
 	}
-	@Scheduled(fixedRate = 1000 * 10)
+	//@Scheduled(fixedRate = 1000 * 10)//10秒执行一次
 	public void job(){
 		System.out.println("to do something...");
 	}

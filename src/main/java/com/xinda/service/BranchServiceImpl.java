@@ -26,5 +26,8 @@ public class BranchServiceImpl implements BranchService
 		List<Branch> list=branchMapper.selectBranchList();
 		return list;
 	}
-
+	@Override
+	public List<String> findAllBranchName() {
+		return branchMapper.selectNameList();
+	}
 }

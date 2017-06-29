@@ -31,4 +31,7 @@
   	left join user u
   	on b.branch_manager=u.user_account
   </select>
+  <select id="selectNameList" resultType="java.lang.String">
+  	select branch_name from branch
+  </select>
 </mapper>

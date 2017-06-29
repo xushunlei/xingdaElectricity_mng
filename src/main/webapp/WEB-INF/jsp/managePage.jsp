@@ -60,7 +60,7 @@
         
         <div id="contentwrapper" class="contentwrapper">
              <div id="inbox" class="subcontent">
-             	<div>
+             	<center>
              	<form id="price_form">
              		<table>
              			<tr><td>当前电价：</td><td><span id="show_price">${currPrice.price }</span>元/度</td><td>*自<span id="show_start_date" >${currPrice.startDateStr }</span>起计费</td></tr>
@@ -73,7 +73,7 @@
              			<tr><td></td><td><input type="button" value="确认" onclick="modifyPrice()"></td></tr>
              		</table>
              	</form>
-             	</div>
+             	</center>
              </div>
              <div id="compose" class="subcontent" style="display: none">&nbsp;
              	<center>
@@ -88,7 +88,7 @@
              		<tr><td>地址：</td><td><input ></td></tr>
              		<tr><td>IP：</td><td><input ></td></tr>
              		<tr><td>端口：</td><td><input ></td></tr>
-             		<tr><td><input type="reset">重置</td><td><input type="submit">提交</td></tr>
+             		<tr><td><input type="reset"></td><td><input type="submit"></td></tr>
              		</table>
              	</form>
              	</center>

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xinda.dao.MeterMapper" >
   <resultMap id="BaseResultMap" type="com.xinda.entity.Meter" >
-    <id column="id" property="meterId" jdbcType="INTEGER" />
+    <id column="mid" property="meterId" jdbcType="INTEGER" />
     <result column="meter_number" property="meterNumber" jdbcType="VARCHAR" />
     <result column="meter_type" property="meterType" jdbcType="TINYINT" />
     <result column="meter_status" property="meterStatus" jdbcType="TINYINT" />
@@ -41,7 +41,7 @@
     <association column="branch_manager" property="branchManager" resultMap="UserMap"></association>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, meter_number, meter_type, meter_status, meter_total_value, meter_max_balance, 
+    mid, meter_number, meter_type, meter_status, meter_total_value, meter_max_balance, 
     meter_balance, meter_prompt_amount, meter_stop_amount, meter_max_overdraft, meter_current_overdraft, 
     meter_total_consumption, electricity_price, user_account, branch_number
   </sql>
@@ -155,7 +155,7 @@
   </select>
   <update id="updateBalanceById">
   	update meter set meter_balance=#{meterBalance}
-  	where id= #{meterId}
+  	where mid= #{meterId}
   </update>
   
   <update id="updateMeterById" parameterType="com.xinda.entity.Meter">
@@ -187,7 +187,7 @@
   		</if>
   	</set>
   	<where>
-  		id=#{meterId}
+  		mid=#{meterId}
   	</where>
   </update>
 </mapper>

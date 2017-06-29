@@ -33,6 +33,7 @@ import com.xinda.entity.User;
 import com.xinda.service.BranchService;
 import com.xinda.service.MeterService;
 import com.xinda.service.PriceService;
+import com.xinda.service.TransactionRecordService;
 import com.xinda.service.UserService;
 import com.xinda.util.StringDepot;
 
@@ -48,6 +49,8 @@ public class AdminController
 	private BranchService branchService;
 	@Autowired
 	private PriceService priceService;
+	@Autowired
+	private TransactionRecordService recordService;
 	/**进入管理页面*/
 	@RequestMapping("manageView")
 	public String managePage(HttpServletRequest request, HttpServletResponse response){
@@ -327,6 +330,18 @@ public class AdminController
 		}
 		result.put("ud", up_date);
 		result.put("p", price);
+		return result;
+	}
+	@ResponseBody
+	@RequestMapping("chartVar")
+	public Map<String,List> chartVar(HttpServletRequest request){
+		Map<String,List> result=new HashMap<String, List>();
+		String branchNumber=request.getParameter("branch");
+		List<String> names=recordService.findGroupMonth(branchNumber);
+		List<BigDecimal> money=recordService.findMoneyGroupBy(branchNumber);
+		recordService.findAllRecord();
+		result.put("month", names);
+		result.put("money", money);
 		return result;
 	}
 }
