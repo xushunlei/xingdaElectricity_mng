@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.xinda.entity.HistoricalPrice;
-import com.xinda.entity.User;
 
 public interface PriceService
 {
@@ -24,4 +23,8 @@ public interface PriceService
 	 * @return list 电价列表
 	 */
 	public List<HistoricalPrice> inquireHistoricalPrices();
+	
+	public List<String> findGroupBy();
+	
+	public List<BigDecimal> findElectricity();
 }

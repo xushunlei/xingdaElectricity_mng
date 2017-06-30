@@ -1,26 +1,8 @@
-
 jQuery(document).ready(function($){	
 	$(".headermenu li").removeClass('current');
 	$(".headermenu li").eq(1).addClass('current');
-	$("#usedate").bind("focus",function(){WdatePicker({
-		minDate:"%y-%M-%d",
-		isShowClear:false,
-		readOnly:true
-	});});
-	$("#senddate").bind("focus",function(){WdatePicker({
-		minDate:"%y-%M-%d",
-		startDate:"%y-%M-%d",
-		maxDate:"#F{$dp.$D('usedate')}",
-		isShowClear:false,
-		readOnly:true
-	});});
-	$("#price_form input:radio[name='sendable']").change(function(){
-		if($("#price_form input:radio[name='sendable']:checked").val()==="1"){
-			$(".sendcells").css("display","table-row");
-		}else{
-			$(".sendcells").css("display","none");
-		}
-	});
+	
+	$("#contentwrapper").load("user/jumpin_modifyprice");
 	/*jQuery("#tree_machine").window({
 		modal:true
 	});
@@ -37,28 +19,7 @@ jQuery(document).ready(function($){
 		}
 	})*/
 });
-/**修改电价*/
-function modifyPrice(){
-	jQuery.ajax({
-		url:"admin/modifyPrice",
-		data:jQuery("#price_form").serialize(),
-		type:"post",
-		dataType:"json",
-		success:function(result){
-			if(result.flag){
-				alert("修改成功");
-				if(result.pt){
-					jQuery("#show_price").text(result.p);
-					jQuery("#show_start_date").text(result.ud);
-				}
-				jQuery("#recent_change_price").text(result.p);
-				jQuery("#recent_change_date").text(result.ud);
-			}else{
-				alert("修改失败");
-			}
-		}
-	});
-}
+
 /**管理消息组*/
 function showTree(){
 	
@@ -70,16 +31,21 @@ function modify_menu(el){
 	jQuery("#leftmenu li a").addClass("drafts");
 	jQuery(el).removeClass("drafts");
 	jQuery(el).addClass("inbox");
+	jQuery("#pagedesc").text(">>>"+jQuery(el).text());
 }
 function modify_price(obj){
 	modify_menu(obj);
+	jQuery("#contentwrapper").load("user/jumpin_modifyprice");
 }
 function add_point(obj){
 	modify_menu(obj);
+	jQuery("#contentwrapper").load("user/jumpin_addbranch");
 }
 function add_meter(obj){
 	modify_menu(obj);
+	jQuery("#contentwrapper").load("user/jumpin_adduser");
 }
 function send_msg(obj){
 	modify_menu(obj);
+	jQuery("#contentwrapper").load("user/jumpin_sendmsg");
 }

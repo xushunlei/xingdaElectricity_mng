@@ -8,20 +8,7 @@
     <result column="branch_address" property="branchAddress" jdbcType="VARCHAR" />
     <result column="branch_host" property="branchHost" jdbcType="VARCHAR" />
     <result column="branch_port" property="branchPort" jdbcType="INTEGER" />
-    <association column="branch_manager" property="branchManager" resultMap="UserMap"></association>
-  </resultMap>
-  <resultMap type="com.xinda.entity.User" id="UserMap">
-  	<id column="uid" property="userId" jdbcType="INTEGER" />
-    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
-    <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
-    <result column="user_name" property="userName" jdbcType="VARCHAR" />
-    <result column="user_role" property="userRole" jdbcType="INTEGER" />
-    <result column="user_mobile" property="userMobile" jdbcType="VARCHAR" />
-    <result column="user_balance" property="userBalance" jdbcType="DECIMAL" />
-    <result column="user_idcard" property="userIdcard" jdbcType="VARCHAR" />
-    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
-    <result column="user_address" property="userAddress" jdbcType="VARCHAR" />
-    <result column="user_status" property="userStatus" jdbcType="TINYINT" />
+    <association column="branch_manager" property="branchManager" resultMap="com.xinda.dao.UserMapper.UserMap"></association>
   </resultMap>
   <sql id="Base_Column_List" >
     bid, branch_name, branch_number, branch_address, branch_manager, branch_host, branch_port

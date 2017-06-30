@@ -1,23 +1,18 @@
 package com.xinda.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mysql.jdbc.interceptors.SessionAssociationInterceptor;
 import com.xinda.entity.User;
 import com.xinda.service.UserService;
 @Controller
@@ -132,5 +127,33 @@ public class UserController
 		//user.setAccount(account);
 		resultMap.put("flag", flag);
 		return resultMap;
+	}
+	@RequestMapping("jumpin_modifyprice")
+	public String jumpModify(){
+		return "mng-modifyprice";
+	}
+	@RequestMapping("jumpin_addbranch")
+	public String jumpAddb(){
+		return "mng-addbranch";
+	}
+	@RequestMapping("jumpin_adduser")
+	public String jumpAddu(){
+		return "mng-adduser";
+	}
+	@RequestMapping("jumpin_sendmsg")
+	public String jumpSendmsg(){
+		return "mng-sendmsg";
+	}
+	@RequestMapping("jumpin_dosagePage")
+	public String dosagePage(){
+		return "histroy-dosage";
+	}
+	@RequestMapping("jumpin_pricePage")
+	public String pricePage(){
+		return "histroy-price";
+	}
+	@RequestMapping("jumpin_rechargePage")
+	public String rechargePage(){
+		return "histroy-recharge";
 	}
 }

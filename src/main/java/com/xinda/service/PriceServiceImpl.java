@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.xinda.dao.HistoricalPriceMapper;
 import com.xinda.entity.HistoricalPrice;
-import com.xinda.entity.User;
 @Service
 public class PriceServiceImpl implements PriceService {
 	@Autowired
@@ -58,5 +57,13 @@ public class PriceServiceImpl implements PriceService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	@Override
+	public List<BigDecimal> findElectricity() {
+		// TODO Auto-generated method stub
+		return priceDao.selectChangeval();
+	}@Override
+	public List<String> findGroupBy() {
+		// TODO Auto-generated method stub
+		return priceDao.selectChangeday();
+	}
 }

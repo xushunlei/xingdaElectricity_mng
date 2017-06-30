@@ -1,5 +1,8 @@
 package com.xinda.dao;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import com.xinda.entity.HistoricalPrice;
 
 public interface HistoricalPriceMapper {
@@ -11,4 +14,8 @@ public interface HistoricalPriceMapper {
     HistoricalPrice selectByActive(Byte active);
     /**根据ID修改记录。修改状态和到期时间*/
     int updateHistoricalPrice(HistoricalPrice record);
+    
+    List<String> selectChangeday();
+    
+    List<BigDecimal> selectChangeval();
 }

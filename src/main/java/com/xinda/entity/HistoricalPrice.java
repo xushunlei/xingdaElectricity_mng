@@ -3,9 +3,6 @@ package com.xinda.entity;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 
 public class HistoricalPrice {
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

@@ -13,7 +13,8 @@ public interface TransactionRecordMapper {
 
     List<TransactionRecord> selectAll();
     
-    List<Map> selectByBranchGroupMonth(String branchNumber);
+    @SuppressWarnings("rawtypes")
+	List<Map> selectByBranchGroupMonth(String branchNumber);
     
     List<BigDecimal> selectMoneyGroupByMonth(String branchNumber);
     

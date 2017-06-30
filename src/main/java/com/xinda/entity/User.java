@@ -75,7 +75,7 @@ public class User {
 
 	public String getUserMobile()
 	{
-		return userMobile;
+		return userMobile==null?"":userMobile;
 	}
 
 	public void setUserMobile(String userMobile)
@@ -95,7 +95,7 @@ public class User {
 
 	public String getUserIdcard()
 	{
-		return userIdcard;
+		return userIdcard==null?"":userIdcard;
 	}
 
 	public void setUserIdcard(String userIdcard)
@@ -105,7 +105,7 @@ public class User {
 
 	public String getUserEmail()
 	{
-		return userEmail;
+		return userEmail==null?"":userEmail;
 	}
 
 	public void setUserEmail(String userEmail)
@@ -115,7 +115,7 @@ public class User {
 
 	public String getUserAddress()
 	{
-		return userAddress;
+		return userAddress==null?"":userAddress;
 	}
 
 	public void setUserAddress(String userAddress)

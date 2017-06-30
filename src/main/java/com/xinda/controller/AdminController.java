@@ -6,21 +6,18 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -332,6 +329,7 @@ public class AdminController
 		result.put("p", price);
 		return result;
 	}
+	@SuppressWarnings("rawtypes")
 	@ResponseBody
 	@RequestMapping("chartVar")
 	public Map<String,List> chartVar(HttpServletRequest request){
@@ -339,9 +337,20 @@ public class AdminController
 		String branchNumber=request.getParameter("branch");
 		List<String> names=recordService.findGroupMonth(branchNumber);
 		List<BigDecimal> money=recordService.findMoneyGroupBy(branchNumber);
-		recordService.findAllRecord();
 		result.put("month", names);
 		result.put("money", money);
+		return result;
+	}
+	@SuppressWarnings("rawtypes")
+	@ResponseBody
+	@RequestMapping("chartPrice")
+	public Map<String,List> chartPrice(HttpServletRequest request){
+		Map<String,List> result=new HashMap<String, List>();
+		//String branchNumber=request.getParameter("branch");
+		List<String> dates=priceService.findGroupBy();
+		List<BigDecimal> price=priceService.findElectricity();
+		result.put("month", dates);
+		result.put("money", price);
 		return result;
 	}
 }

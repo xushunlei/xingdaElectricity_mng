@@ -9,9 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xinda.dao.MeterMapper;
-import com.xinda.entity.Branch;
 import com.xinda.entity.Meter;
-import com.xinda.entity.User;
+@SuppressWarnings("finally")
 @Service
 public class MeterServiceImpl implements MeterService
 {

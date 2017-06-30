@@ -83,4 +83,16 @@
       </if>
       where pid=#{pid}
   </update>
+  <select id="selectChangeday" resultType="java.lang.String">
+  	SELECT DATE_FORMAT(expired_date,'%Y-%m-%d')
+	FROM historical_price
+	WHERE active=2
+	GROUP BY DATE_FORMAT(expired_date,'%Y-%m-%d');
+  </select>
+  <select id="selectChangeval" resultType="java.math.BigDecimal">
+  	SELECT price
+	FROM historical_price
+	WHERE active=2
+	GROUP BY DATE_FORMAT(expired_date,'%Y-%m-%d');
+  </select>
 </mapper>
