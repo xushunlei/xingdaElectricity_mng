@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
@@ -352,5 +354,14 @@ public class AdminController
 		result.put("month", dates);
 		result.put("money", price);
 		return result;
+	}
+	
+	public void ttt(){
+		Timer t=new Timer();
+		t.schedule(new TimerTask(){
+			public void run(){
+				
+			}
+		}, System.currentTimeMillis(), 60*1000);
 	}
 }

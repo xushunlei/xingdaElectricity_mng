@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xinda.entity.User;
+import com.xinda.service.BranchService;
 import com.xinda.service.UserService;
 @Controller
 @RequestMapping("user/")
@@ -21,7 +22,8 @@ public class UserController
 {
 	@Autowired
 	private UserService userService;
-	
+	@Autowired
+	private BranchService branchService;
 	/**用户注册*/
 	@RequestMapping(value="registed",method=RequestMethod.POST)
 	public String registed(HttpServletRequest request,HttpServletResponse response){
@@ -127,6 +129,11 @@ public class UserController
 		//user.setAccount(account);
 		resultMap.put("flag", flag);
 		return resultMap;
+	}
+	@RequestMapping("jumpin_mnguser")
+	public String jumpMnguser(HttpServletRequest request){
+		request.getSession().setAttribute("branchs", branchService.findAllBranch());
+		return "mng-user";
 	}
 	@RequestMapping("jumpin_modifyprice")
 	public String jumpModify(){

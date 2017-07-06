@@ -35,6 +35,7 @@
     <div class="vernav iconmenu">
     	<ul id="leftmenu">
         	<li class="current"><a href="javascript:void(0)" onclick="modify_price(this)" class="inbox">修改电价</a></li>
+            <li><a href="javascript:void(0)" onclick="mng_user(this)" class="drafts">管理用户</a></li>
             <li><a href="javascript:void(0)" onclick="add_point(this)" class="drafts">新增网点</a></li>
             <li><a href="javascript:void(0)" onclick="add_meter(this)" class="drafts">新增用户</a></li>
             <li><a href="javascript:void(0)" onclick="send_msg(this)" class="drafts">推送消息</a></li>
@@ -48,13 +49,6 @@
         <div class="pageheader">
             <h1 class="pagetitle" id="pagename">管理页面</h1>
             <span class="pagedesc" id="pagedesc">The content below are loaded using ajax</span>
-            
-            <ul class="hornav" style="display:none;">
-                <li class="current"><a href="#inbox">修改电价</a></li>
-                <li><a href="#compose">新建网点</a></li>
-                <li><a href="#newmetchdiv">新建用户</a></li>
-                <li><a href="#senddiv">推送短信</a></li>
-            </ul>
         </div><!--pageheader-->
         
         <div id="contentwrapper" class="contentwrapper"></div><!--contentwrapper-->

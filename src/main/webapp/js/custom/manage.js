@@ -37,6 +37,10 @@ function modify_price(obj){
 	modify_menu(obj);
 	jQuery("#contentwrapper").load("user/jumpin_modifyprice");
 }
+function mng_user(obj){
+	modify_menu(obj);
+	jQuery("#contentwrapper").load("user/jumpin_mnguser");
+}
 function add_point(obj){
 	modify_menu(obj);
 	jQuery("#contentwrapper").load("user/jumpin_addbranch");
