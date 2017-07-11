@@ -1,11 +1,13 @@
 jQuery(document).ready(function(){
-	
+		//初始化下拉框
 		jQuery('#overviewselect, input:checkbox').uniform();
 		
 		///// DATE PICKER /////
+		//初始化日期框
 		jQuery( "#datepickfrom, #datepickto" ).datepicker();
 		
 		///// SLIM SCROLL /////
+		//初始化滚动域“LATEST ARTICLES”
 		jQuery('#scroll1').slimscroll({
 			color: '#666',
 			size: '10px',
@@ -14,12 +16,13 @@ jQuery(document).ready(function(){
 		});
 		
 		///// ACCORDION /////
+		//初始化“LATEST NEWS”
 		jQuery('#accordion').accordion({autoHeight:  false});
 	
 		///// SIMPLE CHART /////
 		var flash = [[0, 2], [1, 6], [2,3], [3, 8], [4, 5], [5, 13], [6, 8]];
 		var html5 = [[0, 5], [1, 4], [2,4], [3, 1], [4, 9], [5, 10], [6, 13]];
-			
+		//鼠标滑过图表显示域	
 		function showTooltip(x, y, contents) {
 			jQuery('<div id="tooltip" class="tooltipflot">' + contents + '</div>').css( {
 				position: 'absolute',
@@ -29,7 +32,7 @@ jQuery(document).ready(function(){
 			}).appendTo("body").fadeIn(200);
 		}
 	
-			
+		//初始化图表	
 		var plot = jQuery.plot(jQuery("#chartplace"),
 			   [ { data: flash, label: "Flash(x)", color: "#069"}, { data: html5, label: "HTML5(x)", color: "#FF6600"} ], {
 				   series: {
@@ -40,7 +43,7 @@ jQuery(document).ready(function(){
 				   grid: { hoverable: true, clickable: true, borderColor: '#ccc', borderWidth: 1, labelMargin: 10 },
 				   yaxis: { min: 0, max: 15 }
 				 });
-		
+		//鼠标滑过事件
 		var previousPoint = null;
 		jQuery("#chartplace").bind("plothover", function (event, pos, item) {
 			jQuery("#x").text(pos.x.toFixed(2));
@@ -64,7 +67,7 @@ jQuery(document).ready(function(){
 			}
 		
 		});
-		
+		//鼠标点击事件
 		jQuery("#chartplace").bind("plotclick", function (event, pos, item) {
 			if (item) {
 				jQuery("#clickdata").text("You clicked point " + item.dataIndex + " in " + item.series.label + ".");

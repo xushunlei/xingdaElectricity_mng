@@ -2,6 +2,7 @@ package com.xinda.controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -104,6 +105,11 @@ public class AdminController
 	@RequestMapping("messageView")
 	public String messagePage(HttpServletRequest request){
 		return "messagePage";
+	}
+	/**进入后台主页*/
+	@RequestMapping("mainView")
+	public String mainView(){
+		return "main";
 	}
 	/**查询电表列表*/
 	@ResponseBody
@@ -331,18 +337,38 @@ public class AdminController
 		result.put("p", price);
 		return result;
 	}
+	/**根据网点获取所有电表*/
+	@ResponseBody
+	@RequestMapping("selectMeterByBranch")
+	public List<Meter> selectMeterByBranch(HttpServletRequest request){
+		String bNum=request.getParameter("branchNum");
+		if(bNum!=null){
+			bNum=bNum.trim();
+		}
+		return meterservice.findMeterListForCondition(0, -10, bNum, null, null, null);
+	}
+	/**获取画充值记录表的数据*/
 	@SuppressWarnings("rawtypes")
 	@ResponseBody
 	@RequestMapping("chartVar")
 	public Map<String,List> chartVar(HttpServletRequest request){
 		Map<String,List> result=new HashMap<String, List>();
-		String branchNumber=request.getParameter("branch");
-		List<String> names=recordService.findGroupMonth(branchNumber);
-		List<BigDecimal> money=recordService.findMoneyGroupBy(branchNumber);
-		result.put("month", names);
-		result.put("money", money);
-		return result;
+		List<String> names;
+		List<BigDecimal> money;
+		String branchNumber=request.getParameter("cb");
+		String meterId=request.getParameter("cm");
+		String startDate=request.getParameter("sd");
+		String endDate=request.getParameter("ed");
+		if(endDate==null||endDate.trim()==""){
+			endDate=new Date(System.currentTimeMillis()).toString();
+		}
+		if(meterId==null||meterId.trim()==""){//电表ID空置，以branch为单位查询
+			return recordService.findBranchRechargeRecord(branchNumber, 0, startDate, endDate);
+		}else{
+			return recordService.findMeterRechargeRecord(Integer.parseInt(meterId), 0, startDate, endDate);
+		}
 	}
+	/**获取画电价修改记录表的数据*/
 	@SuppressWarnings("rawtypes")
 	@ResponseBody
 	@RequestMapping("chartPrice")

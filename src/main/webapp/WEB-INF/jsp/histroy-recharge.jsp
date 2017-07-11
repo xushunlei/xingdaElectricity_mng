@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,21 +9,73 @@
 
 <script type="text/javascript">
 jQuery(document).ready(function($){
-$(".detail").hide();
-
+	//初始化日期控件
+	$("#sdate").bind("focus",function(){WdatePicker({
+		maxDate:"%y-%M-%d",
+		isShowClear:false,
+		readOnly:true
+	});});
+	$("#edate").bind("focus",function(){WdatePicker({
+		maxDate:"%y-%M-%d",
+		startDate:"%y-%M-%d",
+		minDate:"#F{$dp.$D('sdate')}",
+		isShowClear:false,
+		readOnly:true
+	});});
+	//绘制图表所需的配置
 	require.config({
 		paths:{echarts:"./js/dist"}
 	});
-	//画图表
-	require(["echarts", "echarts/chart/line"], function (ec) {
-	    var myChart = ec.init(document.getElementById("trydrow"));
-	    $.ajax({
-	    	url:"admin/chartVar",
-	    	type:"post",
-	    	data:{"branch":"hzgongsu001"},
-	    	dataType:"json",
-	    	success:function(data){
-	    		var option = {
+});
+/*选择网点*/
+function showWithBranch(){
+	jQuery("#meterOps").empty();
+	var branchN=jQuery("#branchOps").val();
+	if(jQuery.trim(branchN)!=""){
+		jQuery.ajax({
+			url:"admin/selectMeterByBranch",
+			data:{"branchNum":branchN},
+			type:"post",
+			dataType:"json",
+			async:false,
+			success:function(redate){
+				jQuery("#meterOps").append('<option>选择电表</option>');
+				for(var m = 0; m < redate.length; m++){
+					var t="<option value='"+redate[m].meterId+"'>"+redate[m].meterNumber+"</option>";
+					jQuery("#meterOps").append(t);
+				}
+			}
+		});
+	}
+}
+function showDetail(obj){
+	jQuery(obj).parents("table").find(".detail").show();
+}
+function drawchartByCondi(){
+	//时间段
+	var s=jQuery("#sdate").val();//2017-07-05
+	var e=jQuery("#edate").val();
+	var b=jQuery("#branchOps").val();//branchNumber
+	var m=jQuery("#meterOps").val();//meterId
+	
+	if(isNaN(m)){//m="选择电表",统计与图表以branch为单位
+		m="";
+	}
+	if(s!=null&&jQuery.trim(s)!=""){
+	jQuery.ajax({
+		url:"admin/chartVar",
+		data:{"sd":s,"ed":e,"cb":b,"cm":m},
+		type:"post",
+		dataType:"json",//图表数据：横坐标数组、纵坐标数组;{array[],array[]}
+		success:function(data){
+			var tp=0;
+			for(var t=0;t<data.Xval.length;t++){
+				tp+=data.Xval[t];
+			};
+			jQuery("#totalP").text(tp);
+			require(["echarts", "echarts/chart/line"], function (ec){
+				var myChart = ec.init(document.getElementById("trydrow"));
+				var option = {
 	    	    	    tooltip: {
 	    	    	        show: true
 	    	    	    },
@@ -32,7 +85,7 @@ $(".detail").hide();
 	    	    	    xAxis : [
 	    	    	        {
 	    	    	            type : 'category',
-	    	    	            data : data.month
+	    	    	            data : data.Yval
 	    	    	        }
 	    	    	    ],
 	    	    	    yAxis : [
@@ -44,17 +97,15 @@ $(".detail").hide();
 	    	    	        {
 	    	    	            "name":"总值",
 	    	    	            "type":"line",
-	    	    	            "data":data.money
+	    	    	            "data":data.Xval
 	    	    	        }
 	    	    	    ]
 	    	    	};
-	    		myChart.setOption(option);
-	    	}
-	    });
+				myChart.setOption(option);
+			});
+		}
 	});
-});
-function showDetail(obj){
-	jQuery(obj).parents("table").find(".detail").show();
+	}
 }
 </script>
 </head>
@@ -72,25 +123,18 @@ function showDetail(obj){
 <div id="contentwrapper" class="contentwrapper">
   <div id="inbox" class="subcontent">
   	<center>
-  		<table>
-  		<thead>
-  		<tr><th>临平中心：</th><th><input class="Wdate">-<input class="Wdate"></th><th><input type="button" value="查询"></th></tr>
-  		</thead>
-  			<tr><th>总充值金额：</th><th>10300元</th><td><a href="javascript:void(0);" onclick="showDetail(this)">+展开</a></td></tr>
-  			<tr class="detail"><td>人民广场：</td><td>3000</td></tr>
-  			<tr class="detail"><td>余杭图书馆：</td><td>5200</td></tr>
-  			<tr class="detail"><td>临平职高：</td><td>2100</td></tr>
-  		</table>
-  		<table>
-  		<thead>
-  		<tr><th>和睦新村：</th><th><input class="Wdate" id="sdate">-<input class="Wdate" id="edate"></th><th><input type="button" value="查询"></th></tr>
-  		</thead>
-  			<tr><th>总充值金额：</th><th>3600元</th><td><a href="javascript:void(0);" onclick="showDetail(this)">+展开</a></td></tr>
-  			<tr class="detail"><td>1幢</td><td>800</td></tr>
-  			<tr class="detail"><td>2幢</td><td>1100</td></tr>
-  			<tr class="detail"><td>3幢</td><td>1000</td></tr>
-  			<tr class="detail"><td>4幢</td><td>700</td></tr>
-  		</table>
+  		网点：<select id="branchOps" onchange="showWithBranch()">
+  			<option value="">选择网点</option>
+  			<c:forEach items="${branchList}" var="branch">
+  			<option value="${branch.branchNumber }">${branch.branchName}</option>
+  			</c:forEach>
+  		</select>
+  		用户：<select id="meterOps">
+  		<option>选择电表</option>
+  		</select>
+  		时间：<input class="Wdate" id="sdate">-<input class="Wdate" id="edate">
+  		<input value="查询" type="button" onclick="drawchartByCondi()">
+  		总充值金额：￥<span id="totalP"></span>元
   	</center>
   	<div id="trydrow" style="height:400px"></div>
   </div>

@@ -29,7 +29,7 @@ public class UserController
 	public String registed(HttpServletRequest request,HttpServletResponse response){
 		User user=(User) request.getAttribute("loginUser");
 		if(userService.checkUserCanRegisted(user)&&userService.saveUser(user)){
-			return "dashboard";
+			return "main";
 		}else{
 			return "index";
 		}
@@ -53,7 +53,7 @@ public class UserController
 				
 			}*/
 			session.setAttribute("loginUser", user);
-			return "dashboard";
+			return "main";
 		}else{
 			return "index";
 		}
@@ -160,7 +160,8 @@ public class UserController
 		return "histroy-price";
 	}
 	@RequestMapping("jumpin_rechargePage")
-	public String rechargePage(){
+	public String rechargePage(HttpServletRequest request){
+		request.getSession().setAttribute("branchList", branchService.findAllBranch());
 		return "histroy-recharge";
 	}
 }

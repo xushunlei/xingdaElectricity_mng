@@ -102,7 +102,9 @@
 	</if>
 	1=1
 	</where>
+	<if test="start > 0 and size > 0">
 	limit #{start}, #{size}
+	</if>
   </select>
   <select id="selectCountForCondition" resultType="java.lang.Integer">
   	select count(1) from meter m 

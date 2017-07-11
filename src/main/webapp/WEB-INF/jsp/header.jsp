@@ -52,7 +52,7 @@
     
     <div class="header">
     	<ul class="headermenu">
-        	<li class="current"><a href="dashboard.html"><span class="icon icon-flatscreen"></span>首页</a></li>
+        	<li class="current"><a href="admin/mainView"><span class="icon icon-flatscreen"></span>首页</a></li>
             <li><a href="admin/manageView"><span class="icon icon-pencil"></span>管理</a></li>
             <li><a href="admin/messageView"><span class="icon icon-message"></span>查看消息</a></li>
             <li><a href="admin/reportView"><span class="icon icon-chart"></span>统计报表</a></li>

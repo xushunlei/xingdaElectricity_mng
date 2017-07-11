@@ -574,6 +574,9 @@ body.withmenucoll2 { background-position: 35px 0; } /* with menu style 2 in coll
 .shortcuts li a.gallery { background-image: url(../images/icons/64/images.png); }
 .shortcuts li a.events { background-image: url(../images/icons/64/events.png); }
 .shortcuts li a.analytics { background-image: url(../images/icons/64/analytics.png); }
+.shortcuts li a.recharge { background-image: url(../images/icons/64/recharge.png); }
+.shortcuts li a.rechargerecord { background-image: url(../images/icons/64/rechargerecord.png); }
+.shortcuts li a.site { background-image: url(../images/icons/64/site.png);}
 
 
 .toplist { list-style: none; }

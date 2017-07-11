@@ -75,6 +75,53 @@
       </if>
     </trim>
   </insert>
+  <select id="selectForMeterVal" resultType="java.math.BigDecimal">
+  select SUM(money)
+	from transaction_record tr JOIN meter m ON tr.meter=m.meter_number 
+	left join user u on tr.user=u.user_account
+	WHERE tr.meter in (select meter_number from meter where mid= #{meterId})
+	AND 
+	<choose>
+  		<when test="groupType==0">DATE_FORMAT(trading_time,'%Y-%m-%d')</when>
+  		<when test="groupType==1">DATE_FORMAT(trading_time,'%Y-%m')</when>
+  		<when test="groupType==2">DATE_FORMAT(trading_time,'%Y')</when>
+  	</choose> 
+  	BETWEEN #{startDate} AND 
+  	 <if test="endDate!=null">#{endDate}</if>
+  	 <if test="endDate==null">CRUDATE()</if>
+	group BY 
+  	<choose>
+  		<when test="groupType==0">DATE_FORMAT(trading_time,'%Y %m %d')</when>
+  		<when test="groupType==1">DATE_FORMAT(trading_time,'%Y %m')</when>
+  		<when test="groupType==2">DATE_FORMAT(trading_time,'%Y')</when>
+  	</choose>
+  </select>
+  <select id="selectForMeterGroup" resultType="java.lang.String">
+  	select 
+  	<choose>
+  		<when test="groupType==0">DATE_FORMAT(trading_time,'%Y年%m月%d日')</when>
+  		<when test="groupType==1">DATE_FORMAT(trading_time,'%Y年%m月')</when>
+  		<when test="groupType==2">DATE_FORMAT(trading_time,'%Y年')</when>
+  	</choose>
+	from transaction_record tr JOIN meter m ON tr.meter=m.meter_number 
+	left join user u on tr.user=u.user_account
+	WHERE tr.meter in (select meter_number from meter where mid= #{meterId}) 
+	AND 
+	<choose>
+  		<when test="groupType==0">DATE_FORMAT(trading_time,'%Y-%m-%d')</when>
+  		<when test="groupType==1">DATE_FORMAT(trading_time,'%Y-%m')</when>
+  		<when test="groupType==2">DATE_FORMAT(trading_time,'%Y')</when>
+  	</choose> 
+  	 BETWEEN #{startDate} AND 
+  	 <if test="endDate!=null">#{endDate}</if>
+  	 <if test="endDate==null">CRUDATE()</if>
+	group BY 
+  	<choose>
+  		<when test="groupType==0">DATE_FORMAT(trading_time,'%Y %m %d')</when>
+  		<when test="groupType==1">DATE_FORMAT(trading_time,'%Y %m')</when>
+  		<when test="groupType==2">DATE_FORMAT(trading_time,'%Y')</when>
+  	</choose>
+  </select>
   <select id="selectByBranchGroupMonth" resultMap="GroupByMonth" parameterType="java.lang.String">
 	select SUM(money) s_m,DATE_FORMAT(trading_time,'%Y %m') f_d 
 	from transaction_record tr JOIN meter m ON tr.meter=m.meter_number 
@@ -82,18 +129,51 @@
 	WHERE meter IN (select meter_number from meter WHERE branch_number=#{branchNumber})
 	group BY DATE_FORMAT(trading_time,'%Y %m');
   </select>
-  <select id="selectMoneyGroupByMonth" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+  <select id="selectMoneyGroupByMonth" resultType="java.math.BigDecimal">
   	select SUM(money)
 	from transaction_record tr JOIN meter m ON tr.meter=m.meter_number 
 	left join user u on tr.user=u.user_account
 	WHERE meter IN (select meter_number from meter WHERE branch_number=#{branchNumber})
-	group BY DATE_FORMAT(trading_time,'%Y %m');
+	AND 
+	<choose>
+  		<when test="groupType==0">DATE_FORMAT(trading_time,'%Y-%m-%d')</when>
+  		<when test="groupType==1">DATE_FORMAT(trading_time,'%Y-%m')</when>
+  		<when test="groupType==2">DATE_FORMAT(trading_time,'%Y')</when>
+  	</choose> 
+  	 BETWEEN #{startDate} AND 
+  	 <if test="endDate!=''">#{endDate}</if>
+  	 <if test="endDate==''">CURDATE()</if>
+	group BY 
+  	<choose>
+  		<when test="groupType==0">DATE_FORMAT(trading_time,'%Y %m %d')</when>
+  		<when test="groupType==1">DATE_FORMAT(trading_time,'%Y %m')</when>
+  		<when test="groupType==2">DATE_FORMAT(trading_time,'%Y')</when>
+  	</choose>
   </select>
-  <select id="selectMonthGroupByMonth" parameterType="java.lang.String" resultType="java.lang.String">
-  	select DATE_FORMAT(trading_time,'%Y年%m月')
+  <select id="selectMonthGroupByMonth" resultType="java.lang.String">
+  	select 
+  	<choose>
+  		<when test="groupType==0">DATE_FORMAT(trading_time,'%Y年%m月%d日')</when>
+  		<when test="groupType==1">DATE_FORMAT(trading_time,'%Y年%m月')</when>
+  		<when test="groupType==2">DATE_FORMAT(trading_time,'%Y年')</when>
+  	</choose>
 	from transaction_record tr JOIN meter m ON tr.meter=m.meter_number 
 	left join user u on tr.user=u.user_account
 	WHERE meter IN (select meter_number from meter WHERE branch_number=#{branchNumber})
-	group BY DATE_FORMAT(trading_time,'%Y %m');
+	AND 
+	<choose>
+  		<when test="groupType==0">DATE_FORMAT(trading_time,'%Y-%m-%d')</when>
+  		<when test="groupType==1">DATE_FORMAT(trading_time,'%Y-%m')</when>
+  		<when test="groupType==2">DATE_FORMAT(trading_time,'%Y')</when>
+  	</choose> 
+  	 BETWEEN #{startDate} AND 
+  	 <if test="endDate!=null">#{endDate}</if>
+  	 <if test="endDate==null">CRUDATE()</if>
+	group BY 
+  	<choose>
+  		<when test="groupType==0">DATE_FORMAT(trading_time,'%Y %m %d')</when>
+  		<when test="groupType==1">DATE_FORMAT(trading_time,'%Y %m')</when>
+  		<when test="groupType==2">DATE_FORMAT(trading_time,'%Y')</when>
+  	</choose>
   </select>
 </mapper>
