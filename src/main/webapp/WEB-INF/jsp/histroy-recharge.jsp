@@ -82,6 +82,7 @@ function drawchartByCondi(){
 	    	    	    legend: {
 	    	    	        data:['充值金额']
 	    	    	    },
+	    	    	    //calculable : true,//可计算
 	    	    	    xAxis : [
 	    	    	        {
 	    	    	            type : 'category',

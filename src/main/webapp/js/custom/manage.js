@@ -3,21 +3,6 @@ jQuery(document).ready(function($){
 	$(".headermenu li").eq(1).addClass('current');
 	
 	$("#contentwrapper").load("user/jumpin_modifyprice");
-	/*jQuery("#tree_machine").window({
-		modal:true
-	});
-	jQuery("#userlist").tree({
-		url:"",
-		queryParams:,//在请求远程数据的时候增加查询参数并发送到服务器
-		checkbox:true,
-		loadFilter:function(data){
-			if (data.d){    
-	            return data.d;    
-	        } else {    
-	            return data;    
-	        }
-		}
-	})*/
 });
 
 /**管理消息组*/

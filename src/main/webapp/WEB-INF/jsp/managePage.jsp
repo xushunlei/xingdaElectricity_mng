@@ -16,11 +16,12 @@
 <link rel="stylesheet" href="css/style.default.css" type="text/css" />
 <link rel="stylesheet" href="My97DatePicker/skin/WdatePicker.css" type="text/css" />
 <script type="text/javascript" src="js/plugins/jquery-1.7.min.js"></script>
-<script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
 <script type="text/javascript" src="My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
 <script type="text/javascript" src="js/plugins/jquery.cookie.js"></script>
 <script type="text/javascript" src="js/plugins/jquery.alerts.js"></script>
 <script type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script>
+<script type="text/javascript" src="js/custom/general.js"></script>
 <script type="text/javascript" src="js/custom/manage.js"></script>
 <style type="text/css">
 

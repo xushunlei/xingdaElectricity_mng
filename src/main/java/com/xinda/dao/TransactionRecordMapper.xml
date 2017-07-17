@@ -140,9 +140,7 @@
   		<when test="groupType==1">DATE_FORMAT(trading_time,'%Y-%m')</when>
   		<when test="groupType==2">DATE_FORMAT(trading_time,'%Y')</when>
   	</choose> 
-  	 BETWEEN #{startDate} AND 
-  	 <if test="endDate!=''">#{endDate}</if>
-  	 <if test="endDate==''">CURDATE()</if>
+  	 BETWEEN #{startDate} AND #{endDate}
 	group BY 
   	<choose>
   		<when test="groupType==0">DATE_FORMAT(trading_time,'%Y %m %d')</when>
@@ -166,9 +164,7 @@
   		<when test="groupType==1">DATE_FORMAT(trading_time,'%Y-%m')</when>
   		<when test="groupType==2">DATE_FORMAT(trading_time,'%Y')</when>
   	</choose> 
-  	 BETWEEN #{startDate} AND 
-  	 <if test="endDate!=null">#{endDate}</if>
-  	 <if test="endDate==null">CRUDATE()</if>
+  	 BETWEEN #{startDate} AND #{endDate}
 	group BY 
   	<choose>
   		<when test="groupType==0">DATE_FORMAT(trading_time,'%Y %m %d')</when>

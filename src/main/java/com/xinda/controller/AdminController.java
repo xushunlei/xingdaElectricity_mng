@@ -61,13 +61,6 @@ public class AdminController
 			//session.setAttribute("userList", userService.findUsers());//修改。不展示用户列表，改以展示电表列表
 			//session.setAttribute("meterList", meterservice.findAllMeters());
 			session.setAttribute("all_meter_count", meterservice.findAllMetersCount());
-			HistoricalPrice currPrice=priceService.findPriceByActive(new Byte("1"));
-			session.setAttribute("currPrice", currPrice);
-			HistoricalPrice futurePrice=priceService.findPriceByActive(new Byte("0"));
-			if(futurePrice==null){
-				futurePrice=currPrice;
-			}
-			session.setAttribute("futurePrice", futurePrice);
 			//return "userlist";
 			return "managePage";
 		}else{
@@ -352,15 +345,12 @@ public class AdminController
 	@ResponseBody
 	@RequestMapping("chartVar")
 	public Map<String,List> chartVar(HttpServletRequest request){
-		Map<String,List> result=new HashMap<String, List>();
-		List<String> names;
-		List<BigDecimal> money;
 		String branchNumber=request.getParameter("cb");
 		String meterId=request.getParameter("cm");
 		String startDate=request.getParameter("sd");
 		String endDate=request.getParameter("ed");
 		if(endDate==null||endDate.trim()==""){
-			endDate=new Date(System.currentTimeMillis()).toString();
+			endDate=new Date(System.currentTimeMillis()).toString();//默认结束时间为当天
 		}
 		if(meterId==null||meterId.trim()==""){//电表ID空置，以branch为单位查询
 			return recordService.findBranchRechargeRecord(branchNumber, 0, startDate, endDate);
@@ -368,7 +358,7 @@ public class AdminController
 			return recordService.findMeterRechargeRecord(Integer.parseInt(meterId), 0, startDate, endDate);
 		}
 	}
-	/**获取画电价修改记录表的数据*/
+	/**获取 画 电价修改记录表 的数据*/
 	@SuppressWarnings("rawtypes")
 	@ResponseBody
 	@RequestMapping("chartPrice")

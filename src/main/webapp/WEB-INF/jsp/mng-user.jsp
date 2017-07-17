@@ -5,9 +5,12 @@
 <html>
 <head>
 <title>查看消息页面</title>
+<% String basePath = request.getScheme()+"://"+
+		request.getServerName()+":"+
+		request.getServerPort()+request.getContextPath()+"/";%>
+<base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<script type="text/javascript" src="js/custom/general.js"></script>
 <script type="text/javascript">
 var curr_page=1;//当前页，默认为第一页
 var page_size=10;//容量，每页最多显示条目书
@@ -22,21 +25,21 @@ jQuery(document).ready(function($){
 	total_page=Math.ceil(total_count/page_size);
 	
 	dr(curr_page,page_size);
-	///// CHECKBOX TRANSFORM /////
+	///// 重置单选框 /////
 	jQuery('input:checkbox').uniform();
-	///// CHECK ALL /////
-	jQuery('.checkall, .checkall2').click(function(){
-		if(jQuery(this).is(':checked')) {
-			jQuery(this).parents('table')
-						.find('input:checkbox')
-						.each(function(){
+	///// 选择全部 /////
+	jQuery('.checkall').click(function(){//全选功能的单选框点击事件
+		if(jQuery(this).is(':checked')) {//若勾选：全选
+			jQuery(this).parents('table')//找到祖先节点中的表格节点
+						.find('input:checkbox')//找到单选框节点
+						.each(function(){//遍历节点执行
 									   
-				jQuery(this).attr('checked',true);
-				if(jQuery(this).parents('tbody').length > 0)
-					jQuery(this).parents('tr').addClass('selected');
+				jQuery(this).attr('checked',true);//选中遍历的节点
+				if(jQuery(this).parents('tbody').length > 0)//若该节点祖先节点为‘tbody’的长度>0：有记录
+					jQuery(this).parents('tr').addClass('selected');//给该节点中“tr”祖先节点增加“selected”样式
 			});
 		} else {
-			jQuery(this).parents('table')
+			jQuery(this).parents('table')//若不选：全不选
 						.find('input:checkbox')
 						.each(function(){
 									   
@@ -49,6 +52,7 @@ jQuery(document).ready(function($){
 	});
 	
 });
+/**选择搜索网点*/
 function changebranch(){
 	branch_num=jQuery("#branchOps").val();
 	if(branch_num=="0"){
@@ -144,24 +148,27 @@ function dr(pageNo,pageSize,seachWord,branchNum){
 			var t=(curr_page-1)*page_size+1;
 			jQuery("#page_info").text(t+"-"+(t+result.length-1));
 			///// EACH CHECKBOX CLICK EVENT /////
-			jQuery('.mailinbox input:checkbox').each(function(){
-				jQuery(this).click(function(){
-					if(!jQuery(this).is(':checked')) {
+			jQuery('.mailinbox input:checkbox').each(function(){//遍历.mailinbox中的单选框
+				jQuery(this).click(function(){//绑定点击事件
+					if(!jQuery(this).is(':checked')) {//若被取消勾选
 						var hidetrash = true;
-						jQuery('.mailinbox tbody input:checkbox').each(function(){
-							if(jQuery(this).is(':checked'))
+						jQuery('.mailinbox tbody input:checkbox').each(function(){//遍历tbody的单选框
+							if(jQuery(this).is(':checked')){//若被选中
 								hidetrash = false;
+							}
 						});
 						
-						if(hidetrash)
+						if(hidetrash){//表示没有选中项
 							jQuery('.dropdown_label, .reportspam, .msgtrash').hide();
-						if(jQuery(this).parents('tbody').length > 0)
-							jQuery(this).parents('tr').removeClass('selected');
-							
-					} else {
-						jQuery('.dropdown_label, .reportspam, .msgtrash').css({display: 'block'});
-						if(jQuery(this).parents('tbody').length > 0)
+						}
+						if(jQuery(this).parents('tbody').length > 0){//有记录
+							jQuery(this).parents('tr').removeClass('selected');//把记录样式移除选中的样式
+						}
+					} else {//若被勾选
+						jQuery('.dropdown_label, .reportspam, .msgtrash').css({display: 'block'});//显示
+						if(jQuery(this).parents('tbody').length > 0){
 							jQuery(this).parents('tr').addClass('selected');
+						}
 					}
 				});
 			});
@@ -209,7 +216,7 @@ function findNewCount(branchNum, seachWord, meterType, meterStatus){
 			alert(textStatus);
 		},
 		success:function(redata){
-			console.log(redata);/****/
+			console.log(redata);
 			jQuery("#b1").text(redata.total_count);
 			total_page=Math.ceil(redata.total_count/page_size);
 		}
@@ -285,21 +292,7 @@ function modifyStatus(meterId,obj){
 		}
 	});
 }
-/**批量操作*/
-function centralized(s){
-	var ids=document.getElementsByName("mIds");
-	var mIds="";
-	for(var i=0;i<ids.length;i++){
-		if(ids[i].checked){
-			mIds=mIds+ids[i].value+",";
-		}
-	}
-	mIds=mIds.substring(0, mIds.length-1);
-	console.log(mIds);
-	//局部刷新比较麻烦，采用页面刷新
-	modify_all(mIds,s);
-}
-/**统一修改状态，实现全页面刷新*/
+/**统一修改状态，父页面重新加载子页面*/
 function modify_all(mIds,status){
 	jQuery.ajax({
 		url:"admin/modifyStatus",
@@ -312,7 +305,7 @@ function modify_all(mIds,status){
 		success:function(result){
 			if(result.flag){
 				alert("修改成功");
-				window.location="admin/detailView";
+				jQuery("#contentwrapper").load("user/jumpin_mnguser");
 			}else{
 				alert("修改失败");
 			}
@@ -322,17 +315,17 @@ function modify_all(mIds,status){
 }
 /**批量操作*/
 function centralized(s){
-	var ids=document.getElementsByName("branchOps");
+	if(isNaN(s))return;
+	var ids=document.getElementsByName("mIds");
 	var bNums="";
 	for(var i=0;i<ids.length;i++){
 		if(ids[i].checked){
 			bNums=bNums+ids[i].value+",";
 		}
 	}
-	bNums=bNums.substring(2, bNums.length-1);
-	console.log(bNums);
+	bNums=bNums.substring(0, bNums.length-1);
 	//局部刷新比较麻烦，采用页面刷新
-	//modify_all(bNums,s);
+	modify_all(bNums,s);
 }
 </script>
 <style type="text/css">
@@ -358,17 +351,13 @@ function centralized(s){
 
    <div class="msghead">
        <ul class="msghead_menu">
-           <li><a class="reportspam" onclick="resetPwd();">重置密码</a></li>
-           <li class="marginleft5 dropdown" id="actions">
-               <a class="dropdown_label" href="#actions">
-              	 批量操作
-               <span class="arrow"></span>
-               </a>
-               <ul>
-                   <li><a href="javascript:void(0);" onclick="centralized(0)">供电</a></li>
-                   <li><a href="javascript:void(0);" onclick="centralized(1)">透支</a></li>
-                   <li><a href="javascript:void(0);" onclick="centralized(2)">拉闸</a></li>
-               </ul>
+           <li class="marginleft5 dropdown">
+               <select class="dropdown_label my_select" onchange="centralized(this.value)">
+               <option>批量操作</option>
+               <option value="0">供电</option>
+               <option value="1">透支</option>
+               <option value="2">拉闸</option>
+               </select>
            </li>
            <li class="marginleft5"><a class="msgtrash" title="Trash"></a></li>
        	<li class="right"><a class="next" href="javascript:next_page()" id="down_page"></a></li>

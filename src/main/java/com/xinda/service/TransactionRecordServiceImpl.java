@@ -1,8 +1,6 @@
 package com.xinda.service;
 
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +20,7 @@ public class TransactionRecordServiceImpl implements TransactionRecordService {
 		List<TransactionRecord> result=trDao.selectAll();
 		return result;
 	}
+@SuppressWarnings("rawtypes")
 @Override
 public Map<String, List> findMeterRechargeRecord(Integer meterId,
 		int groupType, String start, String over) {
@@ -33,6 +32,7 @@ public Map<String, List> findMeterRechargeRecord(Integer meterId,
 	result.put("Xval", money);
 	return result;
 }
+@SuppressWarnings("rawtypes")
 @Override
 public Map<String, List> findBranchRechargeRecord(String branchNum,
 		int groupType, String start, String over) {

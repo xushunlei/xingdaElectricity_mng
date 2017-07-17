@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xinda.entity.HistoricalPrice;
 import com.xinda.entity.User;
 import com.xinda.service.BranchService;
+import com.xinda.service.PriceService;
 import com.xinda.service.UserService;
 @Controller
 @RequestMapping("user/")
@@ -24,6 +26,8 @@ public class UserController
 	private UserService userService;
 	@Autowired
 	private BranchService branchService;
+	@Autowired
+	private PriceService priceService;
 	/**用户注册*/
 	@RequestMapping(value="registed",method=RequestMethod.POST)
 	public String registed(HttpServletRequest request,HttpServletResponse response){
@@ -136,7 +140,15 @@ public class UserController
 		return "mng-user";
 	}
 	@RequestMapping("jumpin_modifyprice")
-	public String jumpModify(){
+	public String jumpModify(HttpServletRequest request){
+		HttpSession session=request.getSession();
+		HistoricalPrice currPrice=priceService.findPriceByActive(new Byte("1"));
+		session.setAttribute("currPrice", currPrice);
+		HistoricalPrice futurePrice=priceService.findPriceByActive(new Byte("0"));
+		if(futurePrice==null){
+			futurePrice=currPrice;
+		}
+		session.setAttribute("futurePrice", futurePrice);
 		return "mng-modifyprice";
 	}
 	@RequestMapping("jumpin_addbranch")
