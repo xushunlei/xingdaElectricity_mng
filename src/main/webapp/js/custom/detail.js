@@ -389,3 +389,17 @@ function modify_all(mIds,status){
 	});
 	
 }
+function duqu(){
+	jQuery.ajax({
+		url:"user/duqu",
+		dataType:"json",
+		async:true,
+		success:function(data){
+			console.log(data);
+			jQuery("#span1").text(data.data);
+		},
+		error:function(){
+			alert("err");
+		}
+	});
+}

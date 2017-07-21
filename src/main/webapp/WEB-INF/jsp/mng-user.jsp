@@ -11,6 +11,7 @@
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script type="text/javascript" src="js/custom/general.js"></script>
 <script type="text/javascript">
 var curr_page=1;//当前页，默认为第一页
 var page_size=10;//容量，每页最多显示条目书

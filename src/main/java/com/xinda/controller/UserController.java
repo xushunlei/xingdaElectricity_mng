@@ -1,5 +1,9 @@
 package com.xinda.controller;
 
+import gnu.io.SerialPort;
+
+import java.awt.AWTException;
+import java.awt.Robot;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +22,7 @@ import com.xinda.entity.User;
 import com.xinda.service.BranchService;
 import com.xinda.service.PriceService;
 import com.xinda.service.UserService;
+import com.xinda.util.SerialTool;
 @Controller
 @RequestMapping("user/")
 public class UserController
@@ -175,5 +180,35 @@ public class UserController
 	public String rechargePage(HttpServletRequest request){
 		request.getSession().setAttribute("branchList", branchService.findAllBranch());
 		return "histroy-recharge";
+	}
+	@ResponseBody
+	@RequestMapping("duqu")
+	public Map<String,String> duqu(){
+		SerialTool st=new SerialTool();
+		byte[] command1={(byte)0xFE,(byte)0x68,(byte)0xCC,(byte)0x68,(byte)0x37,(byte)0x82,(byte)0x11};
+		st.scanPorts();
+		st.openSerialPort("COM3");
+		st.setSeriaPortParam(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+		st.sendDataToSeriaPort(command1);
+		/*Timer timer = new Timer();// 实例化Timer类  
+        timer.schedule(new TimerTask() {  
+            public void run() {  
+                System.out.println("退出");  
+                this.cancel();  
+            }  
+        }, 5000);// 这里百毫秒  
+        System.out.println("本程序存在5秒后自动退出");*/ 
+		try {
+			Robot r=new Robot();
+			r.delay(5000);
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+		String redata=st.getReceive();
+		st.closeSerialPort();
+		System.out.println(":::>"+redata);
+		Map<String,String> reMap=new HashMap<String,String>();
+		reMap.put("data", redata);
+		return reMap;
 	}
 }

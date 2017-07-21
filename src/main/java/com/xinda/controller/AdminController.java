@@ -35,7 +35,7 @@ import com.xinda.service.MeterService;
 import com.xinda.service.PriceService;
 import com.xinda.service.TransactionRecordService;
 import com.xinda.service.UserService;
-import com.xinda.util.StringDepot;
+import com.xinda.util.ConstantPool;
 
 @Controller
 @RequestMapping("admin/")
@@ -234,7 +234,7 @@ public class AdminController
 		}
 		String priceString=request.getParameter("price");
 		Double price=null;
-		if(priceString!=null&&priceString.trim()!=""&&Pattern.matches(StringDepot.DOUBLE_REG_EX, priceString.trim())){
+		if(priceString!=null&&priceString.trim()!=""&&Pattern.matches(ConstantPool.DOUBLE_REG_EX, priceString.trim())){
 			price=Double.parseDouble(request.getParameter("price"));
 		}
 		if(meterId==null||price==null){
@@ -257,7 +257,7 @@ public class AdminController
 		if(meterIdString!=null&&meterIdString.trim()!=""){
 			meterId=Integer.parseInt(meterIdString);
 		}
-		if(valueString!=null&&valueString.trim()!=""&&Pattern.matches(StringDepot.INTEGER_REG_EX, valueString.trim())){
+		if(valueString!=null&&valueString.trim()!=""&&Pattern.matches(ConstantPool.INTEGER_REG_EX, valueString.trim())){
 			maxValue=new Long(valueString);
 		}
 		if(meterId==null||maxValue==null){
@@ -275,10 +275,10 @@ public class AdminController
 		String meterIdString=request.getParameter("meterId");
 		String meterStatusString=request.getParameter("meterStatus");
 		Byte meterStatus=null;
-		if(meterStatusString!=null&&meterStatusString.trim()!=""&&Pattern.matches(StringDepot.INTEGER_REG_EX, meterStatusString)){
+		if(meterStatusString!=null&&meterStatusString.trim()!=""&&Pattern.matches(ConstantPool.INTEGER_REG_EX, meterStatusString)){
 			meterStatus=Byte.parseByte(meterStatusString);
 		}
-		if(meterIdString==null||meterStatus==null||!Pattern.matches(StringDepot.INTEGER_ARRAY_REG_EX, meterIdString)){
+		if(meterIdString==null||meterStatus==null||!Pattern.matches(ConstantPool.INTEGER_ARRAY_REG_EX, meterIdString)){
 			result.put("flag", false);
 		}else{
 			result.put("flag", meterservice.tx_modifyStatus(meterIdString, meterStatus));
@@ -301,7 +301,7 @@ public class AdminController
 			Timestamp upDate=new Timestamp(sdf.parse(up_date).getTime());
 			Timestamp nowDate=new Timestamp(System.currentTimeMillis());
 			HistoricalPrice hp=new HistoricalPrice();
-			if(price!=null&&price.trim()!=""&&Pattern.matches(StringDepot.DOUBLE_REG_EX, price)){
+			if(price!=null&&price.trim()!=""&&Pattern.matches(ConstantPool.DOUBLE_REG_EX, price)){
 				hp.setPrice(new BigDecimal(price));//设置修改的价格
 			}
 			hp.setPriceOperator(user);//设置操作员

@@ -16,7 +16,7 @@ import gnu.io.SerialPortEventListener;
 import gnu.io.UnsupportedCommOperationException;
 
 public class SerialTool implements SerialPortEventListener {
-	static Enumeration portList;// 枚举类
+	static Enumeration<CommPortIdentifier> portList;// 枚举类
 	static CommPortIdentifier portId;
 	static SerialPort serialPort;
     private OutputStream outputStream;  
@@ -25,11 +25,13 @@ public class SerialTool implements SerialPortEventListener {
     private String receive="";
 	static final char[] HEX_CHAR_TABLE = { '0', '1', '2', '3', '4', '5', '6',  
         '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+	
 	/** 
      * 扫描本机的所有COM端口 
      *  
      */  
-    public void scanPorts(){
+    @SuppressWarnings("unchecked")
+	public void scanPorts(){
     	portList = CommPortIdentifier.getPortIdentifiers();
 //    	CommPortIdentifier portId;
 //		while (portList.hasMoreElements()) {
@@ -198,6 +200,7 @@ public class SerialTool implements SerialPortEventListener {
     	receive="";
     }
     public static void main(String[] args) {
+    	byte[] command1={(byte)0xFE,(byte)0x68,(byte)0xCC,(byte)0x68,(byte)0x37,(byte)0x82,(byte)0x11};
 		SerialTool st=new SerialTool();
 		st.scanPorts();
 		st.openSerialPort("COM3");
@@ -206,7 +209,9 @@ public class SerialTool implements SerialPortEventListener {
 		String in=null;
 		do{
 			in=sc.nextLine();
-			if("see".equals(in)){
+			if("find".equals(in)){
+				st.sendDataToSeriaPort(ConstantPool.READ_CONTACT_ADDRESS);
+			}else if("see".equals(in)){
 				System.out.println(st.getReceive());
 			}else if("cls".equals(in)){
 				st.cleanReceive();
