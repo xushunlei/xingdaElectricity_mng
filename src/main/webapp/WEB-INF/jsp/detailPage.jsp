@@ -103,7 +103,7 @@
 				            <option value="1">透支</option>
 				            <option value="2">拉闸</option>
 			            </select></li>
-			            <li class="right"><input type="button" value="读取" onclick="duqu()"/><span id="span1"></span></li>
+			            <li class="right"><input type="button" value="合闸" onclick="duqu()"/><span id="span1"></span></li>
                     </ul>
                     <span class="clearall"></span>
                 </div><!--msghead-->

@@ -111,7 +111,7 @@ public class SerialTool implements SerialPortEventListener {
         } catch (IOException e) {  
             e.printStackTrace();  
         }  
-    }  
+    }
     
     /** 
      * 关闭串行端口 
@@ -199,17 +199,80 @@ public class SerialTool implements SerialPortEventListener {
     public void cleanReceive(){
     	receive="";
     }
+    /**
+	 * 根据传入的电表地址获取拉闸命令
+	 * @param addr 传入的电表地址域，如：00 00 00 00 00 01
+	 * 若长度不足12自动补足；拼接命令帧时低位地址在前，高位在后，如：01 00 00 00 00 00
+	 * 拼完地址后将重新计算校验码，即shut_down_somebody的倒数第二个值
+	 * 计算校验码：从帧起始符开始到校验码之前的所有各字节的模256的和， 即各字节二进制 算术和，不计超过256的溢出值
+	 * @return
+	 */
+	public static byte[] getShutdownCommand(byte[] addr){
+		byte[] src=new byte[6];
+		for(int t=0;t<6;t++){
+			if(t<addr.length){
+				/*倒序*/
+				src[t]=addr[addr.length-1-t];
+			}else{
+				/*补位*/
+				src[t]=0x00;
+			}
+		}
+		/*计算校验码*/
+		byte[] reback=ConstantPool.getShut_down_somebody();
+		System.arraycopy(src, 0, reback, 2, 6);//替换地址值
+		int total=0;
+		for(int i=1;i<reback.length-2;i++){
+			total+=reback[i];
+		}
+		int mod = total % 256;  
+		String hex = Integer.toHexString(mod);  
+		int len = hex.length();  
+		if (len < 2) {  
+			hex = "0" + hex;  
+		}
+		reback[reback.length-2]=(byte) Long.parseLong(hex, 16);
+		return reback;
+	}
+	/**根据传入的电表地址获取合闸命令*/
+	public static byte[] getStartupCommand(byte[] addr){
+		byte[] src=new byte[6];
+		for(int t=0;t<6;t++){
+			if(t<addr.length){
+				src[t]=addr[addr.length-1-t];//倒序
+			}else{
+				src[t]=0x00;//补位
+			}
+		}
+		byte[] reback=ConstantPool.getStart_up_somebody();
+		System.arraycopy(src, 0, reback, 2, 6);//替换地址值
+		int total=0;
+		for(int i=1;i<reback.length-2;i++){
+			total+=reback[i];
+		}
+		int mod=total%256;//计算校验码
+		String hex=Integer.toHexString(mod);
+		int len = hex.length();  
+		if (len < 2) {  
+			hex = "0" + hex;  
+		}
+		//reback[reback.length-2]=Byte.decode("0x"+hex);
+		reback[reback.length-2]=(byte) Long.parseLong(hex, 16);//替换校验码
+		return reback;
+	}
     public static void main(String[] args) {
-    	byte[] command1={(byte)0xFE,(byte)0x68,(byte)0xCC,(byte)0x68,(byte)0x37,(byte)0x82,(byte)0x11};
 		SerialTool st=new SerialTool();
 		st.scanPorts();
-		st.openSerialPort("COM3");
+		st.openSerialPort("COM2");
 		st.setSeriaPortParam(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 		Scanner sc=new Scanner(System.in);
 		String in=null;
 		do{
 			in=sc.nextLine();
-			if("find".equals(in)){
+			if("send".equals(in)){
+				byte[] addr={0x04};
+				st.sendDataToSeriaPort(getStartupCommand(addr));
+			}else if("find".equals(in)){
 				st.sendDataToSeriaPort(ConstantPool.READ_CONTACT_ADDRESS);
 			}else if("see".equals(in)){
 				System.out.println(st.getReceive());

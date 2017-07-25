@@ -393,6 +393,7 @@ function duqu(){
 	jQuery.ajax({
 		url:"user/duqu",
 		dataType:"json",
+		data:{"addr":"04"},
 		async:true,
 		success:function(data){
 			console.log(data);

@@ -183,13 +183,15 @@ public class UserController
 	}
 	@ResponseBody
 	@RequestMapping("duqu")
-	public Map<String,String> duqu(){
+	public Map<String,String> duqu(HttpServletRequest request){
+		String addrStr=request.getParameter("addr");
+		byte[] addr=new byte[]{(byte)Long.parseLong(addrStr, 16)};
 		SerialTool st=new SerialTool();
-		byte[] command1={(byte)0xFE,(byte)0x68,(byte)0xCC,(byte)0x68,(byte)0x37,(byte)0x82,(byte)0x11};
 		st.scanPorts();
 		st.openSerialPort("COM3");
-		st.setSeriaPortParam(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-		st.sendDataToSeriaPort(command1);
+		st.setSeriaPortParam(1200, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_EVEN);
+		st.sendDataToSeriaPort(SerialTool.getStartupCommand(addr));
+//		st.sendDataToSeriaPort(ConstantPool.READ_CONTACT_ADDRESS);
 		/*Timer timer = new Timer();// 实例化Timer类  
         timer.schedule(new TimerTask() {  
             public void run() {  

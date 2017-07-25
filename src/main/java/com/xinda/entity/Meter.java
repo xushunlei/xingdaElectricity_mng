@@ -34,6 +34,11 @@ public class Meter
 
 	private Branch meterBranch;
 
+	private String meterContactAddress;
+	
+	private Integer meterRate;
+	
+	private String meterSerial;
 
 	public Integer getMeterId()
 	{
@@ -185,9 +190,45 @@ public class Meter
 		this.meterBranch = meterBranch;
 	}
 
+	public String getMeterContactAddress() {
+		return meterContactAddress;
+	}
+
+	public void setMeterContactAddress(String meterContactAddress) {
+		this.meterContactAddress = meterContactAddress;
+	}
+
+	public Integer getMeterRate() {
+		return meterRate;
+	}
+
+	public void setMeterRate(Integer meterRate) {
+		this.meterRate = meterRate;
+	}
+
+	public String getMeterSerial() {
+		return meterSerial;
+	}
+
+	public void setMeterSerial(String meterSerial) {
+		this.meterSerial = meterSerial;
+	}
+
 	@Override
-	public String toString()
-	{
-		return "Meter [meterId=" + meterId + ", meterNumber=" + meterNumber + ", meterType=" + meterType + ", meterStatus=" + meterStatus + ", meterTotalValue=" + meterTotalValue + ", meterMaxBalance=" + meterMaxBalance + ", meterBalance=" + meterBalance + ", meterPromptAmount=" + meterPromptAmount + ", meterStopAmount=" + meterStopAmount + ", meterMaxOverdraft=" + meterMaxOverdraft + ", meterCurrentOverdraft=" + meterCurrentOverdraft + ", meterTotalConsumption=" + meterTotalConsumption + ", electricityPrice=" + electricityPrice + ", meterUser=" + meterUser + ", meterBranch=" + meterBranch + "]";
+	public String toString() {
+		return "Meter [meterId=" + meterId + ", meterNumber=" + meterNumber
+				+ ", meterType=" + meterType + ", meterStatus=" + meterStatus
+				+ ", meterTotalValue=" + meterTotalValue + ", meterMaxBalance="
+				+ meterMaxBalance + ", meterBalance=" + meterBalance
+				+ ", meterPromptAmount=" + meterPromptAmount
+				+ ", meterStopAmount=" + meterStopAmount
+				+ ", meterMaxOverdraft=" + meterMaxOverdraft
+				+ ", meterCurrentOverdraft=" + meterCurrentOverdraft
+				+ ", meterTotalConsumption=" + meterTotalConsumption
+				+ ", electricityPrice=" + electricityPrice + ", meterUser="
+				+ meterUser + ", meterBranch=" + meterBranch
+				+ ", meterContactAddress=" + meterContactAddress
+				+ ", meterRate=" + meterRate + ", meterSerial=" + meterSerial
+				+ "]";
 	}
 }

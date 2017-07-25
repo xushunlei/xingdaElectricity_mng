@@ -15,13 +15,17 @@
     <result column="meter_current_overdraft" property="meterCurrentOverdraft" jdbcType="DECIMAL" />
     <result column="meter_total_consumption" property="meterTotalConsumption" jdbcType="DECIMAL" />
     <result column="electricity_price" property="electricityPrice" jdbcType="DECIMAL" />
+    <result column="meter_contact_address" property="meterContactAddress" jdbcType="VARCHAR"/>
+    <result column="meter_rate" property="meterRate" jdbcType="INTEGER"/>
+    <result column="meter_serial" property="meterSerial" jdbcType="VARCHAR"/>
     <association column="branch_number" property="meterBranch" resultMap="com.xinda.dao.BranchMapper.BaseResultMap"></association>
     <association column="user_account" property="meterUser" resultMap="com.xinda.dao.UserMapper.UserMap"></association>
   </resultMap>
   <sql id="Base_Column_List" >
     mid, meter_number, meter_type, meter_status, meter_total_value, meter_max_balance, 
     meter_balance, meter_prompt_amount, meter_stop_amount, meter_max_overdraft, meter_current_overdraft, 
-    meter_total_consumption, electricity_price, user_account, branch_number
+    meter_total_consumption, electricity_price, user_account, branch_number, meter_contact_address,
+    meter_rate, meter_serial
   </sql>
   <!-- <select id="selectUser" parameterType="java.lang.String" resultType="com.xinda.entity.User">
   	select * from user where user_account=#{userAccount}
@@ -163,7 +167,16 @@
   		meter_stop_amount=#{meterStopAmount},
   		</if>
   		<if test="meterTotalConsumption!=null">
-  		meter_total_consumption=#{meterTotalConsumption}
+  		meter_total_consumption=#{meterTotalConsumption},
+  		</if>
+  		<if test="meterContactAddress != null">
+  		meter_contact_address=#{meterContactAddress},
+  		</if>
+  		<if test="meterRate !=null">
+  		meter_rate=#{meterRate},
+  		</if>
+  		<if test="meterSerial!=null">
+  		meter_serial=#{meterSerial},
   		</if>
   	</set>
   	<where>
