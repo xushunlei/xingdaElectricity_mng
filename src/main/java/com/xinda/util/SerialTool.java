@@ -1,5 +1,7 @@
 package com.xinda.util;
 
+import java.awt.AWTException;
+import java.awt.Robot;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -105,12 +107,17 @@ public class SerialTool implements SerialPortEventListener {
      *  
      */  
     public void sendDataToSeriaPort(byte[] b) {  
+    	setReceive("");
         try {  
             outputStream.write(b);  
-            outputStream.flush();  
+            outputStream.flush();
+            Robot r=new Robot();
+			r.delay(600);//发送指令后等待500ms接收返回数据
         } catch (IOException e) {  
             e.printStackTrace();  
-        }  
+        } catch (AWTException e) {
+			e.printStackTrace();
+		}  
     }
     
     /** 
@@ -196,46 +203,37 @@ public class SerialTool implements SerialPortEventListener {
     public String getReceive(){
     	return receive;
     }
-    public void cleanReceive(){
+    private void setReceive(String receive) {
+		this.receive = receive;
+	}
+
+	public void cleanReceive(){
     	receive="";
     }
-    /**
-	 * 根据传入的电表地址获取拉闸命令
-	 * @param addr 传入的电表地址域，如：00 00 00 00 00 01
-	 * 若长度不足12自动补足；拼接命令帧时低位地址在前，高位在后，如：01 00 00 00 00 00
-	 * 拼完地址后将重新计算校验码，即shut_down_somebody的倒数第二个值
-	 * 计算校验码：从帧起始符开始到校验码之前的所有各字节的模256的和， 即各字节二进制 算术和，不计超过256的溢出值
-	 * @return
-	 */
+    /** 根据传入的电表地址获取拉闸命令*/
 	public static byte[] getShutdownCommand(byte[] addr){
-		byte[] src=new byte[6];
-		for(int t=0;t<6;t++){
-			if(t<addr.length){
-				/*倒序*/
-				src[t]=addr[addr.length-1-t];
-			}else{
-				/*补位*/
-				src[t]=0x00;
-			}
-		}
-		/*计算校验码*/
-		byte[] reback=ConstantPool.getShut_down_somebody();
-		System.arraycopy(src, 0, reback, 2, 6);//替换地址值
-		int total=0;
-		for(int i=1;i<reback.length-2;i++){
-			total+=reback[i];
-		}
-		int mod = total % 256;  
-		String hex = Integer.toHexString(mod);  
-		int len = hex.length();  
-		if (len < 2) {  
-			hex = "0" + hex;  
-		}
-		reback[reback.length-2]=(byte) Long.parseLong(hex, 16);
-		return reback;
+		byte[] reback=ConstantPool.SHUT_DOWN_SOMEONE;
+		return getCommand(addr,reback);
 	}
 	/**根据传入的电表地址获取合闸命令*/
 	public static byte[] getStartupCommand(byte[] addr){
+		//byte[] reback=ConstantPool.START_UP_SOMEONE;
+		return getCommand(addr,ConstantPool.START_UP_SOMEONE);
+	}
+	public static byte[] getValueCommand(byte[] addr){
+		return getCommand(addr,ConstantPool.READ_VALUE_SOMEONE);
+	}
+	/**
+	 * 根据给定的地址值和指令模版获取相应指令。
+	 * 1.地址值倒序后替换模版中的地址域，并补足长度到6字节。
+	 * 如：00 00 01处理后为01 00 00 00 00 00
+	 * 2.重新计算校验码使命令合法。指令的最后第二个值：
+	 * 从帧起始符开始到校验码之前的所有各字节的模256的和， 即各字节二进制 算术和，不计超过256的溢出值
+	 * @param addr 地址值
+	 * @param command 指令模版
+	 * @return 字节类型的指令，方便输出流输出
+	 */
+	private static byte[] getCommand(byte[] addr, byte[] command){
 		byte[] src=new byte[6];
 		for(int t=0;t<6;t++){
 			if(t<addr.length){
@@ -244,11 +242,10 @@ public class SerialTool implements SerialPortEventListener {
 				src[t]=0x00;//补位
 			}
 		}
-		byte[] reback=ConstantPool.getStart_up_somebody();
-		System.arraycopy(src, 0, reback, 2, 6);//替换地址值
+		System.arraycopy(src, 0, command, 2, 6);//替换地址值
 		int total=0;
-		for(int i=1;i<reback.length-2;i++){
-			total+=reback[i];
+		for(int i=1;i<command.length-2;i++){
+			total+=command[i];
 		}
 		int mod=total%256;//计算校验码
 		String hex=Integer.toHexString(mod);
@@ -256,9 +253,8 @@ public class SerialTool implements SerialPortEventListener {
 		if (len < 2) {  
 			hex = "0" + hex;  
 		}
-		//reback[reback.length-2]=Byte.decode("0x"+hex);
-		reback[reback.length-2]=(byte) Long.parseLong(hex, 16);//替换校验码
-		return reback;
+		command[command.length-2]=(byte) Long.parseLong(hex, 16);//替换校验码
+		return command;
 	}
     public static void main(String[] args) {
 		SerialTool st=new SerialTool();

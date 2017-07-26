@@ -46,6 +46,7 @@ public interface MeterService
 	 */
 	public Meter findByNumber(String meterNum);
 	/**查找所有电表*/
+	public List<Meter> findAllMeters();
 	public List<Meter> findAllMeters(Integer currentPage, Integer pageSize);
 	
 	public Integer findAllMetersCount();

@@ -190,7 +190,7 @@ public class UserController
 		st.scanPorts();
 		st.openSerialPort("COM3");
 		st.setSeriaPortParam(1200, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_EVEN);
-		st.sendDataToSeriaPort(SerialTool.getStartupCommand(addr));
+		st.sendDataToSeriaPort(SerialTool.getValueCommand(addr));
 //		st.sendDataToSeriaPort(ConstantPool.READ_CONTACT_ADDRESS);
 		/*Timer timer = new Timer();// 实例化Timer类  
         timer.schedule(new TimerTask() {  
@@ -200,12 +200,12 @@ public class UserController
             }  
         }, 5000);// 这里百毫秒  
         System.out.println("本程序存在5秒后自动退出");*/ 
-		try {
+		/*try {
 			Robot r=new Robot();
 			r.delay(5000);
 		} catch (AWTException e) {
 			e.printStackTrace();
-		}
+		}*/
 		String redata=st.getReceive();
 		st.closeSerialPort();
 		System.out.println(":::>"+redata);

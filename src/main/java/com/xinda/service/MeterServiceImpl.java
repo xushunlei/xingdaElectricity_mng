@@ -85,6 +85,10 @@ public class MeterServiceImpl implements MeterService
 	}
 
 	@Override
+	public List<Meter> findAllMeters(){
+		return meterDao.selectAllMeters(null,null);
+	}
+	@Override
 	public List<Meter> findAllMeters(Integer currentPage, Integer pageSize)
 	{
 		List<Meter> rList=meterDao.selectAllMeters((currentPage-1)*pageSize,pageSize);
