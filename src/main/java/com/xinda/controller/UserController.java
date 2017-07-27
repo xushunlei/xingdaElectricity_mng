@@ -2,8 +2,6 @@ package com.xinda.controller;
 
 import gnu.io.SerialPort;
 
-import java.awt.AWTException;
-import java.awt.Robot;
 import java.util.HashMap;
 import java.util.Map;
 

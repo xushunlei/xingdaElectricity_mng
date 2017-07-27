@@ -57,11 +57,19 @@ public class SerialTool implements SerialPortEventListener {
      */  
     public void openSerialPort(String portname){
     	try {  
-            portId = CommPortIdentifier.getPortIdentifier(portname);  
+            portId = CommPortIdentifier.getPortIdentifier(portname); 
+          //打开串口
+    		serialPort = (SerialPort) portId.open("SimpleReadApp", 2000);
+    		serialPort.addEventListener(this);
         } catch (NoSuchPortException e) {  
             System.out.println("抱歉,没有找到" + portname + "串行端口号!");  
             return;  
-        }
+        } catch (PortInUseException e) {
+	    	System.out.println(serialPort.getName() + "端口已被占用,请检查!");  
+	    	return;
+        } catch (TooManyListenersException e) {
+			e.printStackTrace();
+		}
     }
     
     /** 
@@ -73,13 +81,13 @@ public class SerialTool implements SerialPortEventListener {
      * @param parity 校验
      */
     public void setSeriaPortParam(int rate, int data, int stop, int parity){
-    	//打开串口
+    	/*//打开串口
     	try {
 			serialPort = (SerialPort) portId.open("SimpleReadApp", 2000);
 		} catch (PortInUseException e) {
 			System.out.println(serialPort.getName() + "端口已被占用,请检查!");  
             return;
-		}
+		}*/
     	//设置串口参数
     	try {
 			serialPort.setSerialPortParams(rate, data, stop, parity);
@@ -94,11 +102,11 @@ public class SerialTool implements SerialPortEventListener {
 			e.printStackTrace();
 		}  
     	// 给端口添加监听器
-    	try {
+    	/*try {
 			serialPort.addEventListener(this);
 		} catch (TooManyListenersException e) {
 			e.printStackTrace();
-		}
+		}*/
     	serialPort.notifyOnDataAvailable(true);
     }
 
@@ -259,15 +267,19 @@ public class SerialTool implements SerialPortEventListener {
     public static void main(String[] args) {
 		SerialTool st=new SerialTool();
 		st.scanPorts();
-		st.openSerialPort("COM2");
-		st.setSeriaPortParam(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+		st.openSerialPort("COM3");
+		st.setSeriaPortParam(4800, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_EVEN);
 		Scanner sc=new Scanner(System.in);
 		String in=null;
 		do{
 			in=sc.nextLine();
-			if("send".equals(in)){
-				byte[] addr={0x04};
+			byte[] addr={0x02,0x01,0x70,0x46,0x75,0x44};
+			if("open".equals(in)){
 				st.sendDataToSeriaPort(getStartupCommand(addr));
+			}else if("close".equals(in)){
+				st.sendDataToSeriaPort(getShutdownCommand(addr));
+			}else if("read".equals(in)){
+				st.sendDataToSeriaPort(getValueCommand(addr));
 			}else if("find".equals(in)){
 				st.sendDataToSeriaPort(ConstantPool.READ_CONTACT_ADDRESS);
 			}else if("see".equals(in)){

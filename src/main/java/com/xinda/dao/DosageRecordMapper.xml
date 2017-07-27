@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinda.dao.DosageRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.xinda.entity.DosageRecord" >
+    <id column="dr_id" property="drId" jdbcType="INTEGER" />
+    <result column="run_day" property="runDay" jdbcType="DATE" />
+    <result column="dosage" property="dosage" jdbcType="DECIMAL" />
+    <result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
+    <result column="total_price" property="totalPrice" jdbcType="DECIMAL" />
+    <association column="dr_meter" property="drMeter" resultMap="com.xinda.dao.MeterMapper.BaseResultMap"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    dr_id, run_day, dr_meter, dosage, unit_price, total_price
+  </sql>
+  <select id="selectByMeter" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * 
+  	from dosage_record dr 
+  	left join meter m 
+  	on dr.dr_meter=m.meter_number 
+  	where dr_meter=#{meterNumber}
+  </select>
+  <insert id="insert" parameterType="com.xinda.entity.DosageRecord" >
+    insert into dosage_record (dr_id, run_day, dr_meter, 
+      dosage, unit_price, total_price)
+    values (#{drId,jdbcType=INTEGER}, #{runDay,jdbcType=DATE}, #{drMeter,jdbcType=VARCHAR}, 
+      #{dosage,jdbcType=DECIMAL}, #{unitPrice}, #{totalPrice})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xinda.entity.DosageRecord" >
+    insert into dosage_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="drId != null" >
+        dr_id,
+      </if>
+        run_day,
+      <if test="drMeter != null" >
+        dr_meter,
+      </if>
+      <if test="dosage != null" >
+        dosage,
+      </if>
+      <if test="unitPrice != null">
+      	unit_price,
+      </if>
+      <if test="totalPrice != null">
+      	total_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="drId != null" >
+        #{drId,jdbcType=INTEGER},
+      </if>
+        CURDATE(),
+      <if test="drMeter != null" >
+        #{drMeter,jdbcType=VARCHAR},
+      </if>
+      <if test="dosage != null" >
+        #{dosage,jdbcType=DECIMAL},
+      </if>
+      <if test="unitPrice != null">
+      	#{unitPrice},
+      </if>
+      <if test="totalPrice != null">
+      	#{totalPrice},
+      </if>
+    </trim>
+  </insert>
+</mapper>

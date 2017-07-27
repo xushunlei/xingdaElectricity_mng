@@ -1,10 +1,19 @@
 package com.xinda.task;
 
+import gnu.io.SerialPort;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.xinda.entity.Meter;
+import com.xinda.service.MeterService;
+import com.xinda.util.SerialTool;
+
 @Component//实现类上要有组件的注解@Component
 public class DemoTask {
+	@Autowired
+	private MeterService meterService;
 	/*CronTrigger配置完整格式为： [秒] [分] [小时] [日] [月] [周] ([年])
 	 * 允许的值[0-59] [0-59] [0-23] [1-31] [1-12或JAN-DEC] [1-7或SUN-SAT] [empty 或1970-2099]
 	 * 通配符：
@@ -28,13 +37,35 @@ public class DemoTask {
 	 * 			例如在日字段上设置"15W"，表示离每月15号最近的那个工作日触发。
 	 * 			(注，"W"前只能设置具体的数字,不允许区间"-"。日字段'LW',意为"该月最后一个工作日")。
 	 */
-	@Scheduled(cron="0 15 10 ? * 6")//需要写在实现方法上
+	//@Scheduled(cron="0 49 13 * * ?")//需要写在实现方法上
 	public void sayHi(){
 	/*定时器的任务方法不能有返回值
 	 * （如果有返回值，spring初始化的时候会告诉你有个错误、需要设定一个proxytargetclass的某个值为true）*/
+		SerialTool st = new SerialTool();
+		st.scanPorts();
+		st.openSerialPort("COM3");
+		st.setSeriaPortParam(1200, SerialPort.DATABITS_8,
+				SerialPort.STOPBITS_1, SerialPort.PARITY_EVEN);
+		for (Meter m : meterService.findAllMeters()){
+			String addrStr = m.getMeterContactAddress();
+			if(addrStr==null||addrStr.trim()==""){
+				continue;
+			}
+			double oldval = Double.parseDouble(
+					m.getMeterTotalValue()==null?"0":m.getMeterTotalValue());
+			int len = addrStr.length();
+			byte[] addr = new byte[len / 2];
+			for (int i = 0; i < len; i += 2) {
+				addr[i / 2] = (byte) Long.parseLong(addrStr.substring(i, i + 2));
+			}
+			st.sendDataToSeriaPort(SerialTool.getValueCommand(addr));
+			String redata = st.getReceive();
+			System.out.println("getword:"+redata);
+		}
+		st.closeSerialPort();
 		System.out.println("hey");
 	}
-	//@Scheduled(fixedRate = 1000 * 10)//10秒执行一次
+	//@Scheduled(fixedRate = 1000 * 10)//表示从上一个任务开始到下一个任务开始的间隔.10秒执行一次
 	public void job(){
 		System.out.println("to do something...");
 	}
