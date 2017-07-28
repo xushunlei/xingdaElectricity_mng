@@ -9,6 +9,8 @@ import java.util.Enumeration;
 import java.util.Scanner;
 import java.util.TooManyListenersException;
 
+import org.springframework.util.StringUtils;
+
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
@@ -23,8 +25,8 @@ public class SerialTool implements SerialPortEventListener {
 	static SerialPort serialPort;
     private OutputStream outputStream;  
     private InputStream inputStream;
-    private int packetlength=1;
-    private String receive="";
+    private int packetlength=2;
+    private StringBuffer receive=new StringBuffer("");
 	static final char[] HEX_CHAR_TABLE = { '0', '1', '2', '3', '4', '5', '6',  
         '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 	
@@ -81,8 +83,8 @@ public class SerialTool implements SerialPortEventListener {
      * @param parity 校验
      */
     public void setSeriaPortParam(int rate, int data, int stop, int parity){
-    	/*//打开串口
-    	try {
+    	//打开串口
+    	/*try {
 			serialPort = (SerialPort) portId.open("SimpleReadApp", 2000);
 		} catch (PortInUseException e) {
 			System.out.println(serialPort.getName() + "端口已被占用,请检查!");  
@@ -115,7 +117,7 @@ public class SerialTool implements SerialPortEventListener {
      *  
      */  
     public void sendDataToSeriaPort(byte[] b) {  
-    	setReceive("");
+    	cleanReceive();
         try {  
             outputStream.write(b);  
             outputStream.flush();
@@ -163,8 +165,8 @@ public class SerialTool implements SerialPortEventListener {
 			break;
 		case SerialPortEvent.DATA_AVAILABLE:/* 端口有可用数据。读到缓冲数组，输出到终端 */
 			//数据处理  
-            String data=toHexString(getPack(packetlength));  
-            receive+=data;  
+			String data=toHexString(getPack(packetlength));
+            receive.append(data);  
             System.out.println("返回数据"+data);
 		}
 	}
@@ -209,14 +211,11 @@ public class SerialTool implements SerialPortEventListener {
     }
     
     public String getReceive(){
-    	return receive;
+    	return receive.toString();
     }
-    private void setReceive(String receive) {
-		this.receive = receive;
-	}
 
 	public void cleanReceive(){
-    	receive="";
+    	receive=new StringBuffer("");
     }
     /** 根据传入的电表地址获取拉闸命令*/
 	public static byte[] getShutdownCommand(byte[] addr){
@@ -233,24 +232,23 @@ public class SerialTool implements SerialPortEventListener {
 	}
 	/**
 	 * 根据给定的地址值和指令模版获取相应指令。
-	 * 1.地址值倒序后替换模版中的地址域，并补足长度到6字节。
-	 * 如：00 00 01处理后为01 00 00 00 00 00
+	 * 1.地址值替换模版中的地址域。
 	 * 2.重新计算校验码使命令合法。指令的最后第二个值：
 	 * 从帧起始符开始到校验码之前的所有各字节的模256的和， 即各字节二进制 算术和，不计超过256的溢出值
-	 * @param addr 地址值
+	 * @param addr 地址值,必须是6字节长度且经过倒序处理
 	 * @param command 指令模版
 	 * @return 字节类型的指令，方便输出流输出
 	 */
 	private static byte[] getCommand(byte[] addr, byte[] command){
-		byte[] src=new byte[6];
+		/*byte[] src=new byte[6];
 		for(int t=0;t<6;t++){
 			if(t<addr.length){
 				src[t]=addr[addr.length-1-t];//倒序
 			}else{
 				src[t]=0x00;//补位
 			}
-		}
-		System.arraycopy(src, 0, command, 2, 6);//替换地址值
+		}*/
+		System.arraycopy(addr, 0, command, 2, 6);//替换地址值
 		int total=0;
 		for(int i=1;i<command.length-2;i++){
 			total+=command[i];
@@ -267,19 +265,24 @@ public class SerialTool implements SerialPortEventListener {
     public static void main(String[] args) {
 		SerialTool st=new SerialTool();
 		st.scanPorts();
-		st.openSerialPort("COM3");
+		st.openSerialPort("COM2");
 		st.setSeriaPortParam(4800, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_EVEN);
+		String addrStr="020170467544";
+		int len = addrStr.length();
+		byte[] addr2 = new byte[6];
+		for (int i = 0; i < len/2; i++) {
+			addr2[i]=(byte) Long.parseLong(addrStr.substring(len-i*2-2, len-i*2),16);
+		}
 		Scanner sc=new Scanner(System.in);
 		String in=null;
 		do{
 			in=sc.nextLine();
-			byte[] addr={0x02,0x01,0x70,0x46,0x75,0x44};
 			if("open".equals(in)){
-				st.sendDataToSeriaPort(getStartupCommand(addr));
+				st.sendDataToSeriaPort(getStartupCommand(addr2));
 			}else if("close".equals(in)){
-				st.sendDataToSeriaPort(getShutdownCommand(addr));
+				st.sendDataToSeriaPort(getShutdownCommand(addr2));
 			}else if("read".equals(in)){
-				st.sendDataToSeriaPort(getValueCommand(addr));
+				st.sendDataToSeriaPort(getValueCommand(addr2));
 			}else if("find".equals(in)){
 				st.sendDataToSeriaPort(ConstantPool.READ_CONTACT_ADDRESS);
 			}else if("see".equals(in)){

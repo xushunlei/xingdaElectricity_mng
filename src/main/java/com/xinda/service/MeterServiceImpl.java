@@ -169,16 +169,21 @@ public class MeterServiceImpl implements MeterService
 		SerialTool st=new SerialTool();
 		st.scanPorts();
 		st.openSerialPort("COM3");
-		st.setSeriaPortParam(1200, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_EVEN);
 		
 		for(String meterId:meterIds.split(",")){
 			Meter meter=meterDao.selectMeterById(Integer.parseInt(meterId));
+			st.setSeriaPortParam(meter.getMeterRate(), SerialPort.DATABITS_8,
+					SerialPort.STOPBITS_1, SerialPort.PARITY_EVEN);
 			meter.setMeterStatus(meterStatus);//更改状态
 			String addrStr=meter.getMeterContactAddress();//获取通讯地址
+			if(addrStr.length()%2==1){
+				addrStr="0"+addrStr;
+			}
 			int len=addrStr.length();
-			byte[] addr=new byte[len/2];
-			for(int i=0;i<len;i+=2){
-				addr[i/2]=(byte)Long.parseLong(addrStr.substring(i, i+2));
+			byte[] addr=new byte[6];
+			for(int i=0;i<len/2;i++){
+				//完成了地址域的倒序和补位
+				addr[i]=(byte) Long.parseLong(addrStr.substring(len-i*2-2, len-i*2),16);
 			}
 			if(meterStatus==0){//供电
 				st.sendDataToSeriaPort(SerialTool.getStartupCommand(addr));
@@ -187,8 +192,6 @@ public class MeterServiceImpl implements MeterService
 			}
 			String redata=st.getReceive();
 			System.out.println(redata);
-			//int rate=meter.getMeterRate();//获取波特率
-			//String serialname=meter.getMeterSerial();//获取端口号
 			int t=meterDao.updateMeterById(meter);
 			if(t!=1){
 				throw new RuntimeException("rollback tx_modifyStatus()");
