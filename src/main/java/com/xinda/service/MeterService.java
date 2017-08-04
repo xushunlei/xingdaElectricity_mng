@@ -68,7 +68,7 @@ public interface MeterService
 	 * @param meterId 操作电表ID
 	 * @param overdraft 最大透支金额
 	 */
-	public boolean tx_markOverdraft(Integer meterId, Long overdraft);
+	public boolean tx_markOverdraft(Integer meterId, BigDecimal overdraft);
 	/**更改电表状态*/
 	public boolean tx_modifyStatus(String meterIds, Byte meterStatus);
 }

@@ -18,6 +18,7 @@ public interface PriceService
 	 * @param HistoricalPrice 
 	 */
 	public boolean tx_editPrice(HistoricalPrice hp);
+	public void tx_autoModify();
 	/**
 	 * 查询历史电价
 	 * @return list 电价列表

@@ -9,8 +9,6 @@ import java.util.Enumeration;
 import java.util.Scanner;
 import java.util.TooManyListenersException;
 
-import org.springframework.util.StringUtils;
-
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
@@ -26,7 +24,7 @@ public class SerialTool implements SerialPortEventListener {
     private OutputStream outputStream;  
     private InputStream inputStream;
     private int packetlength=2;
-    private StringBuffer receive=new StringBuffer("");
+    private StringBuffer receive=new StringBuffer();
 	static final char[] HEX_CHAR_TABLE = { '0', '1', '2', '3', '4', '5', '6',  
         '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 	
@@ -215,7 +213,8 @@ public class SerialTool implements SerialPortEventListener {
     }
 
 	public void cleanReceive(){
-    	receive=new StringBuffer("");
+//    	receive=new StringBuffer("");
+		receive.setLength(0);
     }
     /** 根据传入的电表地址获取拉闸命令*/
 	public static byte[] getShutdownCommand(byte[] addr){

@@ -22,7 +22,7 @@ public class Meter
 
 	private Long meterStopAmount;
 
-	private Long meterMaxOverdraft;
+	private BigDecimal meterMaxOverdraft;
 
 	private BigDecimal meterCurrentOverdraft;
 
@@ -130,12 +130,12 @@ public class Meter
 		this.meterStopAmount = meterStopAmount;
 	}
 
-	public Long getMeterMaxOverdraft()
+	public BigDecimal getMeterMaxOverdraft()
 	{
 		return meterMaxOverdraft;
 	}
 
-	public void setMeterMaxOverdraft(Long meterMaxOverdraft)
+	public void setMeterMaxOverdraft(BigDecimal meterMaxOverdraft)
 	{
 		this.meterMaxOverdraft = meterMaxOverdraft;
 	}

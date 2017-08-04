@@ -282,7 +282,7 @@ function modifyStatus(meterId,obj){
 		data:{"meterId":meterId,"meterStatus":t},
 		dataType:"json",
 		error:function(){
-			alert("大错");
+			alert("通讯失败");
 		},
 		success:function(result){
 			if(result.flag){

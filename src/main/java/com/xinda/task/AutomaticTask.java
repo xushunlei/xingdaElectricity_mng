@@ -24,10 +24,10 @@ public class AutomaticTask {
 	@Autowired
 	private DosageRecordService dosageService;
 
-	/**0 0 4 * ? *
+	/**30 0 4 * ? *
 	 * 记录每日消费额 每天4点统计
 	 */
-	@Scheduled(cron = "0 0/2 14 * * ?")
+	@Scheduled(cron = "30 0 4 * * ?")
 	public void consumptionByDay() {
 		BigDecimal price = priceService.findPriceByActive((byte) 1).getPrice();
 		SerialTool st = new SerialTool();
@@ -53,7 +53,6 @@ public class AutomaticTask {
 			int len = addrStr.length();
 			byte[] addr = new byte[6];
 			for (int i = 0; i < len/2; i ++) {
-//				addr[5-i/2] = (byte) Long.parseLong(addrStr.substring(i, i + 2),16);
 				//完成了地址域的倒序和补位
 				addr[i]=(byte) Long.parseLong(addrStr.substring(len-i*2-2, len-i*2),16);
 			}
@@ -82,12 +81,18 @@ public class AutomaticTask {
 						m.setMeterBalance(BigDecimal.ZERO);
 						m.setMeterCurrentOverdraft(m.getMeterCurrentOverdraft()
 								.add(consumption).subtract(balance));
+						if(m.getMeterMaxOverdraft().compareTo(m.getMeterCurrentOverdraft())<=0){//透支额度用尽
+							st.sendDataToSeriaPort(SerialTool.getShutdownCommand(addr));
+							m.setMeterStatus((byte)2);//拉闸
+						}else{
+							m.setMeterStatus((byte)1);//透支
+						}
 					} else {
 						m.setMeterBalance(balance.subtract(consumption));
 					}
 					m.setMeterTotalConsumption(m.getMeterTotalConsumption().add(consumption));
 					System.out.println(m);
-					//meterService.saveMeter(m);
+					meterService.saveMeter(m);
 					DosageRecord record = new DosageRecord();
 					record.setDosage(useval);
 					record.setUnitPrice(price);
@@ -101,5 +106,15 @@ public class AutomaticTask {
 			}
 		}
 		st.closeSerialPort();
+	}
+	/**
+	 * 每天00:00搜查2遍数据库中有没有当天要改电价的记录，有的话将电价修改
+	 */
+	@Scheduled(cron="0/30 0 0 * * ?")
+	public void rechargePrice(){
+		if(priceService.findPriceByActive((byte)0)==null){//不存在待改价记录
+			return;
+		}
+		priceService.tx_autoModify();
 	}
 }

@@ -252,13 +252,13 @@ public class AdminController
 		Map<String,Object> result=new HashMap<String, Object>();
 		String meterIdString=request.getParameter("meterId");
 		String valueString=request.getParameter("maxValue");
-		Long maxValue=null;
+		BigDecimal maxValue=null;
 		Integer meterId=null;
 		if(meterIdString!=null&&meterIdString.trim()!=""){
 			meterId=Integer.parseInt(meterIdString);
 		}
 		if(valueString!=null&&valueString.trim()!=""&&Pattern.matches(ConstantPool.INTEGER_REG_EX, valueString.trim())){
-			maxValue=new Long(valueString);
+			maxValue=new BigDecimal(valueString);
 		}
 		if(meterId==null||maxValue==null){
 			result.put("flag", false);

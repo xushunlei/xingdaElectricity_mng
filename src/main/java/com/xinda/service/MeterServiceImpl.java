@@ -150,7 +150,7 @@ public class MeterServiceImpl implements MeterService
 	}
 	@Override
 	@Transactional
-	public boolean tx_markOverdraft(Integer meterId, Long overdraft) {
+	public boolean tx_markOverdraft(Integer meterId, BigDecimal overdraft) {
 		Meter meter = new Meter();
 		meter.setMeterMaxOverdraft(overdraft);
 		meter.setMeterId(meterId);

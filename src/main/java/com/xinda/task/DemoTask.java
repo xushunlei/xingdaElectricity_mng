@@ -37,7 +37,7 @@ public class DemoTask {
 	 * 			例如在日字段上设置"15W"，表示离每月15号最近的那个工作日触发。
 	 * 			(注，"W"前只能设置具体的数字,不允许区间"-"。日字段'LW',意为"该月最后一个工作日")。
 	 */
-	//@Scheduled(cron="0 49 13 * * ?")//需要写在实现方法上
+	@Scheduled(cron="0 49 3 * * ?")//需要写在实现方法上
 	public void sayHi(){
 	/*定时器的任务方法不能有返回值
 	 * （如果有返回值，spring初始化的时候会告诉你有个错误、需要设定一个proxytargetclass的某个值为true）*/
@@ -51,8 +51,6 @@ public class DemoTask {
 			if(addrStr==null||addrStr.trim()==""){
 				continue;
 			}
-			double oldval = Double.parseDouble(
-					m.getMeterTotalValue()==null?"0":m.getMeterTotalValue());
 			int len = addrStr.length();
 			byte[] addr = new byte[len / 2];
 			for (int i = 0; i < len; i += 2) {
@@ -68,5 +66,6 @@ public class DemoTask {
 	//@Scheduled(fixedRate = 1000 * 10)//表示从上一个任务开始到下一个任务开始的间隔.10秒执行一次
 	public void job(){
 		System.out.println("to do something...");
+		
 	}
 }

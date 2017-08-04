@@ -2,7 +2,12 @@ package com.xinda.controller;
 
 import gnu.io.SerialPort;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -210,5 +215,34 @@ public class UserController
 		Map<String,String> reMap=new HashMap<String,String>();
 		reMap.put("data", redata);
 		return reMap;
+	}
+	static String[] mmp={"257","264","251","196","207","226","270"};
+	@ResponseBody
+	@RequestMapping("cao")
+	public List<List<String>> ceshi(){
+		List<String> xVal=new ArrayList<String>();
+		List<String> sereis=new ArrayList<String>();
+		List<List<String>> result=new ArrayList<List<String>>();
+		for(int i=0;i<5;i++){
+			/*SimpleDateFormat sdf=new SimpleDateFormat("mm:ss");
+			xVal.add(sdf.format(new Date(System.currentTimeMillis())));*/
+			sereis.add(mmp[i]);
+			xVal.add("数据项"+i);
+			//sereis.add(Integer.toString((int)(Math.random()*300)+200));
+		}
+		String temp=mmp[0];
+		System.arraycopy(mmp, 1, mmp, 0, mmp.length-1);
+		mmp[mmp.length-1]=temp;
+		result.add(xVal);
+		result.add(sereis);
+		return result;
+	}
+	@ResponseBody
+	@RequestMapping("ni")
+	public List<String> ceshi2(){
+		List<String> result=new ArrayList<String>();
+		result.add(Integer.toString((int)(Math.random()*100)+200));
+		result.add("数据项"+(int)(Math.random()*10));
+		return result;
 	}
 }

@@ -51,7 +51,22 @@ public class PriceServiceImpl implements PriceService {
 			return b;
 //		}
 	}
-
+	@Override
+	public void tx_autoModify(){
+		HistoricalPrice hp_0=priceDao.selectByActive((byte)0);
+		if(hp_0!=null){
+			int i=0;
+			HistoricalPrice hp_1=priceDao.selectByActive((byte)1);
+			hp_1.setActive((byte)2);
+			hp_1.setExpiredDate(new Timestamp(System.currentTimeMillis()));
+			i+=priceDao.updateHistoricalPrice(hp_1);
+			hp_0.setActive((byte)1);
+			i+=priceDao.updateHistoricalPrice(hp_0);
+			if(i!=2){
+				throw new RuntimeException("what happened");
+			}
+		}
+	}
 	@Override
 	public List<HistoricalPrice> inquireHistoricalPrices() {
 		// TODO Auto-generated method stub
