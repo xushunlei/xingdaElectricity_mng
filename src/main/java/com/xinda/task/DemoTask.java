@@ -47,7 +47,7 @@ public class DemoTask {
 		st.setSeriaPortParam(1200, SerialPort.DATABITS_8,
 				SerialPort.STOPBITS_1, SerialPort.PARITY_EVEN);
 		for (Meter m : meterService.findAllMeters()){
-			String addrStr = m.getMeterContactAddress();
+			String addrStr = m.getMeterAddress();
 			if(addrStr==null||addrStr.trim()==""){
 				continue;
 			}

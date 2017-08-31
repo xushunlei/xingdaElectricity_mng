@@ -55,8 +55,8 @@ function modifyPrice(){
 	<center>
 	<form id="price_form">
 		<table>
-			<tr><td>当前电价：</td><td><span id="show_price">${currPrice.price }</span>元/度</td><td>*自<span id="show_start_date" >${currPrice.startDateStr }</span>起计费</td></tr>
-			<tr><td>最近修改：</td><td><span id="recent_change_date">${futurePrice.startDateStr }</span>起，电价改为：<span id="recent_change_price">${futurePrice.price }</span>元/度</td></tr>
+			<tr><td>当前电价：</td><td><span id="show_price">${currPrice.priceValue }</span>元/度</td><td>*自<span id="show_start_date" >${currPrice.priceStartDateStr }</span>起计费</td></tr>
+			<tr><td>最近修改：</td><td><span id="recent_change_date">${futurePrice.priceStartDateStr }</span>起，电价改为：<span id="recent_change_price">${futurePrice.priceValue }</span>元/度</td></tr>
 			<tr><td>修改电价：</td><td><input style="width:40px;padding:0" name="new_price">元/度</td></tr>
 			<tr><td>启用时间：</td><td><input id="usedate" class="Wdate" name="up_date"></td></tr>
 			<tr><td>短信通知</td><td><label><input type="radio" name="sendable" value="1">是</label><label><input type="radio" name="sendable" value="0" checked="checked">否</label></td></tr>

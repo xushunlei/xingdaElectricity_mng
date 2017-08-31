@@ -2,233 +2,211 @@ package com.xinda.entity;
 
 import java.math.BigDecimal;
 
-public class Meter
-{
-	private Integer meterId;
+public class Meter {
+    private Integer meterId;
 
-	private String meterNumber;
+    private String meterName;
 
-	private Byte meterType;
+    private String meterDescription;
 
-	private Byte meterStatus;
+    private Integer meterType;
 
-	private String meterTotalValue;
+    private Integer meterStatus;
 
-	private BigDecimal meterMaxBalance;
+    private String meterAddress;
 
-	private BigDecimal meterBalance;
+    private Integer meterRate;
 
-	private Long meterPromptAmount;
+    private String meterPort;
 
-	private Long meterStopAmount;
+    private String meterUserName;
 
-	private BigDecimal meterMaxOverdraft;
+    private String meterUserIdcard;
 
-	private BigDecimal meterCurrentOverdraft;
+    private String meterUserMobile;
 
-	private BigDecimal meterTotalConsumption;
+    private String meterUserAddress;
 
-	private BigDecimal electricityPrice;
+    private BigDecimal meterBalance;
 
-	private User meterUser;
+    private BigDecimal meterTotalPay;
 
-	private Branch meterBranch;
+    private BigDecimal meterValue;
 
-	private String meterContactAddress;
-	
-	private Integer meterRate;
-	
-	private String meterSerial;
+    private BigDecimal meterMaxOverdraft;
 
-	public Integer getMeterId()
-	{
-		return meterId;
+    private BigDecimal meterCurrOverdraft;
+
+    private Zone meterFromZone;
+
+    private Proxy meterFromProxy;
+
+    public Integer getMeterId() {
+        return meterId;
+    }
+
+    public void setMeterId(Integer meterId) {
+        this.meterId = meterId;
+    }
+
+    public String getMeterName() {
+        return meterName;
+    }
+
+    public void setMeterName(String meterName) {
+        this.meterName = meterName == null ? null : meterName.trim();
+    }
+
+    public String getMeterDescription() {
+        return meterDescription;
+    }
+
+    public void setMeterDescription(String meterDescription) {
+        this.meterDescription = meterDescription == null ? null : meterDescription.trim();
+    }
+
+    public Integer getMeterType() {
+        return meterType;
+    }
+
+    public void setMeterType(Integer meterType) {
+        this.meterType = meterType;
+    }
+
+    public Integer getMeterStatus() {
+        return meterStatus;
+    }
+
+    public void setMeterStatus(Integer meterStatus) {
+        this.meterStatus = meterStatus;
+    }
+
+    public String getMeterAddress() {
+        return meterAddress;
+    }
+
+    public void setMeterAddress(String meterAddress) {
+        this.meterAddress = meterAddress == null ? null : meterAddress.trim();
+    }
+
+    public Integer getMeterRate() {
+        return meterRate;
+    }
+
+    public void setMeterRate(Integer meterRate) {
+        this.meterRate = meterRate;
+    }
+
+    public String getMeterPort() {
+        return meterPort;
+    }
+
+    public void setMeterPort(String meterPort) {
+        this.meterPort = meterPort == null ? null : meterPort.trim();
+    }
+
+    public String getMeterUserName() {
+        return meterUserName;
+    }
+
+    public void setMeterUserName(String meterUserName) {
+        this.meterUserName = meterUserName == null ? null : meterUserName.trim();
+    }
+
+    public String getMeterUserIdcard() {
+        return meterUserIdcard;
+    }
+
+    public void setMeterUserIdcard(String meterUserIdcard) {
+        this.meterUserIdcard = meterUserIdcard == null ? null : meterUserIdcard.trim();
+    }
+
+    public String getMeterUserMobile() {
+        return meterUserMobile;
+    }
+
+    public void setMeterUserMobile(String meterUserMobile) {
+        this.meterUserMobile = meterUserMobile == null ? null : meterUserMobile.trim();
+    }
+
+    public String getMeterUserAddress() {
+        return meterUserAddress;
+    }
+
+    public void setMeterUserAddress(String meterUserAddress) {
+        this.meterUserAddress = meterUserAddress == null ? null : meterUserAddress.trim();
+    }
+
+    public BigDecimal getMeterBalance() {
+        return meterBalance;
+    }
+
+    public void setMeterBalance(BigDecimal meterBalance) {
+        this.meterBalance = meterBalance;
+    }
+
+    public BigDecimal getMeterTotalPay() {
+        return meterTotalPay;
+    }
+
+    public void setMeterTotalPay(BigDecimal meterTotalPay) {
+        this.meterTotalPay = meterTotalPay;
+    }
+
+    public BigDecimal getMeterValue() {
+        return meterValue;
+    }
+
+    public void setMeterValue(BigDecimal meterValue) {
+        this.meterValue = meterValue;
+    }
+
+    public BigDecimal getMeterMaxOverdraft() {
+        return meterMaxOverdraft;
+    }
+
+    public void setMeterMaxOverdraft(BigDecimal meterMaxOverdraft) {
+        this.meterMaxOverdraft = meterMaxOverdraft;
+    }
+
+    public BigDecimal getMeterCurrOverdraft() {
+        return meterCurrOverdraft;
+    }
+
+    public void setMeterCurrOverdraft(BigDecimal meterCurrOverdraft) {
+        this.meterCurrOverdraft = meterCurrOverdraft;
+    }
+
+	public Zone getMeterFromZone() {
+		return meterFromZone;
 	}
 
-	public void setMeterId(Integer meterId)
-	{
-		this.meterId = meterId;
+	public void setMeterFromZone(Zone meterFromZone) {
+		this.meterFromZone = meterFromZone;
 	}
 
-	public String getMeterNumber()
-	{
-		return meterNumber;
+	public Proxy getMeterFromProxy() {
+		return meterFromProxy;
 	}
 
-	public void setMeterNumber(String meterNumber)
-	{
-		this.meterNumber = meterNumber == null ? null : meterNumber.trim();
-	}
-
-	public Byte getMeterType()
-	{
-		return meterType;
-	}
-
-	public void setMeterType(Byte meterType)
-	{
-		this.meterType = meterType;
-	}
-
-	public Byte getMeterStatus()
-	{
-		return meterStatus;
-	}
-
-	public void setMeterStatus(Byte meterStatus)
-	{
-		this.meterStatus = meterStatus;
-	}
-
-	public String getMeterTotalValue()
-	{
-		return meterTotalValue;
-	}
-
-	public void setMeterTotalValue(String meterTotalValue)
-	{
-		this.meterTotalValue = meterTotalValue == null ? null : meterTotalValue.trim();
-	}
-
-	public BigDecimal getMeterMaxBalance()
-	{
-		return meterMaxBalance;
-	}
-
-	public void setMeterMaxBalance(BigDecimal meterMaxBalance)
-	{
-		this.meterMaxBalance = meterMaxBalance;
-	}
-
-	public BigDecimal getMeterBalance()
-	{
-		return meterBalance;
-	}
-
-	public void setMeterBalance(BigDecimal meterBalance)
-	{
-		this.meterBalance = meterBalance;
-	}
-
-	public Long getMeterPromptAmount()
-	{
-		return meterPromptAmount;
-	}
-
-	public void setMeterPromptAmount(Long meterPromptAmount)
-	{
-		this.meterPromptAmount = meterPromptAmount;
-	}
-
-	public Long getMeterStopAmount()
-	{
-		return meterStopAmount;
-	}
-
-	public void setMeterStopAmount(Long meterStopAmount)
-	{
-		this.meterStopAmount = meterStopAmount;
-	}
-
-	public BigDecimal getMeterMaxOverdraft()
-	{
-		return meterMaxOverdraft;
-	}
-
-	public void setMeterMaxOverdraft(BigDecimal meterMaxOverdraft)
-	{
-		this.meterMaxOverdraft = meterMaxOverdraft;
-	}
-
-	public BigDecimal getMeterCurrentOverdraft()
-	{
-		return meterCurrentOverdraft;
-	}
-
-	public void setMeterCurrentOverdraft(BigDecimal meterCurrentOverdraft)
-	{
-		this.meterCurrentOverdraft = meterCurrentOverdraft;
-	}
-
-	public BigDecimal getMeterTotalConsumption()
-	{
-		return meterTotalConsumption;
-	}
-
-	public void setMeterTotalConsumption(BigDecimal meterTotalConsumption)
-	{
-		this.meterTotalConsumption = meterTotalConsumption;
-	}
-
-	public BigDecimal getElectricityPrice()
-	{
-		return electricityPrice;
-	}
-
-	public void setElectricityPrice(BigDecimal electricityPrice)
-	{
-		this.electricityPrice = electricityPrice;
-	}
-
-	public User getMeterUser()
-	{
-		return meterUser;
-	}
-
-	public void setMeterUser(User meterUser)
-	{
-		this.meterUser = meterUser;
-	}
-
-	public Branch getMeterBranch()
-	{
-		return meterBranch;
-	}
-
-	public void setMeterBranch(Branch meterBranch)
-	{
-		this.meterBranch = meterBranch;
-	}
-
-	public String getMeterContactAddress() {
-		return meterContactAddress;
-	}
-
-	public void setMeterContactAddress(String meterContactAddress) {
-		this.meterContactAddress = meterContactAddress;
-	}
-
-	public Integer getMeterRate() {
-		return meterRate;
-	}
-
-	public void setMeterRate(Integer meterRate) {
-		this.meterRate = meterRate;
-	}
-
-	public String getMeterSerial() {
-		return meterSerial;
-	}
-
-	public void setMeterSerial(String meterSerial) {
-		this.meterSerial = meterSerial;
+	public void setMeterFromProxy(Proxy meterFromProxy) {
+		this.meterFromProxy = meterFromProxy;
 	}
 
 	@Override
 	public String toString() {
-		return "Meter [meterId=" + meterId + ", meterNumber=" + meterNumber
-				+ ", meterType=" + meterType + ", meterStatus=" + meterStatus
-				+ ", meterTotalValue=" + meterTotalValue + ", meterMaxBalance="
-				+ meterMaxBalance + ", meterBalance=" + meterBalance
-				+ ", meterPromptAmount=" + meterPromptAmount
-				+ ", meterStopAmount=" + meterStopAmount
-				+ ", meterMaxOverdraft=" + meterMaxOverdraft
-				+ ", meterCurrentOverdraft=" + meterCurrentOverdraft
-				+ ", meterTotalConsumption=" + meterTotalConsumption
-				+ ", electricityPrice=" + electricityPrice + ", meterUser="
-				+ meterUser + ", meterBranch=" + meterBranch
-				+ ", meterContactAddress=" + meterContactAddress
-				+ ", meterRate=" + meterRate + ", meterSerial=" + meterSerial
-				+ "]";
+		return "Meter [meterId=" + meterId + ", meterName=" + meterName
+				+ ", meterDescription=" + meterDescription + ", meterType="
+				+ meterType + ", meterStatus=" + meterStatus
+				+ ", meterAddress=" + meterAddress + ", meterRate=" + meterRate
+				+ ", meterPort=" + meterPort + ", meterUserName="
+				+ meterUserName + ", meterUserIdcard=" + meterUserIdcard
+				+ ", meterUserMobile=" + meterUserMobile
+				+ ", meterUserAddress=" + meterUserAddress + ", meterBalance="
+				+ meterBalance + ", meterTotalPay=" + meterTotalPay
+				+ ", meterValue=" + meterValue + ", meterMaxOverdraft="
+				+ meterMaxOverdraft + ", meterCurrOverdraft="
+				+ meterCurrOverdraft + ", meterFromZone=" + meterFromZone
+				+ ", meterFromproxy=" + meterFromProxy + "]";
 	}
 }

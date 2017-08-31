@@ -1,11 +1,6 @@
 package com.xinda.controller;
 
-import gnu.io.SerialPort;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,12 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.xinda.entity.HistoricalPrice;
+import com.xinda.entity.Price;
 import com.xinda.entity.User;
-import com.xinda.service.BranchService;
-import com.xinda.service.PriceService;
-import com.xinda.service.UserService;
-import com.xinda.util.SerialTool;
+import com.xinda.service.*;
 @Controller
 @RequestMapping("user/")
 public class UserController
@@ -33,11 +25,15 @@ public class UserController
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private BranchService branchService;
+	private ZoneService zoneService;
 	@Autowired
 	private PriceService priceService;
+	@Autowired
+	private MeterService meterService;
+	@Autowired
+	private LogService logService;
 	/**用户注册*/
-	@RequestMapping(value="registed",method=RequestMethod.POST)
+	/*@RequestMapping(value="registed",method=RequestMethod.POST)
 	public String registed(HttpServletRequest request,HttpServletResponse response){
 		User user=(User) request.getAttribute("loginUser");
 		if(userService.checkUserCanRegisted(user)&&userService.saveUser(user)){
@@ -45,38 +41,20 @@ public class UserController
 		}else{
 			return "index";
 		}
-	}
-	/**用户登陆*/
-	@RequestMapping("login")
-	public String login(HttpServletRequest request,HttpServletResponse response){
+	}*/
+	/**查看用户列表*/
+	/*@RequestMapping("userlistView")
+	public String showUserlist(HttpServletRequest request,HttpServletResponse response){
 		HttpSession session=request.getSession();
-		String nameString=request.getParameter("username");
-		String password=request.getParameter("password");
-		User user=new User();
-		user.setUserAccount(nameString);
-		user.setUserPassword(password);
-		if(userService.checkUserIsExist(user)){
-			user=userService.login(user);
-			/*if(user.getRole()==1){//管理员
-				List<User> userList=userService.findUsers();
-				session.setAttribute("userList", userList);
-				//session.setAttribute("branchList", branchService.getBranchs());
-			}else{
-				
-			}*/
-			session.setAttribute("loginUser", user);
-			return "main";
+		User loginUser=(User)session.getAttribute("loginUser");
+		if(loginUser!=null&&loginUser.getUserRole()==1){
+			session.setAttribute("userList", userService.findUsers());
+			return "userlist";
 		}else{
 			return "index";
 		}
-		
-	}
-	/**用户退出*/
-	@RequestMapping("logout")
-	public String logout(HttpServletRequest request){
-		request.getSession().removeAttribute("loginUser");
-		return "index";
-	}
+	}*/
+	
 	/**查看用户报表*/
 	@RequestMapping("tablesView")
 	public String showTables(HttpServletRequest request, HttpServletResponse response){
@@ -91,18 +69,6 @@ public class UserController
 			System.out.println(loginUser);
 			return "profile";
 		}else {
-			return "index";
-		}
-	}
-	/**查看用户列表*/
-	@RequestMapping("userlistView")
-	public String showUserlist(HttpServletRequest request,HttpServletResponse response){
-		HttpSession session=request.getSession();
-		User loginUser=(User)session.getAttribute("loginUser");
-		if(loginUser!=null&&loginUser.getUserRole()==1){
-			session.setAttribute("userList", userService.findUsers());
-			return "userlist";
-		}else{
 			return "index";
 		}
 	}
@@ -144,15 +110,17 @@ public class UserController
 	}
 	@RequestMapping("jumpin_mnguser")
 	public String jumpMnguser(HttpServletRequest request){
-		request.getSession().setAttribute("branchs", branchService.findAllBranch());
+		HttpSession session=request.getSession();
+		session.setAttribute("branchs", zoneService.findAllZone());
+		session.setAttribute("all_meter_count", meterService.findAllMetersCount());
 		return "mng-user";
 	}
 	@RequestMapping("jumpin_modifyprice")
 	public String jumpModify(HttpServletRequest request){
 		HttpSession session=request.getSession();
-		HistoricalPrice currPrice=priceService.findPriceByActive(new Byte("1"));
+		Price currPrice=priceService.findPriceByActive(1);
 		session.setAttribute("currPrice", currPrice);
-		HistoricalPrice futurePrice=priceService.findPriceByActive(new Byte("0"));
+		Price futurePrice=priceService.findPriceByActive(0);
 		if(futurePrice==null){
 			futurePrice=currPrice;
 		}
@@ -164,7 +132,8 @@ public class UserController
 		return "mng-addbranch";
 	}
 	@RequestMapping("jumpin_adduser")
-	public String jumpAddu(){
+	public String jumpAddu(HttpServletRequest request){
+		request.getSession().setAttribute("zoneList", zoneService.findAllZone());
 		return "mng-adduser";
 	}
 	@RequestMapping("jumpin_sendmsg")
@@ -181,40 +150,8 @@ public class UserController
 	}
 	@RequestMapping("jumpin_rechargePage")
 	public String rechargePage(HttpServletRequest request){
-		request.getSession().setAttribute("branchList", branchService.findAllBranch());
+		request.getSession().setAttribute("branchList", zoneService.findAllZone());
 		return "histroy-recharge";
-	}
-	@ResponseBody
-	@RequestMapping("duqu")
-	public Map<String,String> duqu(HttpServletRequest request){
-		String addrStr=request.getParameter("addr");
-		byte[] addr=new byte[]{(byte)Long.parseLong(addrStr, 16)};
-		SerialTool st=new SerialTool();
-		st.scanPorts();
-		st.openSerialPort("COM3");
-		st.setSeriaPortParam(1200, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_EVEN);
-		st.sendDataToSeriaPort(SerialTool.getValueCommand(addr));
-//		st.sendDataToSeriaPort(ConstantPool.READ_CONTACT_ADDRESS);
-		/*Timer timer = new Timer();// 实例化Timer类  
-        timer.schedule(new TimerTask() {  
-            public void run() {  
-                System.out.println("退出");  
-                this.cancel();  
-            }  
-        }, 5000);// 这里百毫秒  
-        System.out.println("本程序存在5秒后自动退出");*/ 
-		/*try {
-			Robot r=new Robot();
-			r.delay(5000);
-		} catch (AWTException e) {
-			e.printStackTrace();
-		}*/
-		String redata=st.getReceive();
-		st.closeSerialPort();
-		System.out.println(":::>"+redata);
-		Map<String,String> reMap=new HashMap<String,String>();
-		reMap.put("data", redata);
-		return reMap;
 	}
 	static String[] mmp={"257","264","251","196","207","226","270"};
 	@ResponseBody
@@ -237,6 +174,7 @@ public class UserController
 		result.add(sereis);
 		return result;
 	}
+	/**测试查看历史页面*/
 	@ResponseBody
 	@RequestMapping("ni")
 	public List<String> ceshi2(){
@@ -244,5 +182,11 @@ public class UserController
 		result.add(Integer.toString((int)(Math.random()*100)+200));
 		result.add("数据项"+(int)(Math.random()*10));
 		return result;
+	}
+	/**测试实时数据页面*/
+	@ResponseBody
+	@RequestMapping("ma")
+	public Double ceshi3(){
+	    return Math.random()*10;
 	}
 }

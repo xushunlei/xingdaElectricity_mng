@@ -1,99 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xinda.dao.MeterMapper" >
-  <resultMap id="BaseResultMap" type="com.xinda.entity.Meter" >
-    <id column="mid" property="meterId" jdbcType="INTEGER" />
-    <result column="meter_number" property="meterNumber" jdbcType="VARCHAR" />
-    <result column="meter_type" property="meterType" jdbcType="TINYINT" />
-    <result column="meter_status" property="meterStatus" jdbcType="TINYINT" />
-    <result column="meter_total_value" property="meterTotalValue" jdbcType="VARCHAR" />
-    <result column="meter_max_balance" property="meterMaxBalance" jdbcType="DECIMAL" />
+  <resultMap id="MeterMap" type="com.xinda.entity.Meter" >
+    <id column="meter_id" property="meterId" jdbcType="INTEGER" />
+    <result column="meter_name" property="meterName" jdbcType="VARCHAR" />
+    <result column="meter_description" property="meterDescription" jdbcType="VARCHAR" />
+    <result column="meter_type" property="meterType" jdbcType="INTEGER" />
+    <result column="meter_status" property="meterStatus" jdbcType="INTEGER" />
+    <result column="meter_address" property="meterAddress" jdbcType="VARCHAR" />
+    <result column="meter_rate" property="meterRate" jdbcType="INTEGER" />
+    <result column="meter_port" property="meterPort" jdbcType="VARCHAR" />
+    <result column="meter_user_name" property="meterUserName" jdbcType="VARCHAR" />
+    <result column="meter_user_idcard" property="meterUserIdcard" jdbcType="VARCHAR" />
+    <result column="meter_user_mobile" property="meterUserMobile" jdbcType="VARCHAR" />
+    <result column="meter_user_address" property="meterUserAddress" jdbcType="VARCHAR" />
     <result column="meter_balance" property="meterBalance" jdbcType="DECIMAL" />
-    <result column="meter_prompt_amount" property="meterPromptAmount" jdbcType="DECIMAL" />
-    <result column="meter_stop_amount" property="meterStopAmount" jdbcType="DECIMAL" />
+    <result column="meter_total_pay" property="meterTotalPay" jdbcType="DECIMAL" />
+    <result column="meter_value" property="meterValue" jdbcType="DECIMAL" />
     <result column="meter_max_overdraft" property="meterMaxOverdraft" jdbcType="DECIMAL" />
-    <result column="meter_current_overdraft" property="meterCurrentOverdraft" jdbcType="DECIMAL" />
-    <result column="meter_total_consumption" property="meterTotalConsumption" jdbcType="DECIMAL" />
-    <result column="electricity_price" property="electricityPrice" jdbcType="DECIMAL" />
-    <result column="meter_contact_address" property="meterContactAddress" jdbcType="VARCHAR"/>
-    <result column="meter_rate" property="meterRate" jdbcType="INTEGER"/>
-    <result column="meter_serial" property="meterSerial" jdbcType="VARCHAR"/>
-    <association column="branch_number" property="meterBranch" resultMap="com.xinda.dao.BranchMapper.BaseResultMap"></association>
-    <association column="user_account" property="meterUser" resultMap="com.xinda.dao.UserMapper.UserMap"></association>
+    <result column="meter_curr_overdraft" property="meterCurrOverdraft" jdbcType="DECIMAL" />
+    <association column="meter_from_zone" property="meterFromZone" resultMap="com.xinda.dao.ZoneMapper.ZoneMap"/>
+    <association column="meter_from_proxy" property="meterFromProxy" resultMap="com.xinda.dao.ProxyMapper.ProxyMap"/>
   </resultMap>
-  <sql id="Base_Column_List" >
-    mid, meter_number, meter_type, meter_status, meter_total_value, meter_max_balance, 
-    meter_balance, meter_prompt_amount, meter_stop_amount, meter_max_overdraft, meter_current_overdraft, 
-    meter_total_consumption, electricity_price, user_account, branch_number, meter_contact_address,
-    meter_rate, meter_serial
-  </sql>
-  <!-- <select id="selectUser" parameterType="java.lang.String" resultType="com.xinda.entity.User">
-  	select * from user where user_account=#{userAccount}
-  </select> -->
-  <select id="selectAllMeters" resultMap="BaseResultMap">
-  	select * from meter m 
-  	left join user u
-  	on m.user_account=u.user_account
-	left join branch b
-	on m.branch_number=b.branch_number
+  <sql id="associate_zone_proxy">
+  	meter m 
+  	left join zone z
+  	on m.meter_from_zone=z.zone_id
+	left join proxy p
+	on m.meter_from_proxy=p.proxy_id
+	</sql>
+  
+  <select id="selectAllMeters" resultMap="MeterMap">
+  	select * 
+  	from <include refid="associate_zone_proxy"/>
 	<if test="start>0 and size>0">
   	limit #{start}, #{size}
   	</if>
   </select>
+  
   <select id="selectAllMetersCount" resultType="int">
-  	select count(1) from meter m 
-  	left join user u
-  	on m.user_account=u.user_account
-	left join branch b
-	on m.branch_number=b.branch_number
+  	select count(1) from meter
   </select>
-  <select id="selectMetersLikeExample1" resultMap="BaseResultMap" parameterType="com.xinda.entity.Meter">
-  	select * from meter m 
-  	left join user u
-  	on m.user_account=u.user_account
-  	<where>
-  		<if test='meterStatus!=null'>
-  			m.meter_status = #{meterStatus} or
-  		</if>
-  		<if test="meterType!=null">
-  			m.meter_type = #{meterType} 
-  		</if>
-  	</where>
-  	limit #{start}, #{size}
-  </select>
-  <select id="selectMetersLikeExample1Count" resultType="int" parameterType="com.xinda.entity.Meter">
-  	select * from meter m 
-  	left join user u
-  	on m.user_account=u.user_account
-  	<where>
-  		<if test='meterStatus!=null'>
-  			m.meter_status = #{meterStatus} or
-  		</if>
-  		<if test="meterType!=null">
-  			m.meter_type = #{meterType} 
-  		</if>
-  	</where>
-  </select>
-  <select id="selectMetersLikeExample2" resultMap="BaseResultMap">
-  	select * from meter m 
-  	left join user u
-  	on m.user_account=u.user_account
-  	<where>
-  		m.meter_number like concat("%",#{condi},"%") or
-		m.user_account like concat("%",#{condi},"%") or
-		m.branch_number like concat("%",#{condi},"%")
-  	</where>
-  	limit #{start}, #{size}
-  </select>
-  <select id="selectMetersForCondition" resultMap="BaseResultMap">
-  	select * from meter m 
-  	left join user u
-  	on m.user_account=u.user_account
-	left join branch b
-	on m.branch_number=b.branch_number
+  
+  <select id="selectMetersForCondition" resultMap="MeterMap">
+  	select * 
+  	from <include refid="associate_zone_proxy"/>
 	<where> 
-	<if test="branchNum!=null">
-	m.branch_number=#{branchNum} and
+	<if test="zoneId!=0">
+	m.meter_from_zone=#{zoneId} and
 	</if>
 	<if test="meterType!=null">
 	m.meter_type=#{meterType} and
@@ -102,9 +56,9 @@
 	m.meter_status=#{meterStatus} and
 	</if>
 	<if test="condition!=null">
-	(u.user_name like concat("%",#{condition},"%")
-	or u.user_mobile = #{condition}
-	or u.user_idcard = #{condition}) and
+	(m.meter_user_name like concat("%",#{condition},"%")
+	or m.meter_user_mobile like concat("%",#{condition},"%")
+	or m.meter_user_idcard like concat("%",#{condition},"%")) and
 	</if>
 	1=1
 	</where>
@@ -112,15 +66,13 @@
 	limit #{start}, #{size}
 	</if>
   </select>
+  
   <select id="selectCountForCondition" resultType="java.lang.Integer">
-  	select count(1) from meter m 
-  	left join user u
-  	on m.user_account=u.user_account
-	left join branch b
-	on m.branch_number=b.branch_number
+  	select count(1) 
+  	from <include refid="associate_zone_proxy"/>
 	<where> 
-	<if test="branchNum!=null">
-	m.branch_number=#{branchNum} and
+	<if test="zoneId!=0">
+	m.meter_from_zone=#{zoneId} and
 	</if>
 	<if test="meterType!=null">
 	m.meter_type=#{meterType} and
@@ -129,19 +81,28 @@
 	m.meter_status=#{meterStatus} and
 	</if>
 	<if test="condition!=null">
-	(u.user_name like concat("%",#{condition},"%")
-	or u.user_mobile = #{condition}
-	or u.user_idcard = #{condition}) and
+	(m.meter_user_name like concat("%",#{condition},"%")
+	or m.meter_user_mobile like concat("%",#{condition},"%")
+	or m.meter_user_idcard like concat("%",#{condition},"%")) and
 	</if>
 	1=1
 	</where>
   </select>
-  <select id="selectMeterById" resultMap="BaseResultMap"  parameterType="java.lang.Integer">
-  	select * from meter where mid=#{meterId}
+  
+  <select id="selectMeterById" resultMap="MeterMap" parameterType="java.lang.Integer">
+  	select * from meter where meter_id=#{meterId}
   </select>
+  
+  <select id="getMeterIdsByZoneIds" resultType="int">
+  	select meter_id from meter
+  	<if test="role==0 and zoneId!=null">
+  	where meter_from_zone = #{zoneId} 
+  	</if>
+  </select>
+  
   <update id="updateBalanceById">
   	update meter set meter_balance=#{meterBalance}
-  	where mid= #{meterId}
+  	where meter_id= #{meterId}
   </update>
   
   <update id="updateMeterById" parameterType="com.xinda.entity.Meter">
@@ -156,33 +117,56 @@
   		<if test="meterBalance!=null">
   		meter_balance=#{meterBalance},
   		</if>
-  		<if test="meterCurrentOverdraft!=null">
-  		meter_current_overdraft=#{meterCurrentOverdraft},
+  		<if test="meterCurrOverdraft!=null">
+  		meter_curr_overdraft=#{meterCurrOverdraft},
   		</if>
-  		<if test="meterTotalValue!=null">
-  		meter_total_value=#{meterTotalValue},
+  		<if test="meterValue!=null">
+  		meter_value=#{meterValue},
   		</if>
-  		<if test="meterPromptAmount!=null">
-  		meter_prompt_amount=#{meterPromptAmount},
+  		<if test="meterTotalPay!=null">
+  		meter_total_pay=#{meterTotalPay},
   		</if>
-  		<if test="meterStopAmount!=null">
-  		meter_stop_amount=#{meterStopAmount},
-  		</if>
-  		<if test="meterTotalConsumption!=null">
-  		meter_total_consumption=#{meterTotalConsumption},
-  		</if>
-  		<if test="meterContactAddress != null">
-  		meter_contact_address=#{meterContactAddress},
+  		<if test="meterAddress != null">
+  		meter_address=#{meterAddress},
   		</if>
   		<if test="meterRate !=null">
   		meter_rate=#{meterRate},
   		</if>
-  		<if test="meterSerial!=null">
-  		meter_serial=#{meterSerial},
+  		<if test="meterPort!=null">
+  		meter_port=#{meterPort},
   		</if>
   	</set>
   	<where>
-  		mid=#{meterId}
+  		meter_id=#{meterId}
   	</where>
   </update>
+  
+  <insert id="insertOne" parameterType="com.xinda.entity.Meter">
+  	insert into meter
+  	<trim prefix="(" suffix=")" suffixOverrides="," >
+  		<if test="meterName != null">meter_name,</if>
+  		<if test="meterType != null">meter_type,</if>
+  		<if test="meterAddress != null">meter_address,</if>
+  		<if test="meterRate != null">meter_rate,</if>
+  		<if test="meterPort != null">meter_port,</if>
+  		<if test="meterUserName != null">meter_user_name,</if>
+  		<if test="meterUserMobile != null">meter_user_mobile,</if>
+  		<if test="meterUserIdcard != null">meter_user_idcard,</if>
+  		<if test="meterUserAddress != null">meter_user_address,</if>
+  		<if test="meterFromZone!=null">meter_from_zone,</if>
+  	</trim>
+  	<trim prefix="values (" suffix=")" suffixOverrides="," >
+  		<if test="meterName != null">#{meterName},</if>
+  		<if test="meterType != null">#{meterType},</if>
+  		<if test="meterAddress != null">#{meterAddress},</if>
+  		<if test="meterRate != null">#{meterRate},</if>
+  		<if test="meterPort != null">#{meterPort},</if>
+  		<if test="meterUserName != null">#{meterUserName},</if>
+  		<if test="meterUserMobile != null">#{meterUserMobile},</if>
+  		<if test="meterUserIdcard != null">#{meterUserIdcard},</if>
+  		<if test="meterUserAddress != null">#{meterUserAddress},</if>
+  		<if test="meterFromZone!=null">#{meterFromZone.zoneId},</if>
+  	</trim>
+  </insert>
+  
 </mapper>

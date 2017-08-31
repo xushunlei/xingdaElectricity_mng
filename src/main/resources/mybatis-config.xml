@@ -3,6 +3,6 @@
 <configuration>
 	<typeAliases >
 		<!-- 扫描实体类包 -->
-		<package name="rmkk.entity"/>
+		<package name="com.xinda.entity"/>
 	</typeAliases>
 </configuration>

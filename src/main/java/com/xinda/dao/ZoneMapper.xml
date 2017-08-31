@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinda.dao.ZoneMapper" >
+  <resultMap id="ZoneMap" type="com.xinda.entity.Zone" >
+    <id column="zone_id" property="zoneId" jdbcType="INTEGER" />
+    <result column="zone_name" property="zoneName" jdbcType="VARCHAR" />
+    <result column="zone_description" property="zoneDescription" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    zone_id, zone_name, zone_description
+  </sql>
+  <select id="selectAllZone" resultMap="ZoneMap">
+  	select * from zone
+  </select>
+  <select id="selectAllZoneId" resultType="int">
+  	select zone_id from zone
+  </select>
+  
+  <select id="selectById" resultMap="ZoneMap" parameterType="int">
+  	select * from zone where zone_id=#{zoneId}
+  </select>
+  
+  <!-- 插入时自动将主键赋值到参数对象中。适用支持auto-generated key field的数据库，如MySQL 。keyProperty是Java对象的属性名！-->
+  <insert id="insertZone" parameterType="com.xinda.entity.Zone" useGeneratedKeys="true" keyProperty="zoneId">
+  	insert into zone
+  	<trim prefix="(" suffix=")" suffixOverrides="," >
+  		<if test="zoneName != null">zone_name,</if>
+  		<if test="zoneDescription != null">zone_description,</if>
+  	</trim>
+  	<trim prefix="values (" suffix=")" suffixOverrides="," >
+  		<if test="zoneName != null">#{zoneName},</if>
+  		<if test="zoneDescription != null">#{zoneDescription},</if>
+  	</trim>
+  </insert>
+  
+</mapper>

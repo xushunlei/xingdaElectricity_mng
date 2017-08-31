@@ -4,8 +4,7 @@ jQuery(document).ready(function($){
 function resetform(){
 	jQuery("#username").val('');
 	jQuery("#usermobile").val('');
-	jQuery("#useridcard").val('');
-	jQuery("#useremail").val('');
+	jQuery("#usercord").val('');
 	jQuery("#useraddress").val('');
 }
 function saveuser(){

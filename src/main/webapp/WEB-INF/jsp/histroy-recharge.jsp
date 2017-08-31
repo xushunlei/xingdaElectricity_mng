@@ -16,9 +16,9 @@ jQuery(document).ready(function($){
 		readOnly:true
 	});});
 	$("#edate").bind("focus",function(){WdatePicker({
-		maxDate:"%y-%M-%d",
+		maxDate:"%y-%M-%d",//表示当前日期
 		startDate:"%y-%M-%d",
-		minDate:"#F{$dp.$D('sdate')}",
+		minDate:"#F{$dp.$D('sdate')}",//表示sdate的日期
 		isShowClear:false,
 		readOnly:true
 	});});
@@ -127,7 +127,7 @@ function drawchartByCondi(){
   		网点：<select id="branchOps" onchange="showWithBranch()">
   			<option value="">选择网点</option>
   			<c:forEach items="${branchList}" var="branch">
-  			<option value="${branch.branchNumber }">${branch.branchName}</option>
+  			<option value="${branch.zoneId }">${branch.zoneName}</option>
   			</c:forEach>
   		</select>
   		用户：<select id="meterOps">

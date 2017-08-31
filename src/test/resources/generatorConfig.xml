@@ -16,7 +16,7 @@
 		</commentGenerator>
 		<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://localhost/xinda" userId="root"
+			connectionURL="jdbc:mysql://localhost/xingda" userId="root"
 			password="">
 		</jdbcConnection>
 
@@ -67,7 +67,13 @@
 		<table tableName="user"   selectByExampleQueryId="false" enableUpdateByExample="false" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false">
 			<columnRenamingRule searchString="^user_" replaceString=""/>
 		</table> -->
-		<table tableName="dosage_record" selectByExampleQueryId="false" enableUpdateByExample="false" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false">
+		<table tableName="recharge_record" selectByExampleQueryId="false" enableUpdateByExample="false" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false">
 		</table>
+		<table tableName="user" selectByExampleQueryId="false" enableUpdateByExample="false" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false"></table>
+		<table tableName="meter" selectByExampleQueryId="false" enableUpdateByExample="false" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false"></table>
+		<table tableName="price" selectByExampleQueryId="false" enableUpdateByExample="false" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false"></table>
+		<table tableName="log" selectByExampleQueryId="false" enableUpdateByExample="false" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false"></table>
+		<table tableName="collector" selectByExampleQueryId="false" enableUpdateByExample="false" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false"></table>
+		<table tableName="zone" selectByExampleQueryId="false" enableUpdateByExample="false" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false"></table>
 	</context>
 </generatorConfiguration>

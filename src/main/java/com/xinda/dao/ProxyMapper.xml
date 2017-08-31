@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinda.dao.ProxyMapper" >
+  <resultMap id="ProxyMap" type="com.xinda.entity.Proxy" >
+    <id column="proxy_id" property="proxyId" jdbcType="INTEGER" />
+    <result column="proxy_ip" property="proxyIp" jdbcType="VARCHAR" />
+    <result column="proxy_port" property="proxyPort" jdbcType="INTEGER" />
+  </resultMap>
+</mapper>

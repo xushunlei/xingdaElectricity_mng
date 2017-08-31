@@ -15,7 +15,8 @@
 <script type="text/javascript">
 var curr_page=1;//当前页，默认为第一页
 var page_size=10;//容量，每页最多显示条目书
-var branch_num="";//网点编号
+
+var branch_num=0;//网点编号
 var seach_word="";//搜索关键字：用户姓名、用户身份证、用户电话
 var meter_type;//电表类型
 var meter_status;//电表状态
@@ -25,7 +26,7 @@ jQuery(document).ready(function($){
 	total_count=$("#b1").text();
 	total_page=Math.ceil(total_count/page_size);
 	
-	dr(curr_page,page_size);
+	dr(curr_page,page_size,"",0);
 	///// 重置单选框 /////
 	jQuery('input:checkbox').uniform();
 	///// 选择全部 /////
@@ -56,9 +57,7 @@ jQuery(document).ready(function($){
 /**选择搜索网点*/
 function changebranch(){
 	branch_num=jQuery("#branchOps").val();
-	if(branch_num=="0"){
-		branch_num="";
-	}
+	if(branch_num=="0")return;
 	curr_page=1;
 	findNewCount(branch_num,seach_word,meter_type,meter_status);
 	dr(curr_page,page_size,"",branch_num);
@@ -67,7 +66,6 @@ function changebranch(){
 function changetype(){
 	meter_type=jQuery("#metertype").val();
 	findNewCount(branch_num,seach_word,meter_type,meter_status);
-	console.log(meter_type);
 	curr_page=1;
 	dr(curr_page,page_size,"",branch_num);
 }
@@ -76,7 +74,6 @@ function changestatus(){
 	meter_status=jQuery("#meterstatus").val();
 	findNewCount(branch_num,seach_word,meter_type,meter_status);
 	curr_page=1;
-	console.log(meter_status);
 	dr(curr_page,page_size,"",branch_num);
 }
 /**侦测条件输入框的键盘按键，13表示敲入回车键*/
@@ -115,7 +112,7 @@ function dr(pageNo,pageSize,seachWord,branchNum){
 			"pageNo":pageNo,
 			"pageSize":pageSize,
 			"seachfor":seachWord,
-			"branchNum":branchNum,
+			"zoneId":branchNum,
 			"meterType":meter_type,
 			"meterStatus":meter_status
 			},
@@ -132,17 +129,17 @@ function dr(pageNo,pageSize,seachWord,branchNum){
 				var meterType=result[i].meterType==0?"单相":"三相";
 				var str='<tr><td class="aligncenter">'+
 				'<input type="checkbox" name="mIds" value="'+result[i].meterId+
-				'"/></td><td class="star">'+(i+1)+'</td><td>'+result[i].meterNumber+'</td>'+
-				'<td>'+result[i].meterBranch.branchName+'</td>'+
+				'"/></td><td class="star">'+(i+1)+'</td><td>'+result[i].meterName+'</td>'+
 				'<td>'+meterType+'</td><td><select style="float:right;" class="color_'+result[i].meterStatus+'" onchange="modifyStatus('+result[i].meterId+',this)">'+
 				'<option value="0" style="color:green">供电</option><option value="1" style="color:orange">透支</option><option value="2" style="color:red">拉闸</option></select></td>'+
 				'<td><span>'+result[i].meterBalance+'</span><button style="float:right;" onclick="recharge('+result[i].meterId+',this)">充值</button></td>'+
 				'<td><span>'+result[i].meterMaxOverdraft+'</span><button style="float:right;" onclick="setOverdraft('+result[i].meterId+',this)">设置</button></td>'+
-				'<td>'+result[i].meterTotalConsumption+'</td>'+
-				'<td>'+result[i].meterUser.userName+'</td>'+
-				'<td>'+result[i].meterUser.userMobile+'</td>'+
-				'<td>'+result[i].meterUser.userIdcard+'</td>'+
-				'<td>'+result[i].meterUser.userAddress+'</td></tr>';
+				'<td>'+result[i].meterTotalPay+'</td>'+
+				'<td>'+result[i].meterUserName+'</td>'+
+				'<td>'+result[i].meterUserMobile+'</td>'+
+				'<td>'+result[i].meterUserIdcard+'</td>'+
+				'<td>'+result[i].meterUserAddress+'</td>'+
+				'<td>'+result[i].meterFromZone.zoneName+'</td></tr>';
 				table.append(str);
 				jQuery("#meter_info tr:eq("+(i+1)+") select").val(result[i].meterStatus);
 			}
@@ -252,7 +249,6 @@ function recharge(meterid,obj){
 function setOverdraft(meterid,obj){
 	var money=prompt("输入最大透支金额");
 	if(/^\d+$/.test(money)){
-		console.log("可透支￥"+money+"元");
 		jQuery.ajax({
 			type:"post",
 			url:"admin/markOverdraft",
@@ -382,12 +378,14 @@ function centralized(s){
    <option value="1">透支</option>
    <option value="2">拉闸</option>
   </select></li>
+  <c:if test="${userRole==1}">
   <li class="right"><select  class="my_select" id="branchOps" onchange="changebranch()">
   	<option value="0">选择网点</option>
   	<c:forEach items="${branchs}" var="bran">
-  	<option value="${bran.branchNumber }">${bran.branchName }</option>
+  	<option value="${bran.zoneId }">${bran.zoneName }</option>
   	</c:forEach>
   </select></li>
+  </c:if>
        </ul>
        <span class="clearall"></span>
    </div><!--msghead-->
@@ -396,24 +394,23 @@ function centralized(s){
        <colgroup>
            <col class="con1" width="3%"/>
            <col class="con0" width="3%" />
-           <col class="con1" width="6%"/>
-           <col class="con1" width="6%"/>
+           <col class="con1" width="8%"/>
            <col class="con0" width="5%"/>
            <col class="con1" width="5%"/>
            <col class="con0" width="10%"/>
-           <col class="con1" width="10%"/>
-           <col class="con0" width="8%"/>
            <col class="con1" width="8%"/>
-           <col class="con0" width="10%"/>
+           <col class="con0" width="8%"/>
+           <col class="con1" width="6%"/>
+           <col class="con0" width="8%"/>
            <col class="con1" width="10%"/>
            <col class="con0" width="16%"/>
+           <col class="con1" width="10%"/>
        </colgroup>
        <thead>
        <tr>
            <th width="20" class="head1 aligncenter"><input type="checkbox" name="checkall" class="checkall" /></th>
            <th class="head0">&nbsp;</th>
            <th class="head1">编号</th>
-           <th class="head1">网点</th>
            <th class="head0">类型</th>
            <th class="head1">状态</th>
            <th class="head0">余额</th>
@@ -423,6 +420,7 @@ function centralized(s){
            <th>联系电话</th>
            <th>身份证</th>
            <th>地址</th>
+           <th class="head1">网点</th>
        </tr>
        </thead>
        <tbody>

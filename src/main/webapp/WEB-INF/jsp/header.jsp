@@ -36,13 +36,16 @@
                     </div> -->
                 </div><!--avatar-->
                 <div class="userdata">
-                	<h4>${loginUser.userAccount }</h4>
-                    <span class="email">${loginUser.userEmail }</span>
+                	<h4>${loginUser.userName }</h4>
+                    <span class="email">
+                    	<c:if test="${loginUser.userRole==1 }">超级管理员</c:if>
+                    	<c:if test="${loginUser.userRole==0 }">管理员</c:if>
+                    </span>
                     <ul>
                     	<li><a href="user/editprofile">编辑资料</a></li>
                         <!-- <li><a href="#">账号设置</a></li>
                         <li><a href="#">帮助</a></li> -->
-                        <li><a href="user/logout">退出</a></li>
+                        <li><a href="logout">退出</a></li>
                     </ul>
                 </div><!--userdata-->
             </div><!--userinfodrop-->
@@ -63,17 +66,17 @@
        <div class="headerwidget">
        <c:if test="${loginUser.userRole==0 }">
         	<div class="earnings">
-            	<div class="one_half">
-                	<h4>账户余额</h4>
-                    <h2>￥${loginUser.userBalance }</h2>
-                </div><!--one_half-->
-                <div class="one_half last alignright">
+            	<div>
+                	<h4>管辖区域</h4>
+                    <h2>${loginUser.userZone.zoneName }</h2>
+                </div>
+                <!--<div class="one_half last alignright">
                 	<h4><a href="" style="color:#fff">历史记录</a></h4>
                     <h2><a href="">充值</a></h2>
-                </div><!--one_half last-->
-            </div><!--earnings-->
+                </div>-->
+            </div>
         </c:if>
-        </div><!--headerwidget-->
+        </div>
         
     </div><!--header-->
 </body>

@@ -49,7 +49,7 @@
                 </div><!--loginf-->
             </div><!--nopassword-->
             
-            <form id="login" action="user/login" method="post">
+            <form id="login" action="login" method="post">
             	
                 <div class="username">
                 	<div class="usernameinner">

@@ -2,7 +2,7 @@ jQuery(document).ready(function($){
 	$(".headermenu li").removeClass('current');
 	$(".headermenu li").eq(1).addClass('current');
 	
-	$("#contentwrapper").load("user/jumpin_modifyprice");
+	$("#contentwrapper").load("user/jumpin_mnguser");
 });
 
 /**管理消息组*/

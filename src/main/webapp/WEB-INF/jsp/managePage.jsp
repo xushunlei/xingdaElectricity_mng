@@ -35,9 +35,11 @@
     <%@include file="header.jsp" %>
     <div class="vernav iconmenu">
     	<ul id="leftmenu">
-        	<li class="current"><a href="javascript:void(0)" onclick="modify_price(this)" class="inbox">修改电价</a></li>
-            <li><a href="javascript:void(0)" onclick="mng_user(this)" class="drafts">管理用户</a></li>
+            <li class="current"><a href="javascript:void(0)" onclick="mng_user(this)" class="inbox">管理用户</a></li>
+        	<li><a href="javascript:void(0)" onclick="modify_price(this)" class="drafts">修改电价</a></li>
+            <c:if test="${userRole==1}">
             <li><a href="javascript:void(0)" onclick="add_point(this)" class="drafts">新增网点</a></li>
+            </c:if>
             <li><a href="javascript:void(0)" onclick="add_meter(this)" class="drafts">新增用户</a></li>
             <li><a href="javascript:void(0)" onclick="send_msg(this)" class="drafts">推送消息</a></li>
         </ul>

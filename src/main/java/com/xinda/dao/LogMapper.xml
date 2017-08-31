@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xinda.dao.LogMapper" >
+  <resultMap id="LogMap" type="com.xinda.entity.Log" >
+    <id column="log_id" property="logId" jdbcType="BIGINT" />
+    <result column="log_date" property="logDate" jdbcType="TIMESTAMP" />
+    <result column="log_value" property="logValue" jdbcType="DECIMAL" />
+    <result column="log_unit_price" property="logUnitPrice" jdbcType="DECIMAL" />
+    <result column="log_total_price" property="logTotalPrice" jdbcType="DECIMAL" />
+    <association column="log_meter" property="logMeter" resultMap="com.xinda.dao.MeterMapper.MeterMap"/>
+  </resultMap>
+  
+  <select id="selectByMeter" resultMap="LogMap" parameterType="java.lang.Integer" >
+    select *
+    from log l
+    left join meter m
+    on l.log_meter=m.meter_id 
+    where m.meter_id = #{meterId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectValueAndDateByMeterIds" parameterType="map" resultType="map">
+  	select DATE_FORMAT(log_date,'%H') x, SUM(log_value) y
+  	from log
+  	<if test="role==0">
+  		where log_meter in 
+  		<foreach collection="ids" open="(" separator="," close=")" item="item" index="index">
+  			#{item}
+  		</foreach>
+  	</if>
+  	group by log_date
+  </select>
+  
+  <select id="selectBetweenDate" resultMap="LogMap">
+  	select * 
+  	from log l
+    left join meter m
+    on l.log_meter=m.meter_id
+    where l.log_date 
+    between #{start} and 
+    <if test="end != null">#{end}</if>
+    <if test="end == null">CURDATE()</if>
+  </select>
+  
+  <insert id="insert" parameterType="com.xinda.entity.Log" >
+    insert into log (log_date, log_meter, 
+      log_value, log_unit_price, log_total_price
+      )
+    values (#{logDate,jdbcType=TIMESTAMP}, #{logMeter.meterId,jdbcType=INTEGER}, 
+      #{logValue,jdbcType=DECIMAL}, #{logUnitPrice,jdbcType=DECIMAL}, #{logTotalPrice,jdbcType=DECIMAL}
+      )
+  </insert>
+</mapper>
